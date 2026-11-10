@@ -1,0 +1,17 @@
+.env
+__pycache__/
+*.pyc
+.pytest_cache/
+.venv/
+venv/
+.mypy_cache/
+.ruff_cache/
+*.egg-info/
+# generated artefacts
+data/synthetic/*
+!data/synthetic/sample/
+kb/raw/*
+!kb/raw/.gitkeep
+!kb/raw/MANIFEST.*
+.hf_cache/
+docs/ab_results.md.tmp

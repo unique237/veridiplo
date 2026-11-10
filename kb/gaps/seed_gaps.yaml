@@ -1,0 +1,58 @@
+# Seed gap register (from the technical report, section 6). Runtime gaps from the GapAnalystAgent are appended in the DB.
+gaps:
+  - id: P1
+    type: policy
+    title: "No rule on automated decisions affecting individuals"
+    finding: "Law 2024/017 reportedly does not address automated decision-making; no AI statute yet (SNIA announces a national regulatory framework)."
+    surfaced_by: [S2, S6]
+    proposal: "Mandatory human review of AI verdicts that affect employment, with a right to explanation."
+    sources: [CM-DP-2024, CM-SNIA-2025]
+  - id: P2
+    type: policy
+    title: "Probative value of online verification results and digitised/OCR archive copies undefined"
+    surfaced_by: [S5]
+    proposal: "MINESUP and archive services to define evidential status, hashing and chain-of-custody rules."
+    sources: [CM-ARCH-2024, CM-CYB-2010]
+  - id: P3
+    type: policy
+    title: "No published retention schedule for verification requests and uploaded diplomas"
+    surfaced_by: [S1]
+    proposal: "Default 90 days then deletion (our proposal, rule PR-RETENTION-001, proposal: true)."
+    sources: [CM-DP-2024]
+  - id: P4
+    type: policy
+    title: "Cross-border academic verification blocked by transfer authorisation while the Authority is not operational"
+    surfaced_by: [S4]
+    proposal: "Simplified regime for minimal yes/no attestations."
+    comparison: "UAE: appointed verification agencies + digital attestation (UAE PASS); PDPL 45/2021."
+    sources: [CM-DP-2024, UAE-PDPL-2021, UAE-MOHESR-RECOG]
+  - id: P5
+    type: policy
+    title: "Holder consent required for MINESUP equivalence, but no general rule for employer-initiated checks"
+    surfaced_by: [S3]
+    proposal: "Consent token or explicit legal basis for every check."
+    sources: [CM-MINESUP-FORM, CM-DP-2024]
+  - id: P6
+    type: policy
+    title: "Liability for AI false positives undefined"
+    surfaced_by: [S6]
+    proposal: "Shared-accountability clause; hash-chained audit log as evidence."
+    sources: [CM-DP-2024]
+  - id: S1
+    type: standard
+    title: "No national machine-readable schema for diploma/PV data"
+    proposal: "Contribute the VeriDiplo ontology; align with W3C VC 2.0."
+    sources: [W3C-VC-2.0]
+  - id: S2
+    type: standard
+    title: "No standard format for policy-as-code linked to legal provisions"
+    proposal: "Propose a YAML/JSON policy-rule schema to ITU study groups."
+  - id: S3
+    type: standard
+    title: "Y.3172 lacks a provenance/evidence node and a human-approval gate for agentic pipelines; Readiness 2.0 does not cover multi-agent coordination"
+    proposal: "Add a P-node sub-function 'evidence and approval gate'."
+    sources: [ITU-Y3172, ITU-READINESS-2]
+  - id: S4
+    type: standard
+    title: "No OCR benchmark for French/English Cameroonian administrative scans and names"
+    proposal: "Release the synthetic benchmark openly."

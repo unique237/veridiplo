@@ -1,0 +1,229 @@
+# VeriDiplo knowledge base — source catalogue (seed list, 10 Nov 2026)
+# RULES: real public documents only. Never invent text, articles or URLs.
+#   status: to_download | downloaded | pending_download (needs a human to drop the file in kb/raw/)
+#   verify: true  -> URL or details found via secondary sources; confirm before relying on them
+#   binding: false -> good practice / standard / strategy (not law)
+# Extend toward ~25 sources: AI & data policies + education-sector texts are BOTH required.
+
+sources:
+  # ---------------- Cameroon: data, cyber, digital ----------------
+  - id: CM-DP-2024
+    title: "Loi n° 2024/017 du 23 décembre 2024 relative à la protection des données à caractère personnel au Cameroun"
+    jurisdiction: CM
+    binding: true
+    nodes: [SRC, C, PP, P, SINK]
+    topics: [consent, minimisation, cross_border, security, rights, authority]
+    primary_url: null          # TODO find official text (prc.cm / Journal officiel); do NOT paraphrase as primary
+    secondary_urls:
+      - https://lexafrica.com/2025/10/cameroon-data-protection-law-compliance/
+      - https://www.dlapiperdataprotection.com/?c=CM&t=law
+      - https://techhiveadvisory.africa/insights/operationalising-cameroons-data-protection-law-a-review-of-key-provisions-and-impacts
+      - https://www.afriwise.com/resources/cameroons-evolving-data-privacy-landscape
+    notes: "Articles 19 (prior authorisation), 22/27 (security, breach), 32 (cross-border), 53 (Authority) are AS REPORTED by secondary sources."
+    status: to_download
+
+  - id: CM-CYB-2010
+    title: "Loi n° 2010/012 du 21 décembre 2010 relative à la cybersécurité et à la cybercriminalité"
+    jurisdiction: CM
+    binding: true
+    nodes: [C, D]
+    topics: [security, electronic_evidence, ANTIC]
+    secondary_urls:
+      - https://dig.watch/resource/the-law-no-2010-012-of-21-december-2010-on-cybersecurity-and-cybercriminality-in-cameroon
+    status: to_download
+
+  - id: CM-ECOM-2010
+    title: "Loi n° 2010/021 du 21 décembre 2010 régissant le commerce électronique"
+    jurisdiction: CM
+    binding: true
+    nodes: [D]
+    topics: [electronic_transactions, electronic_evidence]
+    primary_url: null
+    verify: true
+    status: pending_download
+
+  - id: CM-SNIA-2025
+    title: "Stratégie Nationale de l'Intelligence Artificielle (SNIA), MINPOSTEL, juillet 2025"
+    jurisdiction: CM
+    binding: false
+    nodes: [C, M, P]
+    topics: [ai_strategy, sovereignty, inclusion, governance]
+    secondary_urls:
+      - https://oecd.ai/en/dashboards/policy-initiatives/cameroons-national-artificial-intelligence-strategy-snia
+      - https://www.businessincameroon.com/public-management/1107-14843-cameroon-unveils-ai-plan-to-create-12-000-jobs-by-2040
+    notes: "Seven pillars; pillar 1 governance & digital sovereignty; pillar 3 multilingual & inclusive AI. Full official PDF: find on minpostel.gov.cm; else kind: summary."
+    status: to_download
+
+  # ---------------- Cameroon: education, archives, penal ----------------
+  - id: CM-HE-2023
+    title: "Loi n° 2023/007 du 25 juillet 2023 portant orientation de l'enseignement supérieur au Cameroun"
+    jurisdiction: CM
+    binding: true
+    nodes: [SRC, SINK]
+    topics: [higher_education, state_control, diplomas]
+    primary_url: null          # TODO official PDF (minesup.gov.cm / prc.cm)
+    secondary_urls:
+      - https://www.minesup.gov.cm/index.php/category/actualites/page/28/
+    notes: "Repeals Law n° 005 of 16 April 2001 (historical reference: https://campusunivers.com/wp-content/uploads/2023/06/LOI-N°-005-DU-16-AVRIL-2001.pdf)."
+    status: pending_download
+
+  - id: CM-ARCH-2024
+    title: "Loi n° 2024/001 du 24 juillet 2024 régissant les archives au Cameroun"
+    jurisdiction: CM
+    binding: true
+    nodes: [SRC, PP]
+    topics: [archives, conservation, public_records]
+    primary_url: https://prc.cm/files/ab/9c/9b/a3c85b0cba6bbe6f3b86719fa0252905.pdf
+    notes: "Replaces Law n° 2000/010 of 19 Dec 2000."
+    status: to_download
+
+  - id: CM-ARCH-2000
+    title: "Loi n° 2000/010 du 19 décembre 2000 régissant les archives (abrogée — référence historique)"
+    jurisdiction: CM
+    binding: false
+    nodes: [SRC]
+    topics: [archives]
+    primary_url: https://minfi.gov.cm/wp-content/uploads/2023/07/Loi-2000-010_18_DEC_2000.pdf
+    status: to_download
+
+  - id: CM-PEN-2016
+    title: "Loi n° 2016/007 du 12 juillet 2016 portant Code pénal"
+    jurisdiction: CM
+    binding: true
+    nodes: [P]
+    topics: [forgery, unlawful_use_of_diploma]
+    primary_url: https://www.wipo.int/wipolex/en/text/491142
+    secondary_urls:
+      - https://cameroon-tribune.cm/article.html/79799/fr.html/details_2
+    notes: "Article 219: unlawful use of a title/official diploma (confirmed via Cameroon Tribune). Locate forgery articles in the full text; do not guess numbers."
+    status: to_download
+
+  - id: CM-MINESUP-FORM
+    title: "MINESUP – Formulaire de demande d'équivalence / autorisation d'authentification par le titulaire"
+    jurisdiction: CM
+    binding: true
+    nodes: [SRC, P]
+    topics: [consent, authentication_procedure]
+    primary_url: https://www.minesup.gov.cm/DCAA/Formulaire%20equivalence_fr.pdf
+    notes: "Holder authorises the Minister to carry out the searches needed to authenticate the diploma."
+    status: to_download
+
+  - id: CM-VERIF-PLATFORM-2024
+    title: "Lancement de la plateforme gouvernementale de vérification en ligne des diplômes (1er octobre 2024)"
+    jurisdiction: CM
+    binding: false
+    kind: summary
+    nodes: [SRC, D]
+    topics: [existing_solution, MINESUP, MINFOPRA]
+    secondary_urls:
+      - https://www.osiris.sn/le-cameroun-deploie-une-plateforme-numerique-pour-authentifier-les-diplomes.html
+      - https://cameroon-tribune.cm/article.html/67210/fr.html/details_2
+      - https://www.wearetech.africa/en/fils-uk/news/tech/cameroon-launches-digital-platform-to-authenticate-diplomas
+    status: to_download
+
+  # ---------------- Africa / international ----------------
+  - id: INT-ADDIS-2014
+    title: "Revised Convention on the Recognition of Studies, Certificates, Diplomas, Degrees and Other Academic Qualifications in Higher Education in African States (Addis Ababa, 2014)"
+    jurisdiction: AFRICA
+    binding: true            # for States Parties — check Cameroon's ratification status (verify)
+    nodes: [P]
+    topics: [recognition, fair_assessment]
+    primary_url: https://treaties.un.org/doc/Publication/UNTS/No%20Volume/56152/Part/I-56152-08000002805725b8.pdf
+    verify: true
+    status: to_download
+
+  - id: INT-GLOBAL-CONV-2019
+    title: "UNESCO Global Convention on the Recognition of Qualifications concerning Higher Education (2019)"
+    jurisdiction: INTL
+    binding: false
+    nodes: [P]
+    topics: [recognition]
+    primary_url: null        # find on unesco.org
+    status: pending_download
+
+  - id: AU-AI-2024
+    title: "African Union Continental Artificial Intelligence Strategy (2024)"
+    jurisdiction: AFRICA
+    binding: false
+    nodes: [M, P]
+    topics: [ai_strategy, ethics]
+    primary_url: https://au.int/en/documents/20240809/continental-artificial-intelligence-strategy
+    verify: true
+    status: to_download
+
+  - id: INT-UNESCO-ETH-2021
+    title: "UNESCO Recommendation on the Ethics of Artificial Intelligence (2021)"
+    jurisdiction: INTL
+    binding: false
+    nodes: [M, P, SINK]
+    topics: [transparency, human_oversight, fairness]
+    primary_url: https://unesdoc.unesco.org/ark:/48223/pf0000381137
+    verify: true
+    status: to_download
+
+  # ---------------- Standards (non-binding) ----------------
+  - id: ITU-Y3172
+    title: "ITU-T Y.3172 – Architectural framework for machine learning in future networks"
+    jurisdiction: INTL
+    binding: false
+    nodes: [SRC, C, PP, M, P, D, SINK]
+    topics: [pipeline, architecture]
+    primary_url: https://www.itu.int/rec/T-REC-Y.3172
+    status: to_download
+
+  - id: ITU-READINESS-2
+    title: "ITU AI Readiness framework 2.0 – 13 dimensions (machine-readable via CrashingGuru/ITUAIReadiness dimensions.json, MIT)"
+    jurisdiction: INTL
+    binding: false
+    topics: [readiness]
+    primary_url: https://github.com/CrashingGuru/ITUAIReadiness
+    status: to_download
+
+  - id: W3C-VC-2.0
+    title: "W3C Verifiable Credentials Data Model v2.0"
+    jurisdiction: INTL
+    binding: false
+    nodes: [D]
+    topics: [digital_credentials, attestation]
+    primary_url: https://www.w3.org/TR/vc-data-model-2.0/
+    status: to_download
+
+  - id: W3C-SHACL
+    title: "W3C Shapes Constraint Language (SHACL)"
+    jurisdiction: INTL
+    binding: false
+    nodes: [M]
+    primary_url: https://www.w3.org/TR/shacl/
+    status: to_download
+
+  - id: W3C-PROV-O
+    title: "W3C PROV-O: The PROV Ontology"
+    jurisdiction: INTL
+    binding: false
+    nodes: [PP, D]
+    primary_url: https://www.w3.org/TR/prov-o/
+    status: to_download
+
+  # ---------------- Comparison country: UAE ----------------
+  - id: UAE-PDPL-2021
+    title: "UAE Federal Decree-Law No. 45 of 2021 on the Protection of Personal Data"
+    jurisdiction: AE
+    binding: true
+    nodes: [P]
+    topics: [comparison, data_protection]
+    primary_url: https://u.ae/en/about-the-uae/digital-uae/data/data-protection-laws
+    verify: true
+    status: to_download
+
+  - id: UAE-MOHESR-RECOG
+    title: "UAE MoHESR regulations on recognition of higher education qualifications (verification via appointed agencies)"
+    jurisdiction: AE
+    binding: true
+    kind: summary
+    nodes: [P, D]
+    topics: [comparison, verification]
+    secondary_urls:
+      - https://www.thenationalnews.com/news/uae/2025/05/09/how-to-get-your-university-degree-attested-in-the-uae
+      - https://moe.gov.ae/en/mediacenter/news/Pages/launches-e-service-to-attest-higher-education-certificates.aspx
+      - https://gulfnews.com/uae/uae-launches-digital-service-to-verify-education-certificates-issued-overseas-1.500140859
+    status: to_download

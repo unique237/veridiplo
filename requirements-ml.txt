@@ -1,0 +1,2 @@
+# Installed after CPU-only torch (see docker/Dockerfile.app)
+sentence-transformers>=3.0
