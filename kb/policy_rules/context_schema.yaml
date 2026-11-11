@@ -1,0 +1,92 @@
+# Machine-readable CONTRACT of the evaluation context used by the `when` expressions of kb/policy_rules/*.yaml.
+# The policy engine (app/policy/engine.py) must pass ALL namespaces below at EVERY checkpoint, with ALL keys present
+# (value None / 0 / [] / False when unknown). simpleeval raises on a missing key, so never omit keys.
+# app/policy/loader.py::validate_rules() statically checks that every `namespace.key` used in a rule exists here.
+#
+# Evaluator: simpleeval.EvalWithCompoundTypes (list literals, `in`, `not in`, `is None`, and/or/not, comparisons, len()).
+# Dicts are accessed with attribute syntax (request.purpose) — verified with simpleeval 1.0.8 (dict attribute access works;
+# a missing key raises AttributeDoesNotExist).  Plain SimpleEval does NOT support list literals — use EvalWithCompoundTypes.
+#
+# Functions that the engine must register (names are part of the contract):
+#   len(x)                      -> int
+#   contains_any(text, words)   -> bool   case-insensitive, accent-insensitive substring test; text may be None -> False
+#   intersects(a, b)            -> bool   True if the two lists share at least one element (None -> [])
+
+namespaces:
+  request:
+    description: "The verification request (intent) being processed."
+    keys:
+      consent_token:   {type: "str|null", description: "Opaque holder-consent token as supplied by the verifier (None if absent)."}
+      consent_valid:   {type: "bool|null", description: "Result of engine-side token validation (signature, holder match, not expired, covers purpose). None if no token."}
+      legal_basis:     {type: "str|null", description: "Explicit legal basis claimed (e.g. 'court_order', 'public_authority_statutory'); None if absent."}
+      purpose:         {type: "str|null", description: "recruitment | admission | equivalence | other | null"}
+      requester_type:  {type: "str|null", description: "employer | embassy | university | ministry | individual | other"}
+      requester_country: {type: "str|null", description: "ISO 3166-1 alpha-2 of the requester (e.g. 'CM', 'AE'); None if unknown."}
+      batch_size:      {type: "int", description: "Number of distinct holders in this request (1 for a single check)."}
+      scope:           {type: "str|null", description: "Scope requested/produced: verdict | evidence_pack | full_record | attestation."}
+  verifier:
+    description: "The requesting organisation/user (rate accounting)."
+    keys:
+      id:                 {type: "str|null", description: "Verifier identifier."}
+      queries_last_hour:  {type: "int", description: "Distinct holders already queried by this verifier in the previous 60 minutes (excluding the current request)."}
+  upload:
+    description: "An uploaded diploma scan / archive document."
+    keys:
+      age_days:        {type: "int|null", description: "Age of the stored upload in days (None if not applicable)."}
+  verdict:
+    description: "Output of the ConsistencyAgent (None-filled before a verdict exists)."
+    keys:
+      label:           {type: "str|null", description: "CONSISTENT | INCONSISTENT | INSUFFICIENT_EVIDENCE | null"}
+      needs_human:     {type: "bool", description: "True if any critical check is 'unknown' (e.g. name similarity 80-92) or the pipeline requests human review."}
+      confidence:      {type: "float|null", description: "0..1 weighted pass ratio x OCR confidence."}
+      unknown_checks:  {type: "int", description: "Number of checks with status 'unknown'."}
+      evidence_count:  {type: "int", description: "Number of EvidenceItems supporting the verdict."}
+  review:
+    description: "Registrar review of an INCONSISTENT / review-needed verdict."
+    keys:
+      status:               {type: "str|null", description: "pending | approved | rejected | null (null = no review created yet)"}
+      action:               {type: "str|null", description: "The action being attempted now: approve | reject | null"}
+      justification:        {type: "str|null", description: "Free-text justification entered by the registrar."}
+      justification_length: {type: "int", description: "len(justification.strip()) or 0."}
+  output:
+    description: "The candidate output (report / transcript / attestation) about to be produced or released."
+    keys:
+      text:        {type: "str", description: "Concatenated human-readable text of the output, FR+EN (empty string if none)."}
+      fields:      {type: "list[str]", description: "Names of personal-data fields included (e.g. 'holder_name', 'date_of_birth', 'marks_per_subject', 'national_id', 'photo')."}
+      audience:    {type: "str|null", description: "verifier | registrar | holder | third_country_verifier"}
+      scope:       {type: "str|null", description: "verdict | evidence_pack | full_record | attestation"}
+  llm:
+    description: "LLM gateway call about to be made."
+    keys:
+      provider:    {type: "str", description: "none | ollama | anthropic | openai"}
+      sends_personal_data: {type: "bool", description: "True if the prompt contains personal data of a holder."}
+
+# Default (None-filled) context — copy/merge when building a context. Used by tests and examples.yaml.
+defaults:
+  request:  {consent_token: null, consent_valid: null, legal_basis: null, purpose: null, requester_type: null, requester_country: "CM", batch_size: 1, scope: null}
+  verifier: {id: null, queries_last_hour: 0}
+  upload:   {age_days: null}
+  verdict:  {label: null, needs_human: false, confidence: null, unknown_checks: 0, evidence_count: 0}
+  review:   {status: null, action: null, justification: null, justification_length: 0}
+  output:   {text: "", fields: [], audience: null, scope: null}
+  llm:      {provider: "none", sends_personal_data: false}
+
+functions: [len, contains_any, intersects]
+
+# Decision semantics (contract for the engine)
+checkpoints:
+  before_ingest:        "A document/upload is about to be stored (SRC -> C)."
+  before_search:        "A search/verification over archives is about to run on behalf of a requester (M)."
+  before_report:        "A verdict/evidence pack/explanation is about to be generated (D)."
+  before_share:         "A generated output is about to be released to a recipient (D -> SINK)."
+  before_export_abroad: "Data, a derived output or a prompt is about to leave Cameroon (to a foreign requester or a cloud LLM)."
+actions: [allow, redact, require_consent, block, escalate]
+action_precedence: [block, escalate, require_consent, redact, allow]   # strongest first; final decision = strongest fired action
+action_semantics:
+  allow:           "Proceed. A fired allow-rule is recorded (with its params/obligations, e.g. transfer flag) in the audit log."
+  redact:          "Proceed only after minimising the output/prompt as described in the rule message/params."
+  require_consent: "Pause and ask the holder (or verifier) for a valid consent token, then re-run the checkpoint."
+  block:           "Do not proceed. Return the rule message (FR/EN) to the caller; write audit event; GapAnalyst may add a gap."
+  escalate:        "Do not release automatically. Route to a human (registrar/supervisor) and keep the case open."
+no_rule_fired: "decision = allow, fired = []. If the checkpoint has NO applicable rule at all, the GapAnalystAgent records a runtime gap."
+on_evaluation_error: "Fail closed: treat as 'escalate' and record an audit event + gap (do not silently allow)."

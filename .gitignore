@@ -15,3 +15,8 @@ kb/raw/*
 !kb/raw/MANIFEST.*
 .hf_cache/
 docs/ab_results.md.tmp
+
+# Claude Code working files (never pushed)
+.claude/
+CLAUDE.md
+Claude.md

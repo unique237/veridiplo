@@ -1,0 +1,43 @@
+# Templates FR (Jinja2-compatible {{ var }} placeholders only). SPECIMEN - SYNTHETIC DATA.
+# Version B (gouvernée): formulations neutres, sans accusation. Version A (naive): formulations brutes (comparaison).
+lang: fr
+labels:
+  CONSISTENT: "COHÉRENT"
+  INCONSISTENT: "INCOHÉRENT"
+  INSUFFICIENT_EVIDENCE: "PREUVES INSUFFISANTES"
+  BLOCKED: "REFUSÉ"
+  ATTESTATION: "ATTESTATION"
+fields:
+  holder_name: "le nom du titulaire"
+  birth_date: "la date de naissance"
+  birth_place: "le lieu de naissance"
+  programme_id: "la filière"
+  session_year: "la session"
+  average: "la moyenne"
+  mention: "la mention"
+  serial: "le numéro de série"
+  signatory_name: "le signataire"
+  issue_date: "la date de délivrance"
+  institution_id: "l'établissement"
+explain:
+  CONSISTENT: "Les informations du diplôme sont cohérentes avec les sources institutionnelles consultées ({{ n_evidence }} pièce(s) citée(s)). Niveau de confiance : {{ confidence }}."
+  INCONSISTENT: "Incohérence documentaire détectée sur {{ fields_txt }} par rapport aux pièces consultées ({{ n_evidence }} pièce(s) citée(s)). Ce résultat décrit un écart entre documents ; il ne qualifie pas le diplôme ni son titulaire. Le dossier est transmis au registraire de l'établissement pour revue humaine avant toute communication."
+  INSUFFICIENT_EVIDENCE: "Preuves insuffisantes pour conclure : {{ reason }} Aucune conclusion n'est tirée ; une demande d'archives est proposée à l'établissement émetteur."
+  UNCERTAIN: "Correspondance incertaine ({{ reason }}) : revue humaine obligatoire avant toute communication. Le titulaire peut demander une rectification (voie ci-dessous)."
+  PENDING: "Résultat en attente de la décision d'un registraire humain ; aucune information sur le verdict n'est communiquée à ce stade."
+  ATTESTATION: "Attestation minimale : concordance {{ answer }} pour {{ institution }}, session {{ session_year }} (empreinte {{ hash }}). Le relevé complet ne quitte pas le Cameroun."
+  BLOCKED: "Demande refusée par la politique de gouvernance : {{ messages }}"
+naive:
+  CONSISTENT: "OK - diplôme valide. Enregistrement trouvé : {{ matched }}."
+  INCONSISTENT: "FAUX DIPLÔME / FAKE diploma : {{ fields_txt }} ne correspond pas. Enregistrement trouvé : {{ matched }}. Fraude probable, falsification détectée."
+  INSUFFICIENT_EVIDENCE: "Aucune preuve trouvée. Meilleure supposition : {{ matched }}."
+rectification: "Voie de rectification : le titulaire (ou son représentant) peut, sous 30 jours, demander la vérification manuelle auprès du service des archives de {{ institution }}, joindre toute pièce justificative (relevé de notes, copie certifiée du PV) et exprimer son point de vue ; un registraire humain réexamine le dossier (Loi 2024/017, art. 44)."
+holder_notice: "Information du titulaire : une vérification de votre diplôme ({{ institution }}, session {{ session_year }}) a donné un résultat nécessitant une revue humaine. Aucun résultat n'est communiqué avant la décision d'un registraire. Vous pouvez contester ou demander la rectification des données."
+supervisor_alert: "Alerte superviseur : une approbation sans justification écrite (minimum {{ min_chars }} caractères) a été rejetée pour le dossier {{ case_id }}."
+archive_request: |
+  Objet : Demande de recherche d'archives - procès-verbal de délibération {{ session_year }}
+  À l'attention du service des archives de {{ institution }},
+  Dans le cadre d'une vérification de diplôme autorisée par le titulaire (jeton de consentement enregistré), nous n'avons trouvé aucun procès-verbal ni registre pour la session {{ session_year }} (filière : {{ programme }}).
+  Nous vous prions de bien vouloir rechercher et, le cas échéant, nous transmettre une copie certifiée conforme de la page du procès-verbal de délibération mentionnant le titulaire, ainsi que la ligne correspondante du registre des diplômes (numéro de série : {{ serial }}).
+  Référence du dossier : {{ case_id }}. Veuillez confirmer la réception et indiquer le délai de réponse prévu.
+  Cordialement, VeriDiplo - SPECIMEN - SYNTHETIC DATA

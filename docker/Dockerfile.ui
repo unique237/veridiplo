@@ -3,7 +3,8 @@ FROM python:3.11-slim
 
 ENV PYTHONUNBUFFERED=1 \
     PYTHONDONTWRITEBYTECODE=1 \
-    PIP_NO_CACHE_DIR=1 \
+    PIP_DEFAULT_TIMEOUT=60 \
+    PIP_RETRIES=10 \
     PIP_DISABLE_PIP_VERSION_CHECK=1 \
     STREAMLIT_BROWSER_GATHER_USAGE_STATS=false
 
@@ -13,7 +14,7 @@ RUN useradd --create-home --uid ${APP_UID} --shell /bin/bash app \
 WORKDIR /app
 
 COPY requirements-ui.txt /tmp/requirements-ui.txt
-RUN pip install -r /tmp/requirements-ui.txt
+RUN --mount=type=cache,target=/root/.cache/pip pip install -r /tmp/requirements-ui.txt
 
 COPY --chown=app:app ui /app/ui
 USER app

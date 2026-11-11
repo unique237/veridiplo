@@ -1,0 +1,318 @@
+@prefix vd:      <https://veridiplo.org/ont#> .
+@prefix owl:     <http://www.w3.org/2002/07/owl#> .
+@prefix rdf:     <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs:    <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd:     <http://www.w3.org/2001/XMLSchema#> .
+@prefix skos:    <http://www.w3.org/2004/02/skos/core#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix prov:    <http://www.w3.org/ns/prov#> .
+@prefix schema:  <https://schema.org/> .
+
+# =============================================================================
+# VeriDiplo ontology - diplomas, deliberation minutes (PV), institutions,
+# evidence, verdicts and policy governance.
+# Shared vocabulary of all runtime agents. All instance data is synthetic.
+# Instances live under <https://veridiplo.org/id/>.
+# =============================================================================
+
+<https://veridiplo.org/ont> a owl:Ontology ;
+    dcterms:title "VeriDiplo ontology"@en, "Ontologie VeriDiplo"@fr ;
+    dcterms:description "Vocabulary for diploma authentication evidence: diplomas, deliberation minutes (PV), accreditations, signatories, evidence items, verdicts, policy rules and legal provisions."@en ,
+        "Vocabulaire pour l'authentification de diplômes : diplômes, procès-verbaux de délibération, accréditations, signataires, éléments de preuve, verdicts, règles de politique et dispositions légales."@fr ;
+    dcterms:license <https://opensource.org/licenses/MIT> ;
+    owl:versionInfo "0.1.0" ;
+    rdfs:comment "Proposed as an open schema for diploma / PV data: no national schema exists in Cameroon (standards gap)."@en .
+
+# -----------------------------------------------------------------------------
+# Classes
+# -----------------------------------------------------------------------------
+
+vd:Person a owl:Class ; rdfs:subClassOf schema:Person, prov:Agent ;
+    rdfs:label "Personne"@fr, "Person"@en ;
+    skos:definition "Natural person: diploma holder (graduate)."@en , "Personne physique : titulaire d'un diplôme."@fr .
+
+vd:Institution a owl:Class ; rdfs:subClassOf schema:Organization, prov:Agent ;
+    rdfs:label "Établissement"@fr, "Institution"@en ;
+    skos:definition "Issuing institution (university, examination board)."@en , "Établissement émetteur (université, office d'examen)."@fr .
+
+vd:Programme a owl:Class ;
+    rdfs:label "Filière / programme"@fr, "Programme"@en ;
+    skos:definition "Degree programme offered by an institution (e.g. Licence en Informatique)."@en .
+
+vd:ExamSession a owl:Class ;
+    rdfs:label "Session d'examen"@fr, "Exam session"@en ;
+    skos:definition "Examination / graduation session of a programme in a given year."@en .
+
+vd:Deliberation a owl:Class ;
+    rdfs:label "Délibération (PV)"@fr, "Deliberation (PV)"@en ;
+    skos:definition "Deliberation minutes (procès-verbal) of one programme and session."@en .
+
+vd:DeliberationEntry a owl:Class ;
+    rdfs:label "Ligne de PV"@fr, "Deliberation entry"@en ;
+    skos:definition "One row of a PV: one candidate with average, mention and decision."@en .
+
+vd:Grade a owl:Class ;
+    rdfs:label "Note"@fr, "Grade"@en ;
+    skos:definition "A single grade (course unit or global) with value and scale."@en .
+
+vd:Mention a owl:Class ;
+    rdfs:label "Mention"@fr, "Mention"@en ;
+    skos:definition "Honours band attached to an average. Bands are a documented policy parameter (vd:minAverage / vd:maxAverage)."@en .
+
+vd:Signatory a owl:Class ;
+    rdfs:label "Signataire"@fr, "Signatory"@en ;
+    skos:definition "One term of office of a person entitled to sign diplomas (one node per term)."@en .
+
+vd:Accreditation a owl:Class ;
+    rdfs:label "Accréditation"@fr, "Accreditation"@en ;
+    skos:definition "Period during which a programme is authorised to award a degree."@en .
+
+vd:SourceDocument a owl:Class ; rdfs:subClassOf prov:Entity, dcterms:BibliographicResource ;
+    rdfs:label "Document source"@fr, "Source document"@en ;
+    skos:definition "Archive document: PV scan, registry file, diploma image."@en .
+
+vd:EvidenceItem a owl:Class ; rdfs:subClassOf prov:Entity ;
+    rdfs:label "Élément de preuve"@fr, "Evidence item"@en ;
+    skos:definition "Located piece of evidence (document, page, bounding box, hash) that supports or contradicts a diploma field."@en .
+
+vd:VerificationCase a owl:Class ; rdfs:subClassOf prov:Activity ;
+    rdfs:label "Dossier de vérification"@fr, "Verification case"@en .
+
+vd:Verdict a owl:Class ; rdfs:subClassOf prov:Entity ;
+    rdfs:label "Verdict"@fr, "Verdict"@en ;
+    skos:definition "CONSISTENT, INCONSISTENT or INSUFFICIENT_EVIDENCE; never 'fake'."@en .
+
+vd:PolicyRule a owl:Class ;
+    rdfs:label "Règle de politique"@fr, "Policy rule"@en ;
+    skos:definition "Policy-as-code rule (kb/policy_rules), justified by legal provisions."@en .
+
+vd:PolicyGap a owl:Class ;
+    rdfs:label "Écart de politique"@fr, "Policy gap"@en ;
+    skos:definition "A decision point not covered by any policy rule, or covered by conflicting rules."@en .
+
+vd:LegalProvision a owl:Class ;
+    rdfs:label "Disposition légale"@fr, "Legal provision"@en ;
+    skos:definition "A chunk (article or passage) of a real legal text from the open knowledge base."@en .
+
+# -----------------------------------------------------------------------------
+# Object properties
+# -----------------------------------------------------------------------------
+
+vd:holder a owl:ObjectProperty ; rdfs:label "titulaire"@fr, "holder"@en ;
+    rdfs:domain [ owl:unionOf ( vd:Diploma vd:DeliberationEntry ) ] ; rdfs:range vd:Person .
+
+vd:issuedBy a owl:ObjectProperty ; rdfs:label "délivré par"@fr, "issued by"@en ;
+    rdfs:domain [ owl:unionOf ( vd:Diploma vd:Deliberation ) ] ; rdfs:range vd:Institution .
+
+vd:forProgramme a owl:ObjectProperty ; rdfs:label "pour la filière"@fr, "for programme"@en ;
+    rdfs:domain [ owl:unionOf ( vd:Diploma vd:DeliberationEntry vd:Accreditation vd:ExamSession ) ] ;
+    rdfs:range vd:Programme .
+
+vd:offeredBy a owl:ObjectProperty ; rdfs:label "proposée par"@fr, "offered by"@en ;
+    rdfs:domain vd:Programme ; rdfs:range vd:Institution ;
+    rdfs:comment "Authoritative statement that a programme exists at an institution (check C3)."@en .
+
+vd:inSession a owl:ObjectProperty ; rdfs:label "dans la session"@fr, "in session"@en ;
+    rdfs:domain [ owl:unionOf ( vd:Diploma vd:Deliberation vd:DeliberationEntry ) ] ; rdfs:range vd:ExamSession .
+
+vd:recordedIn a owl:ObjectProperty ; rdfs:label "enregistré dans"@fr, "recorded in"@en ;
+    rdfs:domain vd:DeliberationEntry ; rdfs:range vd:Deliberation .
+
+vd:mention a owl:ObjectProperty ; rdfs:label "mention"@fr, "mention"@en ;
+    rdfs:domain [ owl:unionOf ( vd:Diploma vd:DeliberationEntry ) ] ; rdfs:range vd:Mention .
+
+vd:signedBy a owl:ObjectProperty ; rdfs:label "signé par"@fr, "signed by"@en ;
+    rdfs:domain vd:Diploma ; rdfs:range vd:Signatory .
+
+vd:atInstitution a owl:ObjectProperty ; rdfs:label "en fonction à"@fr, "serving at"@en ;
+    rdfs:domain vd:Signatory ; rdfs:range vd:Institution .
+
+vd:verifiedAgainst a owl:ObjectProperty ; rdfs:label "vérifié contre"@fr, "verified against"@en ;
+    rdfs:domain vd:Diploma ; rdfs:range vd:DeliberationEntry ;
+    rdfs:comment "Link asserted by the retrieval/consistency agents once check C1 has matched a diploma to a PV entry. Enables C2, C4, C5 constraints."@en .
+
+vd:supports a owl:ObjectProperty ; rdfs:label "appuie"@fr, "supports"@en ;
+    rdfs:domain vd:EvidenceItem ; rdfs:range rdf:Property ;
+    rdfs:comment "Object is the property IRI of the diploma field supported (e.g. vd:mention)."@en .
+
+vd:contradicts a owl:ObjectProperty ; rdfs:label "contredit"@fr, "contradicts"@en ;
+    rdfs:domain vd:EvidenceItem ; rdfs:range rdf:Property .
+
+vd:aboutDiploma a owl:ObjectProperty ; rdfs:label "concerne le diplôme"@fr, "about diploma"@en ;
+    rdfs:domain vd:VerificationCase ; rdfs:range vd:Diploma .
+
+vd:hasEvidence a owl:ObjectProperty ; rdfs:label "a pour preuve"@fr, "has evidence"@en ;
+    rdfs:domain vd:VerificationCase ; rdfs:range vd:EvidenceItem .
+
+vd:hasVerdict a owl:ObjectProperty ; rdfs:label "a pour verdict"@fr, "has verdict"@en ;
+    rdfs:domain vd:VerificationCase ; rdfs:range vd:Verdict .
+
+vd:justifiedBy a owl:ObjectProperty ; rdfs:label "justifiée par"@fr, "justified by"@en ;
+    rdfs:domain vd:PolicyRule ; rdfs:range vd:LegalProvision ;
+    owl:inverseOf vd:justifies ;
+    rdfs:comment "Links a policy rule to the legal text chunk that justifies it; makes policy decisions queryable."@en .
+
+vd:justifies a owl:ObjectProperty ; rdfs:label "justifie"@fr, "justifies"@en ;
+    rdfs:domain vd:LegalProvision ; rdfs:range vd:PolicyRule .
+
+vd:firedIn a owl:ObjectProperty ; rdfs:label "déclenchée dans"@fr, "fired in"@en ;
+    rdfs:domain vd:PolicyRule ; rdfs:range vd:VerificationCase .
+
+vd:detectedIn a owl:ObjectProperty ; rdfs:label "détecté dans"@fr, "detected in"@en ;
+    rdfs:domain vd:PolicyGap ; rdfs:range vd:VerificationCase .
+
+vd:relatedRule a owl:ObjectProperty ; rdfs:label "règle liée"@fr, "related rule"@en ;
+    rdfs:domain vd:PolicyGap ; rdfs:range vd:PolicyRule .
+
+# PROV-O and Dublin Core terms used directly (not redeclared):
+#   prov:wasDerivedFrom  (Entry/Deliberation/EvidenceItem -> SourceDocument or Entry)
+#   prov:wasGeneratedBy  (Verdict/EvidenceItem -> VerificationCase)
+#   dcterms:issued       (Diploma issue date), dcterms:identifier, dcterms:title, dcterms:publisher
+
+# -----------------------------------------------------------------------------
+# Datatype properties
+# -----------------------------------------------------------------------------
+
+vd:serialNumber a owl:DatatypeProperty ; rdfs:label "numéro de série"@fr, "serial number"@en ;
+    rdfs:domain vd:Diploma ; rdfs:range xsd:string .
+vd:serialPattern a owl:DatatypeProperty ; rdfs:label "motif de numéro de série"@fr, "serial number pattern"@en ;
+    rdfs:domain vd:Institution ; rdfs:range xsd:string ;
+    rdfs:comment "Regular expression; the token YYYY is replaced by the session year (check C7)."@en .
+vd:average a owl:DatatypeProperty ; rdfs:label "moyenne"@fr, "average"@en ;
+    rdfs:domain [ owl:unionOf ( vd:Diploma vd:DeliberationEntry ) ] ; rdfs:range xsd:decimal .
+vd:mentionRaw a owl:DatatypeProperty ; rdfs:label "mention (texte brut)"@fr, "raw mention text"@en ;
+    rdfs:range xsd:string .
+vd:decision a owl:DatatypeProperty ; rdfs:label "décision"@fr, "decision"@en ;
+    rdfs:domain vd:DeliberationEntry ; rdfs:range xsd:string .
+vd:matricule a owl:DatatypeProperty ; rdfs:label "matricule"@fr, "student number"@en ;
+    rdfs:range xsd:string .
+vd:nameRaw a owl:DatatypeProperty ; rdfs:label "nom (brut)"@fr, "raw name"@en ; rdfs:range xsd:string .
+vd:nameNormalised a owl:DatatypeProperty ; rdfs:label "nom normalisé"@fr, "normalised name"@en ; rdfs:range xsd:string ;
+    rdfs:comment "Uppercase, accent-free, whitespace-collapsed."@en .
+vd:nameKey a owl:DatatypeProperty ; rdfs:label "clé de nom"@fr, "name key"@en ; rdfs:range xsd:string ;
+    rdfs:comment "Normalised name with tokens sorted alphabetically (surname/given-name order independent)."@en .
+vd:birthPlaceNorm a owl:DatatypeProperty ; rdfs:label "lieu de naissance normalisé"@fr, "normalised birth place"@en ;
+    rdfs:range xsd:string .
+vd:ocrConfidence a owl:DatatypeProperty ; rdfs:label "confiance OCR"@fr, "OCR confidence"@en ;
+    rdfs:domain vd:DeliberationEntry ; rdfs:range xsd:decimal .
+vd:entryId a owl:DatatypeProperty ; rdfs:label "identifiant de ligne"@fr, "entry identifier"@en ;
+    rdfs:domain vd:DeliberationEntry ; rdfs:range xsd:string .
+vd:institutionId a owl:DatatypeProperty ; rdfs:label "identifiant d'établissement"@fr, "institution identifier"@en ;
+    rdfs:domain vd:Institution ; rdfs:range xsd:string .
+vd:programmeId a owl:DatatypeProperty ; rdfs:label "identifiant de filière"@fr, "programme identifier"@en ;
+    rdfs:domain vd:Programme ; rdfs:range xsd:string .
+vd:signatoryId a owl:DatatypeProperty ; rdfs:label "identifiant de signataire"@fr, "signatory identifier"@en ;
+    rdfs:domain vd:Signatory ; rdfs:range xsd:string .
+vd:office a owl:DatatypeProperty ; rdfs:label "fonction"@fr, "office held"@en ;
+    rdfs:domain vd:Signatory ; rdfs:range xsd:string .
+vd:level a owl:DatatypeProperty ; rdfs:label "niveau"@fr, "level"@en ;
+    rdfs:domain vd:Programme ; rdfs:range xsd:string .
+vd:sessionYear a owl:DatatypeProperty ; rdfs:label "année de session"@fr, "session year"@en ;
+    rdfs:domain vd:ExamSession ; rdfs:range xsd:integer .
+vd:sessionDate a owl:DatatypeProperty ; rdfs:label "date de session (déclarée)"@fr, "session date (claimed)"@en ;
+    rdfs:domain vd:Diploma ; rdfs:range xsd:date .
+vd:periodStart a owl:DatatypeProperty ; rdfs:label "début de période de session"@fr, "session period start"@en ;
+    rdfs:domain vd:Diploma ; rdfs:range xsd:date ;
+    rdfs:comment "Materialised by the mapping: the claimed session date if known, otherwise 1 January of the session year."@en .
+vd:periodEnd a owl:DatatypeProperty ; rdfs:label "fin de période de session"@fr, "session period end"@en ;
+    rdfs:domain vd:Diploma ; rdfs:range xsd:date ;
+    rdfs:comment "The claimed session date if known, otherwise 31 December of the session year."@en .
+vd:deliberationDate a owl:DatatypeProperty ; rdfs:label "date de délibération"@fr, "deliberation date"@en ;
+    rdfs:domain vd:Deliberation ; rdfs:range xsd:date .
+vd:signedOn a owl:DatatypeProperty ; rdfs:label "signé le"@fr, "signed on"@en ;
+    rdfs:domain vd:Diploma ; rdfs:range xsd:date ;
+    rdfs:comment "Signing date; defaults to dcterms:issued when absent (check C6)."@en .
+vd:inOfficeFrom a owl:DatatypeProperty ; rdfs:label "en fonction depuis"@fr, "in office from"@en ;
+    rdfs:domain vd:Signatory ; rdfs:range xsd:date .
+vd:inOfficeTo a owl:DatatypeProperty ; rdfs:label "en fonction jusqu'au"@fr, "in office until"@en ;
+    rdfs:domain vd:Signatory ; rdfs:range xsd:date ; rdfs:comment "Absent = still in office."@en .
+vd:accreditedFrom a owl:DatatypeProperty ; rdfs:label "accrédité depuis"@fr, "accredited from"@en ;
+    rdfs:domain vd:Accreditation ; rdfs:range xsd:date .
+vd:accreditedTo a owl:DatatypeProperty ; rdfs:label "accrédité jusqu'au"@fr, "accredited until"@en ;
+    rdfs:domain vd:Accreditation ; rdfs:range xsd:date ; rdfs:comment "Absent = open-ended."@en .
+vd:sourcePage a owl:DatatypeProperty ; rdfs:label "page source"@fr, "source page"@en ;
+    rdfs:domain [ owl:unionOf ( vd:EvidenceItem vd:DeliberationEntry ) ] ; rdfs:range xsd:integer .
+vd:bbox a owl:DatatypeProperty ; rdfs:label "boîte englobante"@fr, "bounding box"@en ;
+    rdfs:domain [ owl:unionOf ( vd:EvidenceItem vd:DeliberationEntry ) ] ; rdfs:range xsd:string ;
+    rdfs:comment "Four comma-separated numbers 'x0,y0,x1,y1' in page pixel coordinates."@en .
+vd:sha256 a owl:DatatypeProperty ; rdfs:label "empreinte SHA-256"@fr, "SHA-256 hash"@en ;
+    rdfs:range xsd:string ; rdfs:comment "64 lowercase hex characters."@en .
+vd:pageCount a owl:DatatypeProperty ; rdfs:label "nombre de pages"@fr, "page count"@en ;
+    rdfs:domain vd:SourceDocument ; rdfs:range xsd:integer .
+vd:checkId a owl:DatatypeProperty ; rdfs:label "identifiant de contrôle"@fr, "check identifier"@en ;
+    rdfs:comment "Consistency check C1..C8 an evidence item or SHACL shape relates to."@en .
+vd:verdictValue a owl:DatatypeProperty ; rdfs:label "valeur du verdict"@fr, "verdict value"@en ;
+    rdfs:domain vd:Verdict ; rdfs:range xsd:string .
+vd:confidence a owl:DatatypeProperty ; rdfs:label "confiance"@fr, "confidence"@en ;
+    rdfs:domain vd:Verdict ; rdfs:range xsd:decimal .
+vd:requiresReview a owl:DatatypeProperty ; rdfs:label "revue humaine requise"@fr, "requires human review"@en ;
+    rdfs:domain vd:Verdict ; rdfs:range xsd:boolean .
+vd:consentTokenHash a owl:DatatypeProperty ; rdfs:label "empreinte du jeton de consentement"@fr, "consent token hash"@en ;
+    rdfs:domain vd:VerificationCase ; rdfs:range xsd:string .
+vd:ruleId a owl:DatatypeProperty ; rdfs:label "identifiant de règle"@fr, "rule identifier"@en ;
+    rdfs:domain vd:PolicyRule ; rdfs:range xsd:string .
+vd:checkpoint a owl:DatatypeProperty ; rdfs:label "point de contrôle"@fr, "checkpoint"@en ;
+    rdfs:domain vd:PolicyRule ; rdfs:range xsd:string .
+vd:action a owl:DatatypeProperty ; rdfs:label "action"@fr, "action"@en ;
+    rdfs:domain vd:PolicyRule ; rdfs:range xsd:string .
+vd:proposal a owl:DatatypeProperty ; rdfs:label "proposition (non légale)"@fr, "proposal (not law)"@en ;
+    rdfs:domain vd:PolicyRule ; rdfs:range xsd:boolean .
+vd:gapId a owl:DatatypeProperty ; rdfs:label "identifiant d'écart"@fr, "gap identifier"@en ;
+    rdfs:domain vd:PolicyGap ; rdfs:range xsd:string .
+vd:chunkId a owl:DatatypeProperty ; rdfs:label "identifiant de fragment"@fr, "chunk identifier"@en ;
+    rdfs:domain vd:LegalProvision ; rdfs:range xsd:string ; rdfs:comment "Matches chunk_id in kb/chunks/*.jsonl."@en .
+vd:article a owl:DatatypeProperty ; rdfs:label "article"@fr, "article"@en ;
+    rdfs:domain vd:LegalProvision ; rdfs:range xsd:string .
+vd:asReported a owl:DatatypeProperty ; rdfs:label "tel que rapporté"@fr, "as reported"@en ;
+    rdfs:domain vd:LegalProvision ; rdfs:range xsd:boolean .
+vd:binding a owl:DatatypeProperty ; rdfs:label "contraignant"@fr, "binding"@en ;
+    rdfs:domain vd:LegalProvision ; rdfs:range xsd:boolean .
+vd:value a owl:DatatypeProperty ; rdfs:label "valeur"@fr, "value"@en ;
+    rdfs:domain vd:Grade ; rdfs:range xsd:decimal .
+vd:scaleMax a owl:DatatypeProperty ; rdfs:label "barème"@fr, "scale maximum"@en ;
+    rdfs:domain [ owl:unionOf ( vd:Grade vd:Mention ) ] ; rdfs:range xsd:decimal .
+vd:minAverage a owl:DatatypeProperty ; rdfs:label "moyenne minimale (incluse)"@fr, "minimum average (inclusive)"@en ;
+    rdfs:domain vd:Mention ; rdfs:range xsd:decimal .
+vd:maxAverage a owl:DatatypeProperty ; rdfs:label "moyenne maximale"@fr, "maximum average"@en ;
+    rdfs:domain vd:Mention ; rdfs:range xsd:decimal ;
+    rdfs:comment "Exclusive unless vd:upperInclusive is true."@en .
+vd:upperInclusive a owl:DatatypeProperty ; rdfs:label "borne supérieure incluse"@fr, "upper bound inclusive"@en ;
+    rdfs:domain vd:Mention ; rdfs:range xsd:boolean .
+
+# vd:Diploma is the central class of CLAUDE.md 4.1
+vd:Diploma a owl:Class ; rdfs:subClassOf prov:Entity, dcterms:BibliographicResource ;
+    rdfs:label "Diplôme"@fr, "Diploma"@en ;
+    skos:definition "A diploma as presented by a verifier (claim) or as recorded in a registry."@en ,
+        "Diplôme tel que présenté par un vérificateur (déclaration) ou enregistré dans un registre."@fr .
+
+# -----------------------------------------------------------------------------
+# Mention bands (policy parameter, scale /20) - see docs/ontology.md.
+# The French bands follow the common Cameroonian practice; the English honours
+# labels are a PROPOSED equivalence (no national mapping exists - standards gap).
+# -----------------------------------------------------------------------------
+
+vd:Ajourne a vd:Mention ; vd:minAverage 0.0 ; vd:maxAverage 10.0 ; vd:upperInclusive false ; vd:scaleMax 20 ;
+    skos:prefLabel "Ajourné"@fr, "Fail"@en ;
+    skos:altLabel "Ajourne"@fr, "Refusé"@fr, "Failed"@en ; rdfs:label "Ajourné"@fr, "Fail"@en .
+
+vd:Passable a vd:Mention ; vd:minAverage 10.0 ; vd:maxAverage 12.0 ; vd:upperInclusive false ; vd:scaleMax 20 ;
+    skos:prefLabel "Passable"@fr, "Pass"@en ;
+    skos:altLabel "Third Class"@en, "Third Class Honours"@en, "Satisfactory"@en ;
+    rdfs:label "Passable"@fr, "Pass"@en .
+
+vd:AssezBien a vd:Mention ; vd:minAverage 12.0 ; vd:maxAverage 14.0 ; vd:upperInclusive false ; vd:scaleMax 20 ;
+    skos:prefLabel "Assez Bien"@fr, "Lower Second Class"@en ;
+    skos:altLabel "Second Class Lower"@en, "Second Class Lower Division"@en, "Lower Second"@en,
+        "Second Class Honours Lower Division"@en, "Fairly Good"@en, "Credit"@en, "2:2"@en ;
+    rdfs:label "Assez Bien"@fr, "Lower Second Class"@en .
+
+vd:Bien a vd:Mention ; vd:minAverage 14.0 ; vd:maxAverage 16.0 ; vd:upperInclusive false ; vd:scaleMax 20 ;
+    skos:prefLabel "Bien"@fr, "Upper Second Class"@en ;
+    skos:altLabel "Second Class Upper"@en, "Second Class Upper Division"@en, "Upper Second"@en,
+        "Second Class Honours Upper Division"@en, "Good"@en, "2:1"@en ;
+    rdfs:label "Bien"@fr, "Upper Second Class"@en .
+
+vd:TresBien a vd:Mention ; vd:minAverage 16.0 ; vd:maxAverage 20.0 ; vd:upperInclusive true ; vd:scaleMax 20 ;
+    skos:prefLabel "Très Bien"@fr, "First Class"@en ;
+    skos:altLabel "First Class Honours"@en, "Distinction"@en, "Very Good"@en, "Honours"@en ;
+    rdfs:label "Très Bien"@fr, "First Class"@en .

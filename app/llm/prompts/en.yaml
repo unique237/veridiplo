@@ -1,0 +1,42 @@
+# EN templates (Jinja2-compatible {{ var }} placeholders only). SPECIMEN - SYNTHETIC DATA.
+lang: en
+labels:
+  CONSISTENT: "CONSISTENT"
+  INCONSISTENT: "INCONSISTENT"
+  INSUFFICIENT_EVIDENCE: "INSUFFICIENT EVIDENCE"
+  BLOCKED: "REFUSED"
+  ATTESTATION: "ATTESTATION"
+fields:
+  holder_name: "the holder name"
+  birth_date: "the date of birth"
+  birth_place: "the place of birth"
+  programme_id: "the programme"
+  session_year: "the session"
+  average: "the average"
+  mention: "the mention"
+  serial: "the serial number"
+  signatory_name: "the signatory"
+  issue_date: "the issue date"
+  institution_id: "the institution"
+explain:
+  CONSISTENT: "The diploma information is consistent with the institutional sources consulted ({{ n_evidence }} item(s) cited). Confidence: {{ confidence }}."
+  INCONSISTENT: "A documentary inconsistency was detected on {{ fields_txt }} compared with the records consulted ({{ n_evidence }} item(s) cited). This result describes a discrepancy between documents; it does not characterise the diploma or its holder. The case is referred to the institution's registrar for human review before any communication."
+  INSUFFICIENT_EVIDENCE: "Insufficient evidence to conclude: {{ reason }} No conclusion is drawn; an archive request is proposed to the issuing institution."
+  UNCERTAIN: "Uncertain match ({{ reason }}): human review is mandatory before any communication. The holder may request rectification (path below)."
+  PENDING: "Result pending the decision of a human registrar; no verdict information is communicated at this stage."
+  ATTESTATION: "Minimal attestation: match {{ answer }} for {{ institution }}, session {{ session_year }} (hash {{ hash }}). The full record does not leave Cameroon."
+  BLOCKED: "Request refused by the governance policy: {{ messages }}"
+naive:
+  CONSISTENT: "OK - valid diploma. Record found: {{ matched }}."
+  INCONSISTENT: "FAKE diploma / FAUX DIPLÔME: {{ fields_txt }} does not match. Record found: {{ matched }}. Fraud likely, forgery detected."
+  INSUFFICIENT_EVIDENCE: "No proof found. Best guess: {{ matched }}."
+rectification: "Rectification path: the holder (or representative) may, within 30 days, request a manual check with the archive service of {{ institution }}, attach any supporting document (transcript, certified copy of the PV) and state their point of view; a human registrar re-examines the case (Law 2024/017, Art. 44)."
+holder_notice: "Holder notice: a verification of your diploma ({{ institution }}, session {{ session_year }}) produced a result requiring human review. No result is communicated before a registrar decides. You may contest or request rectification of the data."
+supervisor_alert: "Supervisor alert: an approval without a written justification (minimum {{ min_chars }} characters) was rejected for case {{ case_id }}."
+archive_request: |
+  Subject: Archive search request - deliberation minutes (PV) {{ session_year }}
+  To the archive service of {{ institution }},
+  As part of a diploma verification authorised by the holder (consent token on file), we found no minutes or registry for the {{ session_year }} session (programme: {{ programme }}).
+  Please search for and, where available, send a certified copy of the deliberation-minutes page naming the holder and the matching line of the diploma registry (serial number: {{ serial }}).
+  Case reference: {{ case_id }}. Please acknowledge receipt and indicate the expected response time.
+  Kind regards, VeriDiplo - SPECIMEN - SYNTHETIC DATA

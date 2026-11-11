@@ -1,58 +1,364 @@
-# Seed gap register (from the technical report, section 6). Runtime gaps from the GapAnalystAgent are appended in the DB.
+# Seed gap register (extended 10-11 Nov 2026). Runtime gaps from the GapAnalystAgent are appended in the DB (table `gaps`);
+# `python kb/gaps/export_gaps.py [--runtime runtime_gaps.json]` merges both into gap_register.json / gap_register.md.
+#
+# Fields: id, type (policy|standard), title, finding, law_cited [{anchor, article, note}] (anchors resolve to real KB chunks;
+# unresolved anchors are reported by the exporter), evidence (rules/scenarios/files that surfaced it), surfaced_by (scenarios),
+# proposal, comparison (UAE or other practice), sources (KB source ids), severity (high|medium|low), status, verification
+# (what is verified in the KB vs reported by secondary sources).  `correction` documents a change versus the first seed.
 gaps:
   - id: P1
     type: policy
-    title: "No rule on automated decisions affecting individuals"
-    finding: "Law 2024/017 reportedly does not address automated decision-making; no AI statute yet (SNIA announces a national regulatory framework)."
+    title: "Automated-decision safeguards exist in law (Art. 44) but are not operational for AI-assisted document verification"
+    finding: >-
+      Law 2024/017 Art. 44 gives the data subject the right to object to any decision based exclusively on automated processing,
+      with exceptions (informed + explicit consent; authorised by law with safeguards) and the rights to obtain human intervention,
+      to express a point of view and to contest the decision. What is NOT defined anywhere we could read: (a) whether an
+      INCONSISTENT/INSUFFICIENT verdict used by an employer or ministry is a 'decision'; (b) who is the controller of an AI verdict
+      (verifier, registrar, issuing university); (c) whether human review is proactive or only on request; (d) any duty to
+      explain which evidence drove the verdict. There is no AI statute or AI authority yet (SNIA, as reported, announces a framework law).
+    correction: "The first seed said Law 2024/017 'reportedly does not address automated decision-making'. The primary text (OCR of the Presidency's certified copy) contains Art. 44, so the gap is operational detail, not total absence."
+    law_cited:
+      - {anchor: "CM-DP-2024#automated_decision", article: "Art. 44(1)-(2)", note: "right to object to exclusively automated decisions; exceptions"}
+      - {anchor: "CM-DP-2024#human_intervention", article: "Art. 44(3)", note: "human intervention, point of view, contest"}
+      - {anchor: "CM-SNIA-2025#governance_pillar", article: "SNIA pillar 1 (as reported)", note: "AI Authority, Presidential Council on AI and framework law announced, not yet enacted"}
+    evidence: ["rule PR-REGISTRAR-001", "rule PR-HUMAN-REVIEW-001", "scenario S2", "scenario S6"]
     surfaced_by: [S2, S6]
-    proposal: "Mandatory human review of AI verdicts that affect employment, with a right to explanation."
-    sources: [CM-DP-2024, CM-SNIA-2025]
+    proposal: "Make human review of every adverse or uncertain AI verdict mandatory and proactive for employment/admission uses, with a written explanation of the evidence used (rules PR-REGISTRAR-001, PR-HUMAN-REVIEW-001, both proposal: true); define the registrar as the accountable person."
+    comparison: "EU: GDPR Art. 22 and AI Act Art. 14 (human oversight) and Art. 86 (right to explanation; education systems are high-risk, Annex III) — comparison only, not binding in Cameroon. AU Malabo Convention Art. 14 states the same 'no decision based solely on automated processing' principle (Cameroon's ratification NOT verified)."
+    sources: [CM-DP-2024, CM-SNIA-2025, EU-GDPR-2016, EU-AI-ACT-2024, INT-MALABO-2014]
+    severity: high
+    status: open
+    verification: "Art. 44 read in the OCR text (primary). SNIA content as reported by OECD.AI / Business in Cameroon (secondary)."
+
   - id: P2
     type: policy
-    title: "Probative value of online verification results and digitised/OCR archive copies undefined"
+    title: "Probative value of online verification results and of digitised/OCR copies of archives is undefined"
+    finding: >-
+      Law 2024/001 Art. 29 gives a certified copy produced by the national archive body the same evidential admission as the original;
+      Art. 19(2) leaves the management/conservation of electronic archives to future regulation; Law 2010/021 Art. 13 allows an
+      electronic writing under Civil Code conditions; Law 2010/012 declares a 'legal regime of digital evidence' (Section 1). None of
+      these texts addresses (i) a scan/OCR copy held by a university or exam board, (ii) the output of an automated verification
+      platform or of a tool such as VeriDiplo, (iii) hashing / chain of custody of an evidence pack.
+    law_cited:
+      - {anchor: "CM-ARCH-2024#evidential_copy", article: "Law 2024/001 Art. 29", note: "certified copy = original, only when produced by the national archive body"}
+    evidence: ["rule PR-EVIDENCE-001", "scenario S5", "evidence-pack integrity hash (ReporterAgent)"]
     surfaced_by: [S5]
-    proposal: "MINESUP and archive services to define evidential status, hashing and chain-of-custody rules."
-    sources: [CM-ARCH-2024, CM-CYB-2010]
+    proposal: "MINESUP and the archive body define the evidential status of digitised copies and verification results, mandatory hashing and chain-of-custody metadata (PROV-O), and which institution may certify an evidence pack."
+    comparison: "UAE: verification is performed by officially appointed agencies (Dataflow, QuadraBay) that contact the issuing university directly and issue a final report through the ministry portal (The National, 2025, as reported) — evidential value attaches to the agency/ministry report, not to the document copy."
+    sources: [CM-ARCH-2024, CM-ECOM-2010, CM-CYB-2010, UAE-MOHESR-RECOG]
+    severity: high
+    status: open
+    verification: "Articles read in the downloaded texts; absence of other provisions = 'not found in the texts reviewed', not proof of absence."
+
   - id: P3
     type: policy
     title: "No published retention schedule for verification requests and uploaded diplomas"
+    finding: >-
+      Law 2024/017 Art. 13 forbids keeping data longer than necessary and says the period is stated in the processing authorisation;
+      Art. 28 says the maximum period is set in the Authority's reference framework (référentiel, Art. 27). We found no such schedule
+      published, and the Authority's operational status is reported as uncertain (see P4).
+    law_cited:
+      - {anchor: "CM-DP-2024#retention", article: "Art. 13", note: "no longer than necessary; period fixed in authorisation / by regulation"}
+      - {anchor: "CM-DP-2024#retention_max", article: "Art. 28", note: "maximum period set in the Authority's référentiel"}
+    evidence: ["rule PR-RETENTION-001 (proposal: true)", "scenario S1"]
     surfaced_by: [S1]
-    proposal: "Default 90 days then deletion (our proposal, rule PR-RETENTION-001, proposal: true)."
+    proposal: "Default 90 days then deletion of uploads (OUR proposal, not law); keep only the hashed audit record. To be replaced by the Authority's schedule once published."
+    comparison: "Not compared (no UAE schedule read)."
     sources: [CM-DP-2024]
+    severity: medium
+    status: open
+    verification: "Articles read (OCR). Non-existence of a schedule is 'not found', to confirm with the Authority."
+
   - id: P4
     type: policy
-    title: "Cross-border academic verification blocked by transfer authorisation while the Authority is not operational"
+    title: "Cross-border academic verification depends on a prior authorisation regime that cannot yet be exercised"
+    finding: >-
+      Law 2024/017 Art. 32 subordinates any transfer of personal data to a foreign State or international organisation to the prior
+      authorisation of the Authority, checking adequate protection, a signed legal instrument with the destination country, binding
+      security rules and Authority-published standard contractual clauses. Art. 53 gives the Authority the task of publishing the list of
+      countries recognised as adequate. Secondary sources consulted 10 Nov 2026 report that implementing decrees / the Authority's
+      operation were still pending (as reported, to verify) and that the law applies after an 18-month transition (23 June 2026). We found
+      no published adequacy list, no standard clauses and no simplified route for a yes/no attestation. Cloud-LLM calls (S4/LLM provider)
+      are transfers too.
+    law_cited:
+      - {anchor: "CM-DP-2024#transfer", article: "Art. 32", note: "prior authorisation for transfers abroad"}
+      - {anchor: "CM-DP-2024#authority", article: "Art. 53", note: "Authority issues authorisations and publishes the list of adequate countries"}
+    evidence: ["rule PR-CROSSBORDER-001", "rule PR-CROSSBORDER-002", "rule PR-LLM-TRANSFER-001", "scenario S4"]
     surfaced_by: [S4]
-    proposal: "Simplified regime for minimal yes/no attestations."
-    comparison: "UAE: appointed verification agencies + digital attestation (UAE PASS); PDPL 45/2021."
-    sources: [CM-DP-2024, UAE-PDPL-2021, UAE-MOHESR-RECOG]
+    proposal: "Simplified regime for minimal yes/no attestations (+ hash, no personal data beyond the holder's own claim) with a transfer log; until the Authority issues authorisations, only such attestations leave Cameroon (rules PR-CROSSBORDER-001/002)."
+    comparison: "UAE: federal PDPL 45/2021 sets requirements for cross-border transfer (u.ae overview, summary); degree verification is delegated to two appointed agencies with UAE PASS login and a ministry-issued report; MoHRE launched a digital employer verification service (Gulf News, May 2025, as reported). AU Malabo Art. 14 and ECOWAS Supplementary Act give an adequacy-based model (not binding on Cameroon)."
+    sources: [CM-DP-2024, INT-MALABO-2014, ECOWAS-DPA-2010, UAE-PDPL-2021, UAE-MOHESR-RECOG]
+    severity: high
+    status: open
+    verification: "Art. 32/53 read (OCR). Authority status and 18-month transition = secondary sources (as_reported)."
+
   - id: P5
     type: policy
-    title: "Holder consent required for MINESUP equivalence, but no general rule for employer-initiated checks"
+    title: "Holder consent is required for MINESUP equivalence/authentication, but no general rule governs employer-initiated checks or bulk queries"
+    finding: >-
+      The MINESUP equivalence form carries an 'Autorisation de recherche d'informations' by which the holder authorises the Minister to
+      carry out the searches needed to authenticate the diploma. Law 2024/017 Art. 9 requires prior, free, informed, specific and
+      unambiguous consent, with derogations (legal obligation, public-interest mission, vital interests) that leave open whether an
+      employer's 'legitimate interest' qualifies; Art. 50 prohibits processing without consent. Nothing limits the number of
+      holders an HR firm can check, and no consent format (paper form only) exists for digital checks.
+    law_cited:
+      - {anchor: "CM-DP-2024#consent", article: "Art. 9", note: "consent + derogations"}
+      - {anchor: "CM-DP-2024#consent_required", article: "Art. 50", note: "processing without consent forbidden"}
+      - {anchor: "CM-MINESUP-FORM#autorisation", article: "MINESUP form", note: "holder authorisation to the Minister only"}
+    evidence: ["rule PR-CONSENT-001", "rule PR-CONSENT-003", "rule PR-BULK-001 (20 holders/hour, proposal)", "scenario S3"]
     surfaced_by: [S3]
-    proposal: "Consent token or explicit legal basis for every check."
+    proposal: "A consent token or an explicit statutory legal basis for every check; legal basis accepted only from public authorities; rate limit per verifier (20 holders/hour, our proposal)."
+    comparison: "UAE: employer verification goes through the ministry platform / appointed agencies; the holder logs in with UAE PASS (as reported)."
     sources: [CM-MINESUP-FORM, CM-DP-2024]
+    severity: high
+    status: open
+    verification: "Form and Art. 9/50 read in the downloaded texts."
+
   - id: P6
     type: policy
-    title: "Liability for AI false positives undefined"
+    title: "Liability and wording for AI false positives are undefined; outputs may pre-empt a criminal qualification"
+    finding: >-
+      Art. 62 of Law 2024/017 gives the data subject urgent judicial measures and a claim for reparation, but no text allocates
+      liability between verifier, registrar, tool provider and issuing institution when an automated INCONSISTENT verdict is wrong.
+      The Penal Code defines forgery (Art. 144, 314-315) and unlawful use of an official diploma (Art. 219) as offences for courts to establish;
+      no text regulates how verification tools may word their findings. The stakes are real: press reports ~1,000 gendarmerie trainees
+      dismissed in 2022 and 1,312 diplomas reported as fake in June 2024 (as reported).
+    law_cited:
+      - {anchor: "CM-DP-2024#remedy", article: "Art. 62", note: "judicial remedy and reparation"}
+      - {anchor: "CM-PEN-2016#title_usurpation", article: "Penal Code Art. 219", note: "unlawful use of an official diploma"}
+      - {anchor: "CM-PEN-2016#forgery_public_act", article: "Penal Code Art. 144", note: "forgery in a public act"}
+    evidence: ["rule PR-NOACCUSE-001", "rule PR-APPROVAL-AUDIT-001", "scenario S2", "scenario S7"]
+    surfaced_by: [S2, S7]
+    proposal: "Shared-accountability clause (registrar approves, tool provider logs, verifier acts only on approved verdicts); never output 'fake'; hash-chained audit log as evidence of who decided what."
+    comparison: "UAE: findings are 'authenticated or not' reports issued by the ministry after the agency contacts the university (as reported); no automated accusation."
+    sources: [CM-DP-2024, CM-PEN-2016, CM-VERIF-PLATFORM-2024]
+    severity: high
+    status: open
+    verification: "Articles read in downloaded texts; dismissal figures from press (as_reported)."
+
+  - id: P7
+    type: policy
+    title: "No published legal basis, access conditions or holder rights for the national online diploma-verification platform"
+    finding: >-
+      Press (as reported) says the government platform launched on 1 Oct 2024 (MINESUP/MINFOPRA) rests on an agreement of 6 Apr 2023 and a joint
+      circular of 8 May 2024 under which MINESUP gives MINFOPRA a secure software interface to diploma data, to be extended to MINESEC,
+      MINEDUB and MINEFOP. We found no published text on who may query it (private employers?), on logging, on holder notification or
+      on rectification, nor on interoperability with third-party tools.
+    law_cited: []
+    evidence: ["source CM-VERIF-PLATFORM-2024 (summary)", "scenario S1", "scenario S3"]
+    surfaced_by: [S1, S3]
+    proposal: "Publish the circular and an access policy (who, purpose, logging, holder notice, SLA) and an open API/credential format so that third-party tools such as VeriDiplo can federate instead of duplicating."
+    comparison: "UAE: ministries publish the attestation/verification workflow and fees online (The National, MoE news, as reported)."
+    sources: [CM-VERIF-PLATFORM-2024]
+    severity: medium
+    status: open
+    verification: "Press only (kind: summary, as_reported). The circular itself was not obtained."
+
+  - id: P8
+    type: policy
+    title: "Text of the 2023 higher-education orientation law (and any diploma-authentication decree) could not be obtained"
+    finding: >-
+      Law 2023/007 of 25 July 2023 (reported to have 117 articles and to repeal Law 2001/005) is not available as a public PDF we could
+      reach; the repealed 2001 law is in the KB for historical context only. We therefore cannot say whether the current law assigns
+      diploma registry, authentication or archive duties, nor which arrêté governs the authentication procedure.
+    law_cited: []
+    evidence: ["source CM-HE-2023 (pending_download)", "source CM-HE-2001 (repealed, downloaded)"]
+    surfaced_by: []
+    proposal: "Publish the law and its implementing texts in the Journal officiel/PRC site in a machine-readable form; the human team must drop the PDF in kb/raw/CM-HE-2023.pdf and re-run the build."
+    comparison: null
+    sources: [CM-HE-2023, CM-HE-2001]
+    severity: medium
+    status: open
+    verification: "Documentation gap of this KB, honestly flagged."
+
+  - id: P9
+    type: policy
+    title: "No deadline or structured-format duty for institutions to answer verification requests or export deliberation registers"
+    finding: >-
+      Law 2024/001 Art. 30(3) requires reasoned refusals of archive communication and Art. 19(2) defers electronic-archive modalities to
+      regulation, but we found no deadline for issuers (universities, Office du Baccalauréat, GCE Board) to confirm a diploma, and no duty to hold
+      deliberation minutes (PV) as structured/digitised records. Missing or unreadable archives (S5) therefore end in 'insufficient evidence'
+      with no escalation path.
+    law_cited:
+      - {anchor: "CM-ARCH-2024#evidential_copy", article: "Law 2024/001 Art. 29", note: "evidence by certified copies from the national archive body"}
+    evidence: ["scenario S5", "rule PR-EVIDENCE-001"]
+    surfaced_by: [S5]
+    proposal: "Response deadline for issuers, mandatory digitised + structured result registers, and an archive-request template (the system drafts it in S5)."
+    comparison: "UAE: the agency contacts the university and the duration depends on the university's response (The National, as reported) — same bottleneck, partially managed by SLAs on the agency side."
+    sources: [CM-ARCH-2024, UAE-MOHESR-RECOG]
+    severity: medium
+    status: open
+    verification: "Articles read; absence of a deadline = not found in texts reviewed."
+
+  - id: P10
+    type: policy
+    title: "Binding status for Cameroon of the African recognition and data-protection conventions is not established"
+    finding: >-
+      The Addis Ababa revised recognition convention (Art. IV.2(3): Parties commit to eradicate fraudulent practices regarding qualifications;
+      network exchange of counter-fraud measures) is binding only on Parties. The UN registration record in the KB lists 12 Parties and
+      Cameroon is not among them (it appears on the signature pages). Cameroon's ratification of the AU Malabo Convention was not verified.
+    law_cited:
+      - {anchor: "INT-ADDIS-2014#fraud", article: "Addis Convention Art. IV.2(3)", note: "commitment to eradicate fraudulent practices"}
+    evidence: ["source INT-ADDIS-2014 (OCR of UN record, pages 1-2 and 12-22)", "source INT-MALABO-2014"]
+    surfaced_by: [S4]
+    proposal: "Confirm status with UNESCO/AU; if Cameroon is not a Party, ratify/accede so that cross-border verification and counter-fraud cooperation have a treaty basis."
+    comparison: "Global Convention (UNESCO 2019) and Lisbon Convention not downloaded (pending) — compare once available."
+    sources: [INT-ADDIS-2014, INT-MALABO-2014, INT-GLOBAL-CONV-2019]
+    severity: medium
+    status: open
+    verification: "Party list read in OCR of the UN record (dated registration 2020; may be outdated)."
+
+  - id: P11
+    type: policy
+    title: "No reconciliation procedure for name variants and OCR/transcription errors between civil status, diplomas and deliberation minutes"
+    finding: >-
+      Law 2024/017 Art. 12 requires accurate, up-to-date data and a duty to correct inaccurate data, and the rights chapter lets the holder obtain
+      rectification; nothing describes how a holder whose compound name, name order or spelling differs across civil-status documents,
+      diplomas and PVs obtains a documented reconciliation, nor what a verifier may do meanwhile.
+    law_cited:
+      - {anchor: "CM-DP-2024#accuracy", article: "Art. 12", note: "accuracy and correction duty"}
+    evidence: ["scenario S6", "rule PR-HUMAN-REVIEW-001", "rule PR-HOLDER-NOTICE-001"]
     surfaced_by: [S6]
-    proposal: "Shared-accountability clause; hash-chained audit log as evidence."
-    sources: [CM-DP-2024]
+    proposal: "Fuzzy-match results between 80 and 92 are 'unknown' and go to human review with a rectification path offered to the holder (rules PR-HUMAN-REVIEW-001, PR-HOLDER-NOTICE-001)."
+    comparison: "UAE: a mandatory 'name change document' (legal letter, birth/marriage certificate or earlier passport) is required when the certificate name differs from the passport (The National, as reported)."
+    sources: [CM-DP-2024, UAE-MOHESR-RECOG]
+    severity: medium
+    status: open
+    verification: "Art. 12 read; comparison from press."
+
+  - id: P12
+    type: policy
+    title: "No AI statute, AI authority or regulatory-sandbox regime yet: pilots like this one have no legal status"
+    finding: >-
+      SNIA (July 2025, as reported by OECD.AI) plans a Cameroonian AI Authority, a Presidential Council on AI and a framework law; none was found enacted.
+      Without a sandbox regime there is no framework that tells a pilot what data it may use, who supervises it, or when it may go live.
+    law_cited:
+      - {anchor: "CM-SNIA-2025#governance_pillar", article: "SNIA pillar 1 (as reported)", note: "authority, council and framework law announced"}
+    evidence: ["all scenarios run in the sandbox profile", "readiness dimension 10 (AI & Policies), metric d10_m01 Policy Sandbox"]
+    surfaced_by: [S1, S2, S3, S4, S5, S6, S7]
+    proposal: "A policy-sandbox decree defining admissible synthetic/real data, supervisor, exit criteria and publication of sandbox findings (policy case briefs, d10_m08)."
+    comparison: "Not compared (no regulatory-sandbox text in the KB)."
+    sources: [CM-SNIA-2025, AU-AI-2024]
+    severity: medium
+    status: open
+    verification: "SNIA = secondary sources (kind: summary)."
+
   - id: S1
     type: standard
-    title: "No national machine-readable schema for diploma/PV data"
-    proposal: "Contribute the VeriDiplo ontology; align with W3C VC 2.0."
-    sources: [W3C-VC-2.0]
+    title: "No national machine-readable schema for diploma / deliberation-minutes (PV) data"
+    finding: "No Cameroonian or African schema for diplomas, PV rows, registers or accreditation periods was found; each institution uses its own layout."
+    evidence: ["ontology app/kg/ontology/veridiplo.ttl", "SHACL shapes", "scenarios S1, S6"]
+    surfaced_by: [S1, S6]
+    proposal: "Contribute the VeriDiplo ontology; align credentials with W3C VC 2.0 and provenance with PROV-O."
+    comparison: "W3C VC Data Model 2.0 (issuer, credentialSubject, evidence) is the generic building block; no education profile for Cameroon."
+    law_cited: [{anchor: "W3C-VC-2.0#data_minimization", article: "VC 2.0 section 8.9", note: "data minimisation best practice"}]
+    sources: [W3C-VC-2.0, W3C-PROV-O, W3C-SHACL]
+    severity: medium
+    status: open
+
   - id: S2
     type: standard
     title: "No standard format for policy-as-code linked to legal provisions"
-    proposal: "Propose a YAML/JSON policy-rule schema to ITU study groups."
+    finding: "Rules cite legal text only in prose. VeriDiplo links each rule to chunk ids/anchors of a machine-readable KB and tags proposals vs law."
+    evidence: ["kb/policy_rules/*.yaml", "tests/unit/test_policy_rules.py"]
+    surfaced_by: [S2, S3]
+    proposal: "Propose the YAML rule schema + context contract (kb/policy_rules/context_schema.yaml) and chunk/anchor format to ITU study groups."
+    comparison: "OECD/NIST/ISO 42001 describe governance processes, not an executable rule format (ISO text not accessible: pending)."
+    law_cited: []
+    sources: [NIST-AI-RMF-1.0, OECD-AI-2019]
+    severity: medium
+    status: open
+
   - id: S3
     type: standard
-    title: "Y.3172 lacks a provenance/evidence node and a human-approval gate for agentic pipelines; Readiness 2.0 does not cover multi-agent coordination"
-    proposal: "Add a P-node sub-function 'evidence and approval gate'."
-    sources: [ITU-Y3172, ITU-READINESS-2]
+    title: "ITU-T Y.3172 has no provenance/evidence node, no human-approval gate and a minimal security clause; its P node acts only on model output"
+    finding: >-
+      Y.3172 clause 8.1 defines P as the node that 'enables the application of policies to the output of the model node' (example: network-safety rules).
+      It sits between M and D, so it cannot govern ingestion (SRC/C), search, or export decisions, carries no consent/purpose concept, no human approval of an
+      output, no provenance/evidence record and no explainability requirement. Clause 9 (security) is two sentences (authentication/authorisation,
+      prevent unauthorised access and data leaking). The Recommendation targets ML in IMT-2020 networks; applying it to document verification is our adaptation.
+    law_cited:
+      - {anchor: "ITU-Y3172#policy_node", article: "Clause 8.1", note: "definition of the P node"}
+      - {anchor: "ITU-Y3172#security", article: "Clause 9", note: "security considerations"}
+    evidence: ["docs/y3172_mapping.md", "rules guard nodes SRC/C/M/D/SINK (guards_node)"]
+    surfaced_by: [S2, S3, S4, S7]
+    proposal: "Add to Y.3172 a P-node sub-function 'evidence and approval gate' (checkpoints before ingest/search/report/share/export, human approval, audit hash chain) and a provenance requirement on C/PP."
+    comparison: "EU AI Act Art. 12 (record-keeping), 14 (human oversight) cover what Y.3172 lacks, for AI systems in general."
+    sources: [ITU-Y3172, EU-AI-ACT-2024]
+    severity: high
+    status: open
+
   - id: S4
     type: standard
     title: "No OCR benchmark for French/English Cameroonian administrative scans and names"
-    proposal: "Release the synthetic benchmark openly."
+    finding: "The KB itself needed a custom binarisation step to OCR the watermarked certified copy of Law 2024/017 reliably (default OCR garbled several articles)."
+    evidence: ["kb/build_kb.py ocr_threshold", "scenario S6", "synthetic data generator"]
+    surfaced_by: [S6]
+    proposal: "Release the synthetic benchmark (degraded PV scans, compound names, both name orders) openly."
+    comparison: null
+    law_cited: []
+    sources: []
+    severity: medium
+    status: open
+
+  - id: S5
+    type: standard
+    title: "No standard for digital consent evidence (consent token) in education-credential verification"
+    finding: "Art. 9 requires consent that is prior, free, informed, specific and unambiguous but the only artefact found is a paper authorisation (MINESUP form)."
+    law_cited:
+      - {anchor: "CM-DP-2024#consent", article: "Art. 9", note: "consent definition"}
+      - {anchor: "CM-MINESUP-FORM#autorisation", article: "MINESUP form", note: "paper authorisation"}
+    evidence: ["rules PR-CONSENT-001/002", "scenario S3"]
+    surfaced_by: [S3]
+    proposal: "A signed, purpose-bound, expiring consent credential (W3C VC 2.0 profile) verified by the Policy Guardian."
+    comparison: "UAE: UAE PASS login of the holder on the agency portal (as reported)."
+    sources: [CM-DP-2024, CM-MINESUP-FORM, W3C-VC-2.0]
+    severity: medium
+    status: open
+
+  - id: S6
+    type: standard
+    title: "AI Readiness 2.0 has no metric for multi-agent coordination, human approval gates or evidence-pack integrity"
+    finding: >-
+      Readiness 2.0 (13 dimensions, machine-readable in kb/framework/dimensions.json) contains related metrics — d8_m01 'Co-creation Ease (human in inference process)',
+      d10_m07 'Explainability Metrics', d10_m09 'Audit Metrics', d6_m06 'Safety Integration' — but none measures coordination of several agents under a
+      policy guardian, the rate of human-approved vs auto-released adverse outputs, or integrity/provenance of evidence.
+    law_cited:
+      - {anchor: "ITU-READINESS-2#dim10", article: "Dimension 10", note: "AI & Policies metrics"}
+      - {anchor: "ITU-READINESS-2#dim08", article: "Dimension 8", note: "Collaboration with AI metrics"}
+    evidence: ["docs/readiness_mapping.md"]
+    surfaced_by: [S2, S7]
+    proposal: "Add metrics: human-gate coverage (% adverse outputs human-approved), audit-chain verifiability, proposal-vs-law rule ratio, evidence-linked-output ratio."
+    comparison: null
+    sources: [ITU-READINESS-2]
+    severity: medium
+    status: open
+
+  - id: S7
+    type: standard
+    title: "No interoperable format for cross-border verification results (yes/no attestation + hash)"
+    finding: "Verification results are currently reports on national portals/agency accounts; no portable, minimal, verifiable result format was found. The Addis Convention foresees an African network exchanging counter-fraud information but gives no technical format."
+    law_cited:
+      - {anchor: "INT-ADDIS-2014#fraud", article: "Addis Convention Art. IV.2(3)", note: "counter-fraud cooperation"}
+      - {anchor: "W3C-VC-2.0#data_minimization", article: "VC 2.0 section 8.9", note: "minimal disclosure"}
+    evidence: ["rules PR-CROSSBORDER-001/002", "scenario S4"]
+    surfaced_by: [S4]
+    proposal: "Define a minimal verification-attestation credential (verdict class, institution, session, record hash, issuer signature) as a W3C VC 2.0 profile for AU/ECOWAS/CEMAC use."
+    comparison: "UAE agencies deliver proprietary PDF reports via UAE PASS portals (as reported)."
+    sources: [INT-ADDIS-2014, W3C-VC-2.0, UAE-MOHESR-RECOG]
+    severity: medium
+    status: open
+
+  - id: S8
+    type: standard
+    title: "No shared vocabulary for verification outcomes (consistent / inconsistent / insufficient evidence) or for non-accusatory wording"
+    finding: "W3C VC 2.0 offers an 'evidence' property (section 5.6) for supporting information but no outcome vocabulary; national platforms report 'authentic or not' (as reported)."
+    law_cited:
+      - {anchor: "W3C-VC-2.0#data_minimization", article: "VC 2.0", note: "related section; the 'evidence' property is section 5.6"}
+    evidence: ["rule PR-NOACCUSE-001", "scenarios S2, S5"]
+    surfaced_by: [S2, S5]
+    proposal: "Standardise a three-state verdict with mandatory evidence references and a neutral wording list; publish it with the KB format."
+    comparison: "UAE reports a binary authenticated / not authenticated result (as reported)."
+    sources: [W3C-VC-2.0, UAE-MOHESR-RECOG]
+    severity: low
+    status: open

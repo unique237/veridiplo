@@ -1,0 +1,102 @@
+{
+ "GEN-001": {
+  "label": "genuine",
+  "status": "genuine",
+  "truth_authentic": true,
+  "expected_verdict": "CONSISTENT",
+  "expected_failing_checks": [],
+  "expected_unknown_checks": [],
+  "person_id": "P0481",
+  "true_record": {
+   "family_name": "DAIROU",
+   "given_names": "Anne-Marie",
+   "birth_date": "1998-07-23",
+   "institution_id": "UFN",
+   "programme_id": "LINFO",
+   "session_year": 2024,
+   "average": 13.45,
+   "mention": "Assez Bien",
+   "serial": "UFN/2024/LINFO/00036",
+   "issue_date": "2024-09-30",
+   "signatory_id": "UFN-SG4",
+   "accredited_at_session": true
+  },
+  "evidence": {
+   "pv_file": "pv/UFN_LINFO_2024.pdf",
+   "row": 1,
+   "registry_file": "registries/UFN_2024.csv"
+  },
+  "note": "Genuine specimen.",
+  "details": {}
+ },
+ "TMEN-001": {
+  "label": "tampered_mention",
+  "status": "tampered",
+  "truth_authentic": false,
+  "expected_verdict": "INCONSISTENT",
+  "expected_failing_checks": [
+   "C4"
+  ],
+  "expected_unknown_checks": [],
+  "person_id": "P0476",
+  "true_record": {
+   "family_name": "BELINGA",
+   "given_names": "Bertrand",
+   "birth_date": "1999-05-25",
+   "institution_id": "UFN",
+   "programme_id": "LDROIT",
+   "session_year": 2024,
+   "average": 10.53,
+   "mention": "Passable",
+   "serial": "UFN/2024/LDROIT/00153",
+   "issue_date": "2024-12-25",
+   "signatory_id": "UFN-SG4",
+   "accredited_at_session": true
+  },
+  "evidence": {
+   "pv_file": "pv/UFN_LDROIT_2024.pdf",
+   "row": 5,
+   "registry_file": "registries/UFN_2024.csv"
+  },
+  "note": "Mention Passable -> Bien, average 10.53 -> 14.27 (internally consistent, differs from PV).",
+  "details": {
+   "pv_mention": "Passable",
+   "pv_average": 10.53
+  }
+ },
+ "OCRH-001": {
+  "label": "ocr_hard_name",
+  "status": "genuine",
+  "truth_authentic": true,
+  "expected_verdict": "INSUFFICIENT_EVIDENCE",
+  "expected_failing_checks": [],
+  "expected_unknown_checks": [
+   "C1"
+  ],
+  "person_id": "P0362",
+  "true_record": {
+   "family_name": "ÉTOUNDI-MBALLA OWONO",
+   "given_names": "Jean-Rémi Éloi",
+   "birth_date": "2001-01-05",
+   "institution_id": "UFN",
+   "programme_id": "LDROIT",
+   "session_year": 2022,
+   "average": 11.05,
+   "mention": "Passable",
+   "serial": "UFN/2022/LDROIT/00081",
+   "issue_date": "2022-11-30",
+   "signatory_id": "UFN-SG4",
+   "accredited_at_session": true
+  },
+  "evidence": {
+   "pv_file": "pv/UFN_LDROIT_2022.pdf",
+   "row": 9,
+   "registry_file": "registries/UFN_2022.csv"
+  },
+  "note": "Genuine holder; diploma spelling/order differs from the PV (similarity in the 80-92 band): C1 must be 'unknown' -> human review.",
+  "details": {
+   "name_similarity": 88.9,
+   "pv_name": "ÉTOUNDI-MBALLA OWONO Jean-Rémi Éloi"
+  }
+ }
+}

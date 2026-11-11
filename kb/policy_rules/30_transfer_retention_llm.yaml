@@ -1,0 +1,66 @@
+# Cross-border transfer, cloud-LLM transfer warning, retention.
+
+- id: PR-CROSSBORDER-001
+  checkpoint: before_export_abroad
+  when: "request.requester_country is not None and request.requester_country != 'CM' and output.scope != 'attestation'"
+  action: redact
+  message_fr: "Demande transfrontalière : seule une attestation minimale (oui/non + empreinte du dossier) peut être délivrée ; le relevé complet ne quitte pas le Cameroun."
+  message_en: "Cross-border request: only a minimal attestation (yes/no + record hash) may be issued; the full transcript does not leave Cameroon."
+  justified_by: [CM-DP-2024#transfer, INT-MALABO-2014#transfer, UAE-PDPL-2021#cross_border]
+  pipeline_node: P
+  readiness_dims: [10, 7]
+  kind: legal_interpretation
+  guards_node: D
+  gap_id: P4
+  params: {max_scope: attestation}
+  scenarios: [S4]
+  note: "Law 2024/017 Art. 32: transfer of personal data abroad is subject to prior authorisation of the Authority (which is not yet operational: gap P4). Reducing the output to a minimal yes/no attestation + hash is our operationalisation while no authorisation regime exists. UAE PDPL overview cited as comparison."
+
+- id: PR-CROSSBORDER-002
+  checkpoint: before_export_abroad
+  when: "request.requester_country is not None and request.requester_country != 'CM'"
+  action: allow
+  message_fr: "Transfert transfrontalier signalé et journalisé (destination, finalité, empreinte de l'attestation)."
+  message_en: "Cross-border transfer flagged and logged (destination, purpose, attestation hash)."
+  justified_by: [CM-DP-2024#transfer]
+  pipeline_node: P
+  readiness_dims: [10, 7]
+  kind: legal_interpretation
+  guards_node: D
+  gap_id: P4
+  params: {flag: cross_border_transfer, log_fields: [destination, purpose, attestation_hash]}
+  scenarios: [S4]
+  note: "Records every transfer so that, once the Authority issues authorisations/standard clauses, the audit log can demonstrate compliance with Art. 32."
+
+- id: PR-LLM-TRANSFER-001
+  checkpoint: before_export_abroad
+  when: "llm.provider in ['anthropic', 'openai']"
+  action: redact
+  message_fr: "Fournisseur LLM cloud : avertissement de transfert transfrontalier journalisé ; les données personnelles doivent être pseudonymisées avant l'appel."
+  message_en: "Cloud LLM provider: cross-border transfer warning logged; personal data must be pseudonymised before the call."
+  justified_by: [CM-DP-2024#transfer]
+  pipeline_node: P
+  readiness_dims: [10, 7]
+  kind: legal_interpretation
+  guards_node: M
+  gap_id: P4
+  params: {audit_warning: cross_border_transfer, pseudonymise: true}
+  scenarios: []
+  note: "A prompt sent to a foreign cloud LLM is a transfer of personal data abroad (Law 2024/017 Art. 32). Default providers 'none' and 'ollama' stay local and never fire this rule."
+
+- id: PR-RETENTION-001
+  checkpoint: before_search
+  when: "upload.age_days is not None and upload.age_days > 90"
+  action: block
+  message_fr: "Pièce téléversée conservée depuis plus de 90 jours : elle doit être supprimée et ne peut plus être utilisée."
+  message_en: "Uploaded document stored for more than 90 days: it must be deleted and can no longer be used."
+  justified_by: [CM-DP-2024#retention, CM-DP-2024#retention_max]
+  pipeline_node: P
+  readiness_dims: [10, 1]
+  kind: proposal
+  proposal: true
+  guards_node: SRC
+  gap_id: P3
+  params: {retention_days: 90}
+  scenarios: [S1]
+  justification_note: "The 90-day period is OUR PROPOSAL, not law. Law 2024/017 Art. 13 only says data must not be kept beyond the period necessary (period fixed in the processing authorisation / by regulation) and Art. 28 says the maximum period is set in the Authority's reference framework (référentiel, Art. 27); no such schedule was found published (gap P3)."

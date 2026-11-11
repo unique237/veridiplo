@@ -1,0 +1,503 @@
+[
+ {
+  "id": "UFN",
+  "name_fr": "Université Fictive de Nkolbisson",
+  "name_en": "Fictive University of Nkolbisson",
+  "kind": "public",
+  "language": "fr",
+  "city": "Yaoundé",
+  "programmes": [
+   {
+    "id": "LDROIT",
+    "name_fr": "Licence en Droit Privé",
+    "name_en": "Bachelor in Private Law",
+    "level": "Licence",
+    "language": "fr",
+    "accreditations": [
+     {
+      "from": "1992-10-01",
+      "to": null,
+      "decree_ref": "ARR-FICTIF-0114/1992"
+     }
+    ]
+   },
+   {
+    "id": "LINFO",
+    "name_fr": "Licence en Informatique",
+    "name_en": "Bachelor in Computer Science",
+    "level": "Licence",
+    "language": "fr",
+    "accreditations": [
+     {
+      "from": "2004-09-01",
+      "to": "2018-08-31",
+      "decree_ref": "ARR-FICTIF-0388/2004"
+     },
+     {
+      "from": "2019-09-01",
+      "to": null,
+      "decree_ref": "ARR-FICTIF-1021/2019"
+     }
+    ]
+   },
+   {
+    "id": "MINFO",
+    "name_fr": "Master en Informatique",
+    "name_en": "Master in Computer Science",
+    "level": "Master",
+    "language": "fr",
+    "accreditations": [
+     {
+      "from": "2012-09-01",
+      "to": null,
+      "decree_ref": "ARR-FICTIF-0507/2012"
+     }
+    ]
+   },
+   {
+    "id": "MDATA",
+    "name_fr": "Master en Science des Données",
+    "name_en": "Master in Data Science",
+    "level": "Master",
+    "language": "fr",
+    "accreditations": [
+     {
+      "from": "2021-09-01",
+      "to": null,
+      "decree_ref": "ARR-FICTIF-1377/2021"
+     }
+    ]
+   }
+  ],
+  "signatories": [
+   {
+    "id": "UFN-SG1",
+    "name": "Hyacinthe Roger MBOLO ESSIMI",
+    "title": "Recteur",
+    "in_office_from": "1994-01-01",
+    "in_office_to": "2009-12-31"
+   },
+   {
+    "id": "UFN-SG2",
+    "name": "Charlotte NGO BATJOM",
+    "title": "Rectrice",
+    "in_office_from": "2010-01-01",
+    "in_office_to": "2016-12-31"
+   },
+   {
+    "id": "UFN-SG3",
+    "name": "Alphonse MVONDO BELINGA",
+    "title": "Recteur",
+    "in_office_from": "2017-01-01",
+    "in_office_to": "2022-09-30"
+   },
+   {
+    "id": "UFN-SG4",
+    "name": "Joséphine ABENA MANGA",
+    "title": "Rectrice",
+    "in_office_from": "2022-10-01",
+    "in_office_to": null
+   }
+  ],
+  "serial_format": "^UFN/\\d{4}/[A-Z]{3,7}/\\d{5}$",
+  "serial_pattern": "UFN/{YYYY}/{PROG}/{NNNNN}",
+  "serial_example": "UFN/2019/LINFO/00123"
+ },
+ {
+  "id": "UFB",
+  "name_fr": "Université Fictive de Bonabéri",
+  "name_en": "Fictive University of Bonaberi",
+  "kind": "public",
+  "language": "fr",
+  "city": "Douala",
+  "programmes": [
+   {
+    "id": "LGEST",
+    "name_fr": "Licence en Gestion",
+    "name_en": "Bachelor in Management",
+    "level": "Licence",
+    "language": "fr",
+    "accreditations": [
+     {
+      "from": "2000-09-01",
+      "to": null,
+      "decree_ref": "ARR-FICTIF-0201/2000"
+     }
+    ]
+   },
+   {
+    "id": "LCOMPT",
+    "name_fr": "Licence en Comptabilité et Finance",
+    "name_en": "Bachelor in Accounting and Finance",
+    "level": "Licence",
+    "language": "fr",
+    "accreditations": [
+     {
+      "from": "2008-09-01",
+      "to": null,
+      "decree_ref": "ARR-FICTIF-0455/2008"
+     }
+    ]
+   },
+   {
+    "id": "MMARK",
+    "name_fr": "Master en Marketing Digital",
+    "name_en": "Master in Digital Marketing",
+    "level": "Master",
+    "language": "fr",
+    "accreditations": [
+     {
+      "from": "2016-09-01",
+      "to": null,
+      "decree_ref": "ARR-FICTIF-0902/2016"
+     }
+    ]
+   },
+   {
+    "id": "LLOG",
+    "name_fr": "Licence en Logistique et Transport",
+    "name_en": "Bachelor in Logistics and Transport",
+    "level": "Licence",
+    "language": "fr",
+    "accreditations": [
+     {
+      "from": "2019-09-01",
+      "to": null,
+      "decree_ref": "ARR-FICTIF-1033/2019"
+     }
+    ]
+   }
+  ],
+  "signatories": [
+   {
+    "id": "UFB-SG1",
+    "name": "Étienne Blaise MOUKOKO EPEE",
+    "title": "Recteur",
+    "in_office_from": "2000-03-01",
+    "in_office_to": "2011-02-28"
+   },
+   {
+    "id": "UFB-SG2",
+    "name": "Marguerite DIBOUE LOBE",
+    "title": "Rectrice",
+    "in_office_from": "2011-03-01",
+    "in_office_to": "2018-06-30"
+   },
+   {
+    "id": "UFB-SG3",
+    "name": "Samuel Aimé TCHINDA KAMGA",
+    "title": "Recteur",
+    "in_office_from": "2018-07-01",
+    "in_office_to": "2023-12-31"
+   },
+   {
+    "id": "UFB-SG4",
+    "name": "Prisca ELLA NKODO",
+    "title": "Rectrice",
+    "in_office_from": "2024-01-01",
+    "in_office_to": null
+   }
+  ],
+  "serial_format": "^UFB\\.\\d{4}\\.\\d{6}$",
+  "serial_pattern": "UFB.{YYYY}.{NNNNNN}",
+  "serial_example": "UFB.2019.004512"
+ },
+ {
+  "id": "FUM",
+  "name_fr": "Université Fictive de Mbengwi",
+  "name_en": "Fictional University of Mbengwi",
+  "kind": "public",
+  "language": "en",
+  "city": "Bamenda",
+  "programmes": [
+   {
+    "id": "BAENG",
+    "name_fr": "Licence en Études Anglaises",
+    "name_en": "Bachelor of Arts in English Studies",
+    "level": "Bachelor",
+    "language": "en",
+    "accreditations": [
+     {
+      "from": "2003-09-01",
+      "to": null,
+      "decree_ref": "ARR-FICTIF-0277/2003"
+     }
+    ]
+   },
+   {
+    "id": "BSCOMP",
+    "name_fr": "Licence en Informatique",
+    "name_en": "Bachelor of Science in Computer Science",
+    "level": "Bachelor",
+    "language": "en",
+    "accreditations": [
+     {
+      "from": "2006-09-01",
+      "to": "2018-08-31",
+      "decree_ref": "ARR-FICTIF-0391/2006"
+     },
+     {
+      "from": "2019-09-01",
+      "to": null,
+      "decree_ref": "ARR-FICTIF-1040/2019"
+     }
+    ]
+   },
+   {
+    "id": "MSEDU",
+    "name_fr": "Master en Sciences de l'Éducation",
+    "name_en": "Master of Science in Education",
+    "level": "Master",
+    "language": "en",
+    "accreditations": [
+     {
+      "from": "2011-09-01",
+      "to": null,
+      "decree_ref": "ARR-FICTIF-0560/2011"
+     }
+    ]
+   },
+   {
+    "id": "BSAGRB",
+    "name_fr": "Licence en Agrobusiness",
+    "name_en": "Bachelor of Science in Agribusiness",
+    "level": "Bachelor",
+    "language": "en",
+    "accreditations": [
+     {
+      "from": "2013-09-01",
+      "to": null,
+      "decree_ref": "ARR-FICTIF-0689/2013"
+     }
+    ]
+   }
+  ],
+  "signatories": [
+   {
+    "id": "FUM-SG1",
+    "name": "Nelson Fonyuy TABE ASONG",
+    "title": "Vice-Chancellor",
+    "in_office_from": "2003-09-01",
+    "in_office_to": "2012-08-31"
+   },
+   {
+    "id": "FUM-SG2",
+    "name": "Agnes NGWA MBAH",
+    "title": "Vice-Chancellor",
+    "in_office_from": "2012-09-01",
+    "in_office_to": "2019-08-31"
+   },
+   {
+    "id": "FUM-SG3",
+    "name": "Godlove ATEM TANYI",
+    "title": "Vice-Chancellor",
+    "in_office_from": "2019-09-01",
+    "in_office_to": "2024-05-31"
+   },
+   {
+    "id": "FUM-SG4",
+    "name": "Cynthia NFOR EKEMA",
+    "title": "Vice-Chancellor",
+    "in_office_from": "2024-06-01",
+    "in_office_to": null
+   }
+  ],
+  "serial_format": "^FUM-\\d{4}-[A-Z]{3,7}-\\d{4}$",
+  "serial_pattern": "FUM-{YYYY}-{PROG}-{NNNN}",
+  "serial_example": "FUM-2019-BSCOMP-0042"
+ },
+ {
+  "id": "ISFG",
+  "name_fr": "Institut Supérieur Fictif de Garoua",
+  "name_en": "Fictive Higher Institute of Garoua",
+  "kind": "public",
+  "language": "fr",
+  "city": "Garoua",
+  "programmes": [
+   {
+    "id": "BTSGC",
+    "name_fr": "BTS Génie Civil",
+    "name_en": "HND Civil Engineering",
+    "level": "BTS",
+    "language": "fr",
+    "accreditations": [
+     {
+      "from": "2009-09-01",
+      "to": null,
+      "decree_ref": "ARR-FICTIF-0310/2009"
+     }
+    ]
+   },
+   {
+    "id": "BTSIG",
+    "name_fr": "BTS Informatique de Gestion",
+    "name_en": "HND Business Computing",
+    "level": "BTS",
+    "language": "fr",
+    "accreditations": [
+     {
+      "from": "2010-09-01",
+      "to": null,
+      "decree_ref": "ARR-FICTIF-0344/2010"
+     }
+    ]
+   },
+   {
+    "id": "LPELEC",
+    "name_fr": "Licence Professionnelle en Électrotechnique",
+    "name_en": "Professional Bachelor in Electrical Engineering",
+    "level": "Licence",
+    "language": "fr",
+    "accreditations": [
+     {
+      "from": "2014-09-01",
+      "to": null,
+      "decree_ref": "ARR-FICTIF-0793/2014"
+     }
+    ]
+   },
+   {
+    "id": "BTSAGR",
+    "name_fr": "BTS Production Animale",
+    "name_en": "HND Animal Production",
+    "level": "BTS",
+    "language": "fr",
+    "accreditations": [
+     {
+      "from": "2012-09-01",
+      "to": "2020-08-31",
+      "decree_ref": "ARR-FICTIF-0612/2012"
+     },
+     {
+      "from": "2021-09-01",
+      "to": null,
+      "decree_ref": "ARR-FICTIF-1301/2021"
+     }
+    ]
+   }
+  ],
+  "signatories": [
+   {
+    "id": "ISFG-SG1",
+    "name": "Hamadou Alioum BELLO",
+    "title": "Directeur",
+    "in_office_from": "2009-01-01",
+    "in_office_to": "2015-06-30"
+   },
+   {
+    "id": "ISFG-SG2",
+    "name": "Zénabou ISSA ADAMOU",
+    "title": "Directrice",
+    "in_office_from": "2015-07-01",
+    "in_office_to": "2020-12-31"
+   },
+   {
+    "id": "ISFG-SG3",
+    "name": "Mahamat DAIROU YAYA",
+    "title": "Directeur",
+    "in_office_from": "2021-01-01",
+    "in_office_to": null
+   }
+  ],
+  "serial_format": "^ISFG\\d{4}[A-Z]{3,7}\\d{4}$",
+  "serial_pattern": "ISFG{YYYY}{PROG}{NNNN}",
+  "serial_example": "ISFG2019BTSGC0017"
+ },
+ {
+  "id": "IPFM",
+  "name_fr": "Institut Privé Fictif de Management de Bonanjo",
+  "name_en": "Fictive Private Institute of Management of Bonanjo",
+  "kind": "private",
+  "language": "bilingual",
+  "city": "Douala",
+  "programmes": [
+   {
+    "id": "LMANAG",
+    "name_fr": "Licence en Management",
+    "name_en": "Bachelor in Management",
+    "level": "Licence",
+    "language": "fr",
+    "accreditations": [
+     {
+      "from": "2011-09-01",
+      "to": null,
+      "decree_ref": "ARR-FICTIF-0577/2011"
+     }
+    ]
+   },
+   {
+    "id": "BBANK",
+    "name_fr": "Licence en Banque et Finance",
+    "name_en": "Bachelor in Banking and Finance",
+    "level": "Bachelor",
+    "language": "en",
+    "accreditations": [
+     {
+      "from": "2014-09-01",
+      "to": null,
+      "decree_ref": "ARR-FICTIF-0801/2014"
+     }
+    ]
+   },
+   {
+    "id": "MMBA",
+    "name_fr": "Master en Administration des Affaires",
+    "name_en": "Master of Business Administration",
+    "level": "Master",
+    "language": "en",
+    "accreditations": [
+     {
+      "from": "2016-09-01",
+      "to": null,
+      "decree_ref": "ARR-FICTIF-0944/2016"
+     }
+    ]
+   },
+   {
+    "id": "MRH",
+    "name_fr": "Master en Ressources Humaines",
+    "name_en": "Master in Human Resources",
+    "level": "Master",
+    "language": "fr",
+    "accreditations": [
+     {
+      "from": "2018-09-01",
+      "to": "2023-08-31",
+      "decree_ref": "ARR-FICTIF-1004/2018"
+     },
+     {
+      "from": "2024-09-01",
+      "to": null,
+      "decree_ref": "ARR-FICTIF-1502/2024"
+     }
+    ]
+   }
+  ],
+  "signatories": [
+   {
+    "id": "IPFM-SG1",
+    "name": "Régine Estelle NJOH SONE",
+    "title": "Directrice Générale",
+    "in_office_from": "2011-01-01",
+    "in_office_to": "2017-12-31"
+   },
+   {
+    "id": "IPFM-SG2",
+    "name": "Patrick OWONA ETEKI",
+    "title": "Directeur Général",
+    "in_office_from": "2018-01-01",
+    "in_office_to": "2022-03-31"
+   },
+   {
+    "id": "IPFM-SG3",
+    "name": "Larissa KUATE FOKOU",
+    "title": "Directrice Générale",
+    "in_office_from": "2022-04-01",
+    "in_office_to": null
+   }
+  ],
+  "serial_format": "^IPFM/\\d{4}/\\d{5}$",
+  "serial_pattern": "IPFM/{YYYY}/{NNNNN}",
+  "serial_example": "IPFM/2019/00231"
+ }
+]

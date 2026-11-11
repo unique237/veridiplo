@@ -1,0 +1,3 @@
+# raw downloads are not committed (size / third-party licences); the manifest is.
+raw/*
+!raw/MANIFEST.json

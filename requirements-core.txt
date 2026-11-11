@@ -1,0 +1,19 @@
+# Light subset: enough to run api/worker/tests for policy, KG and DB code (target "core").
+# The full set lives in requirements.txt (target "full").
+fastapi>=0.110
+uvicorn[standard]>=0.29
+python-multipart>=0.0.9
+sqlalchemy>=2.0
+psycopg[binary]>=3.1
+pgvector>=0.2.5
+pydantic>=2.6
+pydantic-settings>=2.2
+pyyaml>=6.0
+simpleeval>=0.9.13
+rdflib>=7.0
+pyshacl>=0.26
+rapidfuzz>=3.6
+unidecode>=1.3
+requests>=2.31
+httpx>=0.27
+pytest>=8.0

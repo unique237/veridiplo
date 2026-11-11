@@ -1,0 +1,19 @@
+{
+ "case_id": "TMEN-001",
+ "scenario_tags": [
+  "S2"
+ ],
+ "label": "tampered_mention",
+ "holder_name": "BELINGA Bertrand",
+ "birth_date": "1999-05-25",
+ "birth_place": "Obala",
+ "institution_id": "UFN",
+ "programme_id": "LDROIT",
+ "session_year": 2024,
+ "average": 14.27,
+ "mention": "Bien",
+ "serial": "UFN/2024/LDROIT/00153",
+ "signatory_name": "Joséphine ABENA MANGA",
+ "issue_date": "2024-12-25",
+ "language": "fr"
+}

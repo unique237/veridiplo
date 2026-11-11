@@ -13,12 +13,15 @@ x-app-env: &app-env
   OPENAI_API_KEY: ${OPENAI_API_KEY:-}
   SEED: ${SEED:-42}
   EMBED_MODEL: ${EMBED_MODEL:-intfloat/multilingual-e5-small}
+  EMBED_BACKEND: ${EMBED_BACKEND:-auto}
 
 x-app-build: &app-build
   context: .
   dockerfile: docker/Dockerfile.app
+  target: ${APP_BUILD_TARGET:-full}
   args:
     APP_UID: ${APP_UID:-1000}
+    BASE_IMAGE: ${APP_BASE_IMAGE:-python:3.11-slim}
 
 x-app-volumes: &app-volumes
   - ./app:/app/app

@@ -1,0 +1,33 @@
+name: ci
+
+on:
+  push:
+  pull_request:
+
+env:
+  LLM_PROVIDER: none
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Prepare env
+        run: cp .env.example .env
+      - name: Build images
+        run: docker compose build
+      - name: Start db and kg
+        run: docker compose up -d --wait db kg
+      - name: Run unit tests (LLM_PROVIDER=none)
+        run: |
+          docker compose run --rm --no-deps -e LLM_PROVIDER=none \
+            -e DATABASE_URL=postgresql+psycopg://veridiplo:veridiplo@db:5432/veridiplo \
+            api python -m pytest -q tests/unit
+      - name: Stack smoke test
+        run: |
+          docker compose up -d --wait
+          curl -fsS http://localhost:8000/health
+          curl -fsS http://localhost:8501/_stcore/health
+      - name: Logs on failure
+        if: failure()
+        run: docker compose logs --tail=200

@@ -1,9 +1,24 @@
-# VeriDiplo knowledge base — source catalogue (seed list, 10 Nov 2026)
+# VeriDiplo knowledge base — source catalogue (updated 10 Nov 2026)
 # RULES: real public documents only. Never invent text, articles or URLs.
-#   status: to_download | downloaded | pending_download (needs a human to drop the file in kb/raw/)
-#   verify: true  -> URL or details found via secondary sources; confirm before relying on them
-#   binding: false -> good practice / standard / strategy (not law)
-# Extend toward ~25 sources: AI & data policies + education-sector texts are BOTH required.
+#
+# Fields
+#   id, title, jurisdiction, binding, nodes (Y.3172 nodes), topics (coarse fallback tags)
+#   issuer, date (ISO date of the instrument), lang (fr|en)
+#   kind: primary (default) | summary      -> summary = text comes from a secondary/overview page
+#   primary_url      : full-text URL (tried first)           fallback_urls: tried only if primary fails -> kind becomes summary
+#   secondary_urls   : citations; they are FETCHED only when kind: summary
+#   local_file       : human drop-in in kb/raw/ (e.g. kb/raw/CM-HE-2023.pdf) -> takes priority over any URL
+#   extract          : {ocr: auto|force|never, selector: CSS, junk_lines: [regex], format: pdf|html|json}
+#   chunking         : {mode: article|tokens|headings|dimensions, articles_keep: [..], section_as_article: bool,
+#                       article_regex, preamble: keep|skip, include_sections: [regex], max_chunks, max_chars}
+#   anchors          : {name: regex | {article: "Art. N", pattern: regex}} -> kb/chunks/anchors.json
+#                      (an anchor is only created if the regex matches the text of a real chunk)
+#   licence, redistribute (false => kb/raw is git-ignored; chunks are short excerpts with citation)
+#   status (declared; the build prints/writes the ACTUAL status): downloaded | summary_only | pending_download | pending_ocr
+#   as_reported: true marks article numbers taken from secondary sources.
+#   verify: true -> details found via secondary sources; confirm before relying on them
+#
+# Statuses below were set after the real download run of 10 Nov 2026 (see kb/raw/MANIFEST.json).
 
 sources:
   # ---------------- Cameroon: data, cyber, digital ----------------
@@ -11,219 +26,619 @@ sources:
     title: "Loi n° 2024/017 du 23 décembre 2024 relative à la protection des données à caractère personnel au Cameroun"
     jurisdiction: CM
     binding: true
+    issuer: "Présidence de la République du Cameroun"
+    date: "2024-12-23"
+    lang: fr
     nodes: [SRC, C, PP, P, SINK]
     topics: [consent, minimisation, cross_border, security, rights, authority]
-    primary_url: null          # TODO find official text (prc.cm / Journal officiel); do NOT paraphrase as primary
+    primary_url: https://www.digitalbusiness.africa/wp-content/uploads/2024/12/1055fa3c2251b4c4248fd301f584daaf.pdf
     secondary_urls:
       - https://lexafrica.com/2025/10/cameroon-data-protection-law-compliance/
       - https://www.dlapiperdataprotection.com/?c=CM&t=law
       - https://techhiveadvisory.africa/insights/operationalising-cameroons-data-protection-law-a-review-of-key-provisions-and-impacts
       - https://www.afriwise.com/resources/cameroons-evolving-data-privacy-landscape
-    notes: "Articles 19 (prior authorisation), 22/27 (security, breach), 32 (cross-border), 53 (Authority) are AS REPORTED by secondary sources."
-    status: to_download
+    extract: {ocr: force, ocr_threshold: 140, junk_lines: ['PRESID|REPUBLIQUE|SECRETARIAT|SERVICE DU FICHIER|CARD INDEX|COPIE CERTIFI|CERTIFIED TRUE|LEGISLATIVE AND STATUTORY|COPIE CER|TRUE COPY|^[A-Za-z]{1,2}$']}
+    chunking: {mode: article}
+    anchors: {consent: {article: "Art. 9", pattern: 'consentement\s+préalable,\s*libre'}, consent_required: {article: "Art. 50", pattern: 'consentement\s+préalable.{0,60}interdit'}, purpose: {article: "Art. 11", pattern: 'finalités\s+déterminées'}, accuracy: {article: "Art. 12", pattern: 'complètes,\s*fiables'}, retention: {article: "Art. 13", pattern: 'n.excède\s+pas\s+la\s+période'}, retention_max: {article: "Art. 28", pattern: 'délai\s+maximum\s+de\s+conservation'}, security: {article: "Art. 27", pattern: 'identité\s+des\s+tiers'}, minimisation: {article: "Art. 36", pattern: 'principe\s+de\s+minimisation'}, accountability_register: {article: "Art. 29", pattern: 'registre\s+physique'}, transfer: {article: "Art. 32", pattern: 'autorisation\s+préalable'}, automated_decision: {article: "Art. 44", pattern: 'exclusivement\s+sur\s+le\s+traitement\s+automatisé'}, human_intervention: {article: "Art. 44", pattern: 'intervention\s+humaine'}, authority: {article: "Art. 53", pattern: 'organisme\s+public\s+indépendant'}, remedy: {article: "Art. 62", pattern: 'réparation'}}
+    licence: "Official legislative text (public). Copy is the 'certified true copy' of the Presidency (prc.cm watermark) republished by digitalbusiness.africa; scanned PDF -> OCR."
+    redistribute: true
+    notes: "REAL TEXT via OCR of the Presidency's certified copy (scanned PDF, watermark). Article numbers are those of the text itself (as_reported: false), but OCR errors are possible: check against the official Journal officiel before legal use. Secondary sources (lexafrica, DLA Piper, TechHive, Afriwise) report Art. 19/22/27/32/53 — compare with chunks."
+    status: downloaded
+    raw_file: CM-DP-2024.pdf
+    chunks: 80
 
   - id: CM-CYB-2010
-    title: "Loi n° 2010/012 du 21 décembre 2010 relative à la cybersécurité et à la cybercriminalité"
+    title: "Loi n° 2010/012 du 21 décembre 2010 relative à la cybersécurité et à la cybercriminalité (English version)"
     jurisdiction: CM
     binding: true
+    issuer: "Présidence de la République du Cameroun / ANTIC (English version)"
+    date: "2010-12-21"
+    lang: en
     nodes: [C, D]
     topics: [security, electronic_evidence, ANTIC]
+    primary_url: https://database.cyberpolicyportal.org/api/files/166367990584329pspck8evk.pdf
     secondary_urls:
       - https://dig.watch/resource/the-law-no-2010-012-of-21-december-2010-on-cybersecurity-and-cybercriminality-in-cameroon
-    status: to_download
+      - https://www.antic.cm/images/stories/laws/Law%20relating%20to%20cybersecurity%20and%20cybercriminality%20in%20Cameroon.pdf
+    chunking: {mode: article, section_as_article: true}
+    licence: "Official legislative text (public). Copy hosted on UNIDIR Cyber Policy Portal; byte-identical (135785 bytes) to the ANTIC PDF, whose host forbids crawling (robots.txt Disallow /images/), so the ANTIC URL is cited but NOT fetched."
+    redistribute: true
+    notes: "The English version numbers its provisions 'Section N' (not 'Article N'); chunk article labels read 'Section N'."
+    status: downloaded
+    raw_file: CM-CYB-2010.pdf
+    chunks: 101
 
   - id: CM-ECOM-2010
-    title: "Loi n° 2010/021 du 21 décembre 2010 régissant le commerce électronique"
+    title: "Loi n° 2010/021 du 21 décembre 2010 régissant le commerce électronique au Cameroun"
     jurisdiction: CM
     binding: true
+    issuer: "Présidence de la République du Cameroun (copy: MINCOMMERCE)"
+    date: "2010-12-21"
+    lang: fr
     nodes: [D]
     topics: [electronic_transactions, electronic_evidence]
-    primary_url: null
-    verify: true
-    status: pending_download
+    primary_url: https://www.mincommerce.gov.cm/sites/default/files/documents/loi-n-2010-021-du-21-decembre-2010-regissant-le-commerce-electronique-au-cameroun.pdf
+    chunking: {mode: article}
+    licence: "Official legislative text (public), MINCOMMERCE website."
+    redistribute: true
+    status: downloaded
+    raw_file: CM-ECOM-2010.pdf
+    chunks: 50
 
   - id: CM-SNIA-2025
-    title: "Stratégie Nationale de l'Intelligence Artificielle (SNIA), MINPOSTEL, juillet 2025"
+    title: "Stratégie Nationale de l'Intelligence Artificielle (SNIA), MINPOSTEL, juillet 2025 — OVERVIEW (summary)"
     jurisdiction: CM
     binding: false
+    kind: summary
+    as_reported: true
+    issuer: "MINPOSTEL (Cameroun) — as described by OECD.AI Policy Navigator and Business in Cameroon"
+    date: "2025-07-07"
+    lang: en
     nodes: [C, M, P]
     topics: [ai_strategy, sovereignty, inclusion, governance]
     secondary_urls:
       - https://oecd.ai/en/dashboards/policy-initiatives/cameroons-national-artificial-intelligence-strategy-snia
       - https://www.businessincameroon.com/public-management/1107-14843-cameroon-unveils-ai-plan-to-create-12-000-jobs-by-2040
-    notes: "Seven pillars; pillar 1 governance & digital sovereignty; pillar 3 multilingual & inclusive AI. Full official PDF: find on minpostel.gov.cm; else kind: summary."
-    status: to_download
+    extract: {selector: "main", cut_after: ['Ludovic Amara', 'About the policy initiative']}
+    chunking: {mode: tokens, max_chars: 8000}
+    anchors: {governance_pillar: 'governance\s+and\s+digital\s+sovereignty'}
+    licence: "Secondary web pages; short excerpts for citation only."
+    redistribute: false
+    notes: "Official SNIA PDF NOT found publicly (searched 10 Nov 2026). Human: if the PDF is obtained from MINPOSTEL, drop it in kb/raw/CM-SNIA-2025.pdf and set kind: primary."
+    status: summary_only
+    raw_file: CM-SNIA-2025__1.html
+    chunks: 3
 
   # ---------------- Cameroon: education, archives, penal ----------------
   - id: CM-HE-2023
     title: "Loi n° 2023/007 du 25 juillet 2023 portant orientation de l'enseignement supérieur au Cameroun"
     jurisdiction: CM
     binding: true
+    issuer: "Présidence de la République du Cameroun"
+    date: "2023-07-25"
+    lang: fr
     nodes: [SRC, SINK]
     topics: [higher_education, state_control, diplomas]
-    primary_url: null          # TODO official PDF (minesup.gov.cm / prc.cm)
+    primary_url: null          # official PDF not found publicly on 10 Nov 2026
     secondary_urls:
       - https://www.minesup.gov.cm/index.php/category/actualites/page/28/
-    notes: "Repeals Law n° 005 of 16 April 2001 (historical reference: https://campusunivers.com/wp-content/uploads/2023/06/LOI-N°-005-DU-16-AVRIL-2001.pdf)."
+    chunking: {mode: article}
+    notes: "NOT DOWNLOADED. Search found no public full text (Cameroon Tribune mentions a PDF). Human: obtain the official text (prc.cm / minesup.gov.cm / Journal officiel) and drop it in kb/raw/CM-HE-2023.pdf. Repeals Law n° 2001/005 of 16 April 2001 (see CM-HE-2001, downloaded)."
     status: pending_download
+    chunks: 0
+
+  - id: CM-HE-2001
+    title: "Loi n° 2001/005 du 16 avril 2001 portant orientation de l'enseignement supérieur (abrogée par la loi 2023/007 — référence historique)"
+    jurisdiction: CM
+    binding: false
+    issuer: "Présidence de la République du Cameroun"
+    date: "2001-04-16"
+    lang: fr
+    nodes: [SRC, SINK]
+    topics: [higher_education, diplomas]
+    primary_url: https://campusunivers.com/wp-content/uploads/2023/06/LOI-N°-005-DU-16-AVRIL-2001.pdf
+    chunking: {mode: article}
+    licence: "Official legislative text (public), copy hosted by campusunivers.com (third party)."
+    redistribute: true
+    notes: "Repealed. Used only as historical/education-sector reference until CM-HE-2023 full text is obtained. Third-party copy of the official text."
+    status: downloaded
+    raw_file: CM-HE-2001.pdf
+    chunks: 54
 
   - id: CM-ARCH-2024
     title: "Loi n° 2024/001 du 24 juillet 2024 régissant les archives au Cameroun"
     jurisdiction: CM
     binding: true
+    issuer: "Présidence de la République du Cameroun"
+    date: "2024-07-24"
+    lang: fr
     nodes: [SRC, PP]
     topics: [archives, conservation, public_records]
     primary_url: https://prc.cm/files/ab/9c/9b/a3c85b0cba6bbe6f3b86719fa0252905.pdf
-    notes: "Replaces Law n° 2000/010 of 19 Dec 2000."
-    status: to_download
+    extract: {junk_lines: ['^[A-Za-z.]{1,3}$', 'PRESID|ESIOENCY|PftESI|CARO ?INDE|IFIEE|IFIED|TRUE ?CO|CONFO|REPUBL ?- ?I']}
+    chunking: {mode: article}
+    anchors: {evidential_copy: {article: "Art. 29", pattern: 'qualité\s+de\s+preuve'}}
+    licence: "Official legislative text (public), prc.cm."
+    redistribute: true
+    notes: "Replaces Law n° 2000/010 of 19 Dec 2000. Text layer contains watermark noise (cleaned)."
+    status: downloaded
+    raw_file: CM-ARCH-2024.pdf
+    chunks: 58
 
   - id: CM-ARCH-2000
     title: "Loi n° 2000/010 du 19 décembre 2000 régissant les archives (abrogée — référence historique)"
     jurisdiction: CM
     binding: false
+    issuer: "Présidence de la République du Cameroun"
+    date: "2000-12-19"
+    lang: fr
     nodes: [SRC]
     topics: [archives]
     primary_url: https://minfi.gov.cm/wp-content/uploads/2023/07/Loi-2000-010_18_DEC_2000.pdf
-    status: to_download
+    chunking: {mode: article}
+    licence: "Official legislative text (public), MINFI website."
+    redistribute: true
+    status: downloaded
+    raw_file: CM-ARCH-2000.pdf
+    chunks: 33
 
   - id: CM-PEN-2016
-    title: "Loi n° 2016/007 du 12 juillet 2016 portant Code pénal"
+    title: "Loi n° 2016/007 du 12 juillet 2016 portant Code pénal (articles retenus : faux, usage de faux, usurpation de titre)"
     jurisdiction: CM
     binding: true
+    issuer: "Présidence de la République du Cameroun"
+    date: "2016-07-12"
+    lang: fr
     nodes: [P]
     topics: [forgery, unlawful_use_of_diploma]
     primary_url: https://www.wipo.int/wipolex/en/text/491142
     secondary_urls:
       - https://cameroon-tribune.cm/article.html/79799/fr.html/details_2
-    notes: "Article 219: unlawful use of a title/official diploma (confirmed via Cameroon Tribune). Locate forgery articles in the full text; do not guess numbers."
-    status: to_download
+    extract: {selector: "body", junk_lines: ['PRESI.?[A-Z]{2,}', 'COPIE ?CERT', 'PRESIOHICE|REPU9UOUE|SEIMCE|CRflARt|FICltU|lfC,W', '^[MN]$', '^\d{1,3}$']}
+    chunking: {mode: article, articles_keep: ["144", "206", "219", "219-1", "220", "314", "315"]}
+    anchors: {forgery_public_act: {article: "Art. 144", pattern: 'contrefait\s+ou\s+altere'}, title_usurpation: {article: "Art. 219", pattern: 'diplome\s+officiel'}, private_forgery: {article: "Art. 314", pattern: 'falsifie\s+une\s+ecriture\s+privee'}}
+    licence: "Official legislative text (public) as published by WIPO Lex (OCR text; accents stripped by the source)."
+    redistribute: true
+    notes: "WIPO Lex page contains the French text (OCR-quality, accents missing, kept verbatim). Only articles relevant to forgery / unlawful use of a diploma are chunked. Art. 144 (faux dans un acte, public official), 219 (usurpation de titre / diplôme officiel), 314-315 (faux en écriture privée / certificat). Qualification of facts as forgery belongs to courts."
+    status: downloaded
+    raw_file: CM-PEN-2016.html
+    chunks: 7
 
   - id: CM-MINESUP-FORM
-    title: "MINESUP – Formulaire de demande d'équivalence / autorisation d'authentification par le titulaire"
+    title: "MINESUP – Formulaire de demande d'équivalence (inclut l'autorisation du titulaire de recherche d'informations en vue de l'authentification du diplôme)"
     jurisdiction: CM
     binding: true
+    issuer: "MINESUP – Direction de la Coordination des Activités Académiques"
+    date: null
+    lang: fr
     nodes: [SRC, P]
     topics: [consent, authentication_procedure]
     primary_url: https://www.minesup.gov.cm/DCAA/Formulaire%20equivalence_fr.pdf
-    notes: "Holder authorises the Minister to carry out the searches needed to authenticate the diploma."
-    status: to_download
+    extract: {ocr: never}
+    chunking: {mode: tokens}
+    anchors: {autorisation: 'AUTORISATION\s+DE\s+RECHERCHE|toutes\s+les\s+recherches'}
+    licence: "Official administrative form (public). Blank form; no personal data."
+    redistribute: true
+    notes: "Holder authorises the Minister to carry out the searches needed to authenticate the diploma ('AUTORISATION DE RECHERCHE D'INFORMATIONS'). Bilingual FR/EN form; text layer has OCR-like noise."
+    status: downloaded
+    raw_file: CM-MINESUP-FORM.pdf
+    chunks: 1
 
   - id: CM-VERIF-PLATFORM-2024
-    title: "Lancement de la plateforme gouvernementale de vérification en ligne des diplômes (1er octobre 2024)"
+    title: "Lancement de la plateforme gouvernementale de vérification en ligne des diplômes (1er octobre 2024) — press coverage (summary)"
     jurisdiction: CM
     binding: false
     kind: summary
+    as_reported: true
+    issuer: "Press: Cameroon Tribune, Osiris, We Are Tech Africa (reporting MINESUP/MINFOPRA launch)"
+    date: "2024-10-01"
+    lang: fr
     nodes: [SRC, D]
     topics: [existing_solution, MINESUP, MINFOPRA]
     secondary_urls:
       - https://www.osiris.sn/le-cameroun-deploie-une-plateforme-numerique-pour-authentifier-les-diplomes.html
       - https://cameroon-tribune.cm/article.html/67210/fr.html/details_2
       - https://www.wearetech.africa/en/fils-uk/news/tech/cameroon-launches-digital-platform-to-authenticate-diplomas
-    status: to_download
+    extract: {cut_after: ['P\.N\.N\.\nemail', 'Related (articles|stories)', 'Partager']}
+    chunking: {mode: tokens, max_chars: 8000}
+    anchors: {platform_launch: 'plateforme|platform'}
+    licence: "Press articles; short excerpts for citation only."
+    redistribute: false
+    status: summary_only
+    raw_file: CM-VERIF-PLATFORM-2024__1.html
+    chunks: 2
 
   # ---------------- Africa / international ----------------
   - id: INT-ADDIS-2014
     title: "Revised Convention on the Recognition of Studies, Certificates, Diplomas, Degrees and Other Academic Qualifications in Higher Education in African States (Addis Ababa, 2014)"
     jurisdiction: AFRICA
-    binding: true            # for States Parties — check Cameroon's ratification status (verify)
+    binding: false           # binding only for States Parties; Cameroon is NOT in the list of Parties in the UN registration record (see notes)
+    issuer: "UNESCO / African Union (UN Treaty Series No. 56152)"
+    date: "2014-12-12"
+    lang: en
     nodes: [P]
     topics: [recognition, fair_assessment]
     primary_url: https://treaties.un.org/doc/Publication/UNTS/No%20Volume/56152/Part/I-56152-08000002805725b8.pdf
+    extract: {ocr: force, ocr_lang: eng, pages: [[1, 2], [12, 22]]}
+    chunking: {mode: article, article_regex: '(?m)^[ \t]*(?:Article|Articie|ARTICLE)[ \t]+([IVXl!{|]+\.[ \t]?\d+)(?P<rest>[^\n]*)'}
+    anchors: {fraud: 'fraudulent\s+practices'}
+    licence: "UN Treaty Series text (public)."
+    redistribute: true
     verify: true
-    status: to_download
+    notes: "Scanned UN Treaty Series record in 4 languages (OCR; only the English pages 1-2 and 12-22 are chunked). The registration record (UN, 27 Jan 2020) lists as Parties: Burkina Faso, Congo, Djibouti, Gambia, Guinea, Holy See, Mauritania, Mauritius, Senegal, Seychelles, South Africa, Togo — Cameroon is NOT listed (it appears on the signature pages). Binding status for Cameroon therefore NOT established: verify current ratification with UNESCO/AU before relying on it."
+    status: downloaded
+    raw_file: INT-ADDIS-2014.pdf
+    chunks: 28
 
   - id: INT-GLOBAL-CONV-2019
     title: "UNESCO Global Convention on the Recognition of Qualifications concerning Higher Education (2019)"
     jurisdiction: INTL
     binding: false
+    issuer: "UNESCO"
+    date: "2019-11-25"
+    lang: en
     nodes: [P]
     topics: [recognition]
-    primary_url: null        # find on unesco.org
+    primary_url: https://unesdoc.unesco.org/ark:/48223/pf0000374905_eng
+    fallback_urls:
+      - https://www.unesco.org/en/higher-education/global-convention
+    extract: {selector: "main"}
+    chunking: {mode: tokens, max_chars: 8000}
+    licence: "UNESCO web page (CC BY-SA 3.0 IGO for UNESCO content unless stated)."
+    redistribute: true
+    notes: "unesdoc.unesco.org is behind Cloudflare bot protection (HTTP 403) — full convention text NOT downloaded; only the UNESCO overview page is used (kind: summary). Human: drop the convention PDF in kb/raw/INT-GLOBAL-CONV-2019.pdf."
     status: pending_download
+    chunks: 0
 
   - id: AU-AI-2024
-    title: "African Union Continental Artificial Intelligence Strategy (2024)"
+    title: "African Union Continental Artificial Intelligence Strategy (July 2024)"
     jurisdiction: AFRICA
     binding: false
+    issuer: "African Union"
+    date: "2024-07-01"
+    lang: en
     nodes: [M, P]
     topics: [ai_strategy, ethics]
-    primary_url: https://au.int/en/documents/20240809/continental-artificial-intelligence-strategy
+    primary_url: https://au.int/sites/default/files/documents/44004-doc-EN-_Continental_AI_Strategy_July_2024.pdf
+    chunking: {mode: tokens}
+    licence: "African Union publication (no open licence stated); excerpts for citation."
+    redistribute: false
+    status: downloaded
+    raw_file: AU-AI-2024.pdf
+    chunks: 81
+
+  - id: AU-DATA-POLICY-2022
+    title: "African Union Data Policy Framework (February 2022)"
+    jurisdiction: AFRICA
+    binding: false
+    issuer: "African Union"
+    date: "2022-02-01"
+    lang: en
+    nodes: [SRC, C, P]
+    topics: [data_governance, cross_border, sovereignty]
+    primary_url: https://au.int/sites/default/files/documents/42078-doc-DATA-POLICY-FRAMEWORKS-2024-ENG-V2.pdf
+    secondary_urls:
+      - https://au.int/en/documents/20220728/au-data-policy-framework
+    chunking: {mode: tokens}
+    licence: "African Union publication (no open licence stated); excerpts for citation."
+    redistribute: false
+    status: downloaded
+    raw_file: AU-DATA-POLICY-2022.pdf
+    chunks: 118
+
+  - id: INT-MALABO-2014
+    title: "African Union Convention on Cyber Security and Personal Data Protection (Malabo, 27 June 2014)"
+    jurisdiction: AFRICA
+    binding: true            # for States Parties — Cameroon's ratification status NOT verified
+    issuer: "African Union"
+    date: "2014-06-27"
+    lang: en
+    nodes: [SRC, C, P]
+    topics: [data_protection, consent, cross_border, security]
+    primary_url: https://au.int/sites/default/files/treaties/29560-treaty-0048_-_african_union_convention_on_cyber_security_and_personal_data_protection_e.pdf
+    extract: {ocr: force}
+    chunking: {mode: article}
+    anchors: {consent: {article: "Art. 13", pattern: 'Principle\s+of\s+consent'}, transfer: {article: "Art. 14", pattern: 'non-Member\s+State\s+of\s+the\s+African\s+Union'}, automated_decision: {article: "Art. 14", pattern: 'solely\s+on\s+automated\s+processing'}}
+    licence: "African Union treaty text (public)."
+    redistribute: true
     verify: true
-    status: to_download
+    notes: "Scanned PDF -> OCR (eng). Check ratification status of Cameroon before treating as binding."
+    status: downloaded
+    raw_file: INT-MALABO-2014.pdf
+    chunks: 57
+
+  - id: ECOWAS-DPA-2010
+    title: "ECOWAS Supplementary Act A/SA.1/01/10 on Personal Data Protection within ECOWAS (16 February 2010) — comparison (Cameroon is a CEMAC, not ECOWAS, member)"
+    jurisdiction: ECOWAS
+    binding: false           # not applicable to Cameroon; comparison only
+    issuer: "ECOWAS"
+    date: "2010-02-16"
+    lang: en
+    nodes: [P]
+    topics: [data_protection, consent, cross_border, comparison]
+    primary_url: https://www.statewatch.org/media/documents/news/2013/mar/ecowas-dp-act.pdf
+    chunking: {mode: article}
+    anchors: {consent: {article: "Art. 23", pattern: 'Principle\s+of\s+consent'}}
+    licence: "Official ECOWAS text; copy hosted by Statewatch (third party)."
+    redistribute: true
+    notes: "Regional comparison (West Africa). Third-party copy of the official English text."
+    status: downloaded
+    raw_file: ECOWAS-DPA-2010.pdf
+    chunks: 46
 
   - id: INT-UNESCO-ETH-2021
     title: "UNESCO Recommendation on the Ethics of Artificial Intelligence (2021)"
     jurisdiction: INTL
     binding: false
+    issuer: "UNESCO"
+    date: "2021-11-23"
+    lang: en
     nodes: [M, P, SINK]
     topics: [transparency, human_oversight, fairness]
     primary_url: https://unesdoc.unesco.org/ark:/48223/pf0000381137
-    verify: true
-    status: to_download
+    fallback_urls:
+      - https://www.unesco.org/en/artificial-intelligence/recommendation-ethics
+    extract: {selector: "main"}
+    chunking: {mode: tokens, max_chars: 10000}
+    licence: "UNESCO web page (CC BY-SA 3.0 IGO for UNESCO content unless stated)."
+    redistribute: true
+    notes: "unesdoc.unesco.org returns HTTP 403 (Cloudflare) — full Recommendation NOT downloaded; UNESCO overview page used (kind: summary). Human: drop the PDF in kb/raw/INT-UNESCO-ETH-2021.pdf (https://unesdoc.unesco.org/ark:/48223/pf0000381137)."
+    status: pending_download
+    chunks: 0
+
+  - id: OECD-AI-2019
+    title: "OECD Recommendation of the Council on Artificial Intelligence (2019, updated 2024) — OECD.AI overview of the AI Principles (summary)"
+    jurisdiction: INTL
+    binding: false
+    kind: summary
+    issuer: "OECD"
+    date: "2024-05-03"
+    lang: en
+    nodes: [M, P]
+    topics: [ai_principles, transparency, accountability]
+    secondary_urls:
+      - https://oecd.ai/en/ai-principles
+    extract: {selector: "main"}
+    chunking: {mode: tokens, max_chars: 6000}
+    licence: "OECD.AI web page; excerpts for citation."
+    redistribute: false
+    notes: "Full legal instrument at https://legalinstruments.oecd.org/en/instruments/OECD-LEGAL-0449 is a JavaScript app (not downloadable). Human: drop the PDF in kb/raw/OECD-AI-2019.pdf to upgrade to primary text."
+    status: summary_only
+    raw_file: OECD-AI-2019__1.html
+    chunks: 2
+
+  - id: INT-LISBON-1997
+    title: "Council of Europe/UNESCO Convention on the Recognition of Qualifications concerning Higher Education in the European Region (Lisbon, 1997, CETS 165) — comparison for fair recognition"
+    jurisdiction: INTL
+    binding: false           # not applicable to Cameroon; comparison only
+    issuer: "Council of Europe / UNESCO"
+    date: "1997-04-11"
+    lang: en
+    nodes: [P]
+    topics: [recognition, comparison]
+    primary_url: https://www.coe.int/en/web/conventions/full-list?module=treaty-detail&treatynum=165
+    chunking: {mode: article}
+    notes: "NOT DOWNLOADED: coe.int / rm.coe.int return HTTP 403 (bot protection). Human: drop the PDF in kb/raw/INT-LISBON-1997.pdf."
+    status: pending_download
+    chunks: 0
 
   # ---------------- Standards (non-binding) ----------------
   - id: ITU-Y3172
-    title: "ITU-T Y.3172 – Architectural framework for machine learning in future networks"
+    title: "ITU-T Y.3172 – Architectural framework for machine learning in future networks including IMT-2020 (06/2019)"
     jurisdiction: INTL
     binding: false
+    issuer: "ITU-T"
+    date: "2019-06-22"
+    lang: en
     nodes: [SRC, C, PP, M, P, D, SINK]
     topics: [pipeline, architecture]
-    primary_url: https://www.itu.int/rec/T-REC-Y.3172
-    status: to_download
+    primary_url: https://www.itu.int/rec/dologin_pub.asp?lang=e&id=T-REC-Y.3172-201906-I!!PDF-E&type=items
+    secondary_urls:
+      - https://www.itu.int/rec/T-REC-Y.3172
+    extract: {junk_lines: ['^\s*Rec\. ITU-T Y\.3172 \(06/2019\)', '^\s*\d+\s+Rec\. ITU-T Y\.3172']}
+    chunking: {mode: headings, heading_regex: '^(?:\d+(?:\.\d+){0,2}\s{1,}[A-Za-z][A-Za-z ,\-–/()'']{3,90}|Appendix [IVX]+)$', max_tokens: 600}
+    anchors: {policy_node: 'P\s+\(policy\)', mlfo: 'machine\s+learning\s+function\s+orchestrator\s+\(MLFO\)', sandbox: 'ML\s+sandbox\s+is\s+an\s+isolated\s+domain', security: 'Security\s+considerations'}
+    licence: "© ITU 2019 — free download of a single copy; reproduction needs ITU permission. Excerpts for citation only."
+    redistribute: false
+    notes: "Official PDF downloaded from itu.int (free of charge). Nodes SRC/C/PP/M/P/D/SINK, MLFO, ML sandbox: clause 8.1; requirements REQ-ML-*: clause 7."
+    status: downloaded
+    raw_file: ITU-Y3172.pdf
+    chunks: 31
 
   - id: ITU-READINESS-2
     title: "ITU AI Readiness framework 2.0 – 13 dimensions (machine-readable via CrashingGuru/ITUAIReadiness dimensions.json, MIT)"
     jurisdiction: INTL
     binding: false
+    issuer: "ITU (report: 'ITU AI Ready - Analysis Towards a Standardized Readiness Framework', Report 2.0, January 2026); JSON by CrashingGuru/ITUAIReadiness (MIT)"
+    date: "2026-01-01"
+    lang: en
     topics: [readiness]
-    primary_url: https://github.com/CrashingGuru/ITUAIReadiness
-    status: to_download
+    primary_url: https://raw.githubusercontent.com/CrashingGuru/ITUAIReadiness/main/simulation/data/framework/dimensions.json
+    repo_url: https://github.com/CrashingGuru/ITUAIReadiness
+    extract: {format: json}
+    vendor_to: framework/dimensions.json
+    chunking: {mode: dimensions}
+    licence: "MIT (repository code/data; Copyright (c) 2026 Vishnu Ram OV). Underlying framework: ITU report."
+    redistribute: true
+    status: downloaded
+    raw_file: ITU-READINESS-2.json
+    chunks: 14
 
   - id: W3C-VC-2.0
-    title: "W3C Verifiable Credentials Data Model v2.0"
+    title: "W3C Verifiable Credentials Data Model v2.0 (selected sections)"
     jurisdiction: INTL
     binding: false
+    issuer: "W3C"
+    date: "2025-05-15"
+    lang: en
     nodes: [D]
     topics: [digital_credentials, attestation]
     primary_url: https://www.w3.org/TR/vc-data-model-2.0/
-    status: to_download
+    extract: {selector: "main"}
+    chunking: {mode: headings, max_tokens: 500, include_sections: ['(?i)credential subject', '(?i)issuer', '(?i)validity', '(?i)status', '(?i)privacy', '(?i)data minimi', '(?i)verif', '(?i)evidence', '(?i)bearer', '(?i)zero-knowledge|selective disclosure']}
+    anchors: {data_minimization: {article: "Section 8.9", pattern: 'Data\s+Minimization'}}
+    licence: "W3C Document License (copy with attribution)."
+    redistribute: true
+    status: downloaded
+    raw_file: W3C-VC-2.0.html
+    chunks: 30
 
   - id: W3C-SHACL
-    title: "W3C Shapes Constraint Language (SHACL)"
+    title: "W3C Shapes Constraint Language (SHACL) (selected sections)"
     jurisdiction: INTL
     binding: false
+    issuer: "W3C"
+    date: "2017-07-20"
+    lang: en
     nodes: [M]
+    topics: [validation]
     primary_url: https://www.w3.org/TR/shacl/
-    status: to_download
+    extract: {selector: "main"}
+    chunking: {mode: headings, max_tokens: 500, include_sections: ['(?i)^\s*1\.?\s*introduction', '(?i)validation report', '(?i)^\s*[0-9.]*\s*shapes', '(?i)property shapes', '(?i)severity']}
+    licence: "W3C Document License (copy with attribution)."
+    redistribute: true
+    status: downloaded
+    raw_file: W3C-SHACL.html
+    chunks: 9
 
   - id: W3C-PROV-O
-    title: "W3C PROV-O: The PROV Ontology"
+    title: "W3C PROV-O: The PROV Ontology (selected sections)"
     jurisdiction: INTL
     binding: false
+    issuer: "W3C"
+    date: "2013-04-30"
+    lang: en
     nodes: [PP, D]
+    topics: [provenance]
     primary_url: https://www.w3.org/TR/prov-o/
-    status: to_download
+    extract: {selector: "main"}
+    chunking: {mode: headings, max_tokens: 500, include_sections: ['(?i)introduction', '(?i)starting point', '(?i)entity', '(?i)activity', '(?i)agent', '(?i)derivation', '(?i)attribution', '(?i)delegation']}
+    licence: "W3C Document License (copy with attribution)."
+    redistribute: true
+    status: downloaded
+    raw_file: W3C-PROV-O.html
+    chunks: 28
+
+  - id: NIST-AI-RMF-1.0
+    title: "NIST AI Risk Management Framework 1.0 (NIST AI 100-1, January 2023)"
+    jurisdiction: US
+    binding: false
+    issuer: "NIST (US Department of Commerce)"
+    date: "2023-01-26"
+    lang: en
+    nodes: [M, P]
+    topics: [risk_management, trustworthy_ai, accountability, transparency]
+    primary_url: https://nvlpubs.nist.gov/nistpubs/ai/NIST.AI.100-1.pdf
+    chunking: {mode: tokens}
+    licence: "US Government work (NIST) — public domain in the US."
+    redistribute: true
+    status: downloaded
+    raw_file: NIST-AI-RMF-1.0.pdf
+    chunks: 37
+
+  - id: ISO-IEC-42001
+    title: "ISO/IEC 42001:2023 – Artificial intelligence — Management system (summary only; standard text is paywalled)"
+    jurisdiction: INTL
+    binding: false
+    kind: summary
+    issuer: "ISO/IEC"
+    date: "2023-12-18"
+    lang: en
+    nodes: [P]
+    topics: [management_system, governance]
+    primary_url: null
+    secondary_urls:
+      - https://www.iso.org/standard/81230.html
+    notes: "NOT DOWNLOADED: iso.org returns HTTP 403 (bot protection) and the standard is paywalled. Human: if you hold a licensed copy do NOT commit it; add only your own short notes citing the clause numbers."
+    status: pending_download
+    chunks: 0
+
+  # ---------------- Comparison: EU ----------------
+  - id: EU-GDPR-2016
+    title: "Regulation (EU) 2016/679 (GDPR) — selected articles (comparison: automated decisions, consent, transfers)"
+    jurisdiction: EU
+    binding: false           # not applicable in Cameroon; comparison only
+    issuer: "European Parliament and Council"
+    date: "2016-04-27"
+    lang: en
+    nodes: [P]
+    topics: [comparison, data_protection, automated_decision]
+    primary_url: https://eur-lex.europa.eu/legal-content/EN/TXT/HTML/?uri=CELEX:32016R0679
+    extract: {selector: "body"}
+    chunking: {mode: article, preamble: skip, articles_keep: ["4", "5", "6", "7", "12", "13", "14", "15", "16", "17", "22", "25", "32", "44", "45", "46", "47", "49"]}
+    anchors: {purpose_limitation: {article: "Art. 5", pattern: 'purpose\s+limitation'}, data_minimisation: {article: "Art. 5", pattern: 'adequate,\s+relevant\s+and\s+limited'}, automated_decision: {article: "Art. 22", pattern: 'automated\s+individual\s+decision'}, transfers: {article: "Art. 44", pattern: 'transfer'}, consent_conditions: {article: "Art. 7", pattern: 'consent'}}
+    licence: "EU legal act; reuse authorised under Commission Decision 2011/833/EU."
+    redistribute: true
+    notes: "Comparison only (not applicable to Cameroon). Art. 22 = automated individual decision-making; used to show gap P1."
+    status: downloaded
+    raw_file: EU-GDPR-2016.html
+    chunks: 37
+
+  - id: EU-AI-ACT-2024
+    title: "Regulation (EU) 2024/1689 (AI Act) — selected articles and Annex III (comparison: human oversight, high-risk education systems)"
+    jurisdiction: EU
+    binding: false           # not applicable in Cameroon; comparison only
+    issuer: "European Parliament and Council"
+    date: "2024-06-13"
+    lang: en
+    nodes: [M, P]
+    topics: [comparison, ai_regulation, human_oversight]
+    primary_url: https://eur-lex.europa.eu/legal-content/EN/TXT/HTML/?uri=OJ:L_202401689
+    extract: {selector: "body"}
+    chunking: {mode: article, preamble: skip, articles_keep: ["3", "6", "9", "10", "12", "13", "14", "26", "27", "50", "86", "Annex III"]}
+    anchors: {human_oversight: {article: "Art. 14", pattern: 'Human\s+oversight'}, record_keeping: {article: "Art. 12", pattern: 'Record-keeping'}, transparency: {article: "Art. 13", pattern: 'Transparency'}, explanation: {article: "Art. 86", pattern: 'explanation'}, high_risk_education: {article: "Annex III", pattern: 'Education\s+and\s+vocational\s+training'}}
+    licence: "EU legal act; reuse authorised under Commission Decision 2011/833/EU."
+    redistribute: true
+    notes: "Comparison only. Annex III point 3 lists education and vocational training AI systems as high-risk; Art. 14 human oversight; Art. 86 right to explanation."
+    status: downloaded
+    raw_file: EU-AI-ACT-2024.html
+    chunks: 49
 
   # ---------------- Comparison country: UAE ----------------
   - id: UAE-PDPL-2021
-    title: "UAE Federal Decree-Law No. 45 of 2021 on the Protection of Personal Data"
-    jurisdiction: AE
-    binding: true
-    nodes: [P]
-    topics: [comparison, data_protection]
-    primary_url: https://u.ae/en/about-the-uae/digital-uae/data/data-protection-laws
-    verify: true
-    status: to_download
-
-  - id: UAE-MOHESR-RECOG
-    title: "UAE MoHESR regulations on recognition of higher education qualifications (verification via appointed agencies)"
+    title: "UAE Federal Decree-Law No. 45 of 2021 on the Protection of Personal Data — u.ae official portal overview (summary)"
     jurisdiction: AE
     binding: true
     kind: summary
+    as_reported: true
+    issuer: "UAE Government portal (u.ae)"
+    date: "2021-09-20"
+    lang: en
+    nodes: [P]
+    topics: [comparison, data_protection]
+    secondary_urls:
+      - https://u.ae/en/about-the-uae/digital-uae/data/data-protection-laws
+    extract: {selector: "main"}
+    chunking: {mode: tokens, max_chars: 6000}
+    anchors: {cross_border: 'cross-border\s+transfer'}
+    licence: "UAE government portal page; excerpts for citation."
+    redistribute: false
+    verify: true
+    notes: "Official text on uaelegislation.gov.ae returns HTTP 403 (bot protection). Only the u.ae overview (a summary) is used; article numbers not available => do not cite articles. Human: drop the PDF in kb/raw/UAE-PDPL-2021.pdf."
+    status: summary_only
+    raw_file: UAE-PDPL-2021__1.html
+    chunks: 3
+
+  - id: UAE-MOHESR-RECOG
+    title: "UAE MoHESR / MoE regulations on recognition and attestation of higher education qualifications (press coverage, summary)"
+    jurisdiction: AE
+    binding: true
+    kind: summary
+    as_reported: true
+    issuer: "Press: The National, Gulf News; UAE Ministry of Education news"
+    date: "2025-05-09"
+    lang: en
     nodes: [P, D]
     topics: [comparison, verification]
     secondary_urls:
       - https://www.thenationalnews.com/news/uae/2025/05/09/how-to-get-your-university-degree-attested-in-the-uae
       - https://moe.gov.ae/en/mediacenter/news/Pages/launches-e-service-to-attest-higher-education-certificates.aspx
       - https://gulfnews.com/uae/uae-launches-digital-service-to-verify-education-certificates-issued-overseas-1.500140859
-    status: to_download
+    extract: {cut_after: ['Get Updates on Topics You Choose', 'Related Stories']}
+    chunking: {mode: tokens, max_chars: 8000}
+    anchors: {appointed_agencies: 'officially\s+appointed'}
+    licence: "Press articles / ministry news; short excerpts for citation only."
+    redistribute: false
+    status: summary_only
+    raw_file: UAE-MOHESR-RECOG__1.html
+    chunks: 5

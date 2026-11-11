@@ -1,0 +1,401 @@
+@prefix vd:      <https://veridiplo.org/ont#> .
+@prefix vds:     <https://veridiplo.org/shapes#> .
+@prefix sh:      <http://www.w3.org/ns/shacl#> .
+@prefix owl:     <http://www.w3.org/2002/07/owl#> .
+@prefix rdf:     <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs:    <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd:     <http://www.w3.org/2001/XMLSchema#> .
+@prefix skos:    <http://www.w3.org/2004/02/skos/core#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix prov:    <http://www.w3.org/ns/prov#> .
+
+# =============================================================================
+# SHACL shapes encoding the VeriDiplo consistency checks (CLAUDE.md 4.2).
+#
+# One NodeShape per check; its vd:checkId annotation identifies the check in
+# validation reports. Several constraints may share a check id (sub-checks).
+# Every violation message starts with the check id ("C4: ...") in FR and EN.
+#
+# The validation graph must contain the ontology (mention bands are data there);
+# app.kg.mapping.validate() takes care of that.
+#
+# Not expressible in SHACL (done by the ConsistencyAgent in Python):
+#   C1 fuzzy name matching, C8 image-integrity hints, "unknown" status handling.
+# =============================================================================
+
+<https://veridiplo.org/shapes> a owl:Ontology ;
+    dcterms:title "VeriDiplo SHACL shapes"@en ;
+    sh:declare
+      [ sh:prefix "vd"       ; sh:namespace "https://veridiplo.org/ont#"^^xsd:anyURI ] ,
+      [ sh:prefix "rdf"      ; sh:namespace "http://www.w3.org/1999/02/22-rdf-syntax-ns#"^^xsd:anyURI ] ,
+      [ sh:prefix "rdfs"     ; sh:namespace "http://www.w3.org/2000/01/rdf-schema#"^^xsd:anyURI ] ,
+      [ sh:prefix "xsd"      ; sh:namespace "http://www.w3.org/2001/XMLSchema#"^^xsd:anyURI ] ,
+      [ sh:prefix "skos"     ; sh:namespace "http://www.w3.org/2004/02/skos/core#"^^xsd:anyURI ] ,
+      [ sh:prefix "dcterms"  ; sh:namespace "http://purl.org/dc/terms/"^^xsd:anyURI ] ,
+      [ sh:prefix "prov"     ; sh:namespace "http://www.w3.org/ns/prov#"^^xsd:anyURI ] .
+
+# -----------------------------------------------------------------------------
+# C2 - date / place of birth match (diploma holder vs. PV holder, when both known)
+# -----------------------------------------------------------------------------
+
+vds:C2_BirthShape a sh:NodeShape ;
+    vd:checkId "C2" ;
+    sh:targetClass vd:Diploma ;
+    sh:sparql [
+        a sh:SPARQLConstraint ;
+        sh:message "C2: la date de naissance du diplôme diffère de celle du PV."@fr ,
+                   "C2: birth date on the diploma differs from the one in the PV."@en ;
+        sh:prefixes <https://veridiplo.org/shapes> ;
+        sh:select """
+            SELECT $this ?claimed ?recorded WHERE {
+                $this vd:verifiedAgainst ?e ; vd:holder ?h1 .
+                ?e vd:holder ?h2 .
+                ?h1 <https://schema.org/birthDate> ?claimed .
+                ?h2 <https://schema.org/birthDate> ?recorded .
+                FILTER(?claimed != ?recorded)
+            }
+        """
+    ] ;
+    sh:sparql [
+        a sh:SPARQLConstraint ;
+        sh:message "C2: le lieu de naissance du diplôme diffère de celui du PV."@fr ,
+                   "C2: birth place on the diploma differs from the one in the PV."@en ;
+        sh:prefixes <https://veridiplo.org/shapes> ;
+        sh:select """
+            SELECT $this ?claimed ?recorded WHERE {
+                $this vd:verifiedAgainst ?e ; vd:holder ?h1 .
+                ?e vd:holder ?h2 .
+                ?h1 vd:birthPlaceNorm ?claimed .
+                ?h2 vd:birthPlaceNorm ?recorded .
+                FILTER(?claimed != ?recorded)
+            }
+        """
+    ] .
+
+# -----------------------------------------------------------------------------
+# C3 - programme exists at the institution and the session falls in an
+#      Accreditation period
+# -----------------------------------------------------------------------------
+
+vds:C3_AccreditationShape a sh:NodeShape ;
+    vd:checkId "C3" ;
+    sh:targetClass vd:Diploma ;
+    sh:sparql [
+        a sh:SPARQLConstraint ;
+        sh:message "C3: la filière n'est pas proposée par l'établissement émetteur."@fr ,
+                   "C3: the programme is not offered by the issuing institution."@en ;
+        sh:prefixes <https://veridiplo.org/shapes> ;
+        sh:select """
+            SELECT $this ?programme ?institution WHERE {
+                $this vd:forProgramme ?programme ; vd:issuedBy ?institution .
+                FILTER NOT EXISTS { ?programme vd:offeredBy ?institution }
+            }
+        """
+    ] ;
+    sh:sparql [
+        a sh:SPARQLConstraint ;
+        sh:message "C3: la session n'est couverte par aucune période d'accréditation de la filière."@fr ,
+                   "C3: the session is not covered by any accreditation period of the programme."@en ;
+        sh:prefixes <https://veridiplo.org/shapes> ;
+        sh:select """
+            SELECT $this ?programme ?lo ?hi WHERE {
+                $this vd:forProgramme ?programme ; vd:periodStart ?lo ; vd:periodEnd ?hi .
+                FILTER NOT EXISTS {
+                    ?acc vd:forProgramme ?programme ; vd:accreditedFrom ?from .
+                    OPTIONAL { ?acc vd:accreditedTo ?to }
+                    FILTER( ?from <= ?hi && ( !BOUND(?to) || ?to >= ?lo ) )
+                }
+            }
+        """
+    ] .
+
+# -----------------------------------------------------------------------------
+# C4 - average and mention: (a) mention within the band of the average (diplomas
+#      and PV entries), (b) diploma average / mention equal the PV entry.
+#      Bands = vd:minAverage / vd:maxAverage / vd:upperInclusive on vd:Mention.
+# -----------------------------------------------------------------------------
+
+vds:C4_BandShape a sh:NodeShape ;
+    vd:checkId "C4" ;
+    sh:targetClass vd:Diploma, vd:DeliberationEntry ;
+    sh:sparql [
+        a sh:SPARQLConstraint ;
+        sh:message "C4: la mention ne correspond pas à la moyenne (tranche de mention)."@fr ,
+                   "C4: the mention does not match the average (mention band)."@en ;
+        sh:prefixes <https://veridiplo.org/shapes> ;
+        sh:select """
+            SELECT $this ?average ?mention WHERE {
+                $this vd:average ?average ; vd:mention ?mention .
+                ?mention vd:minAverage ?min ; vd:maxAverage ?max ; vd:upperInclusive ?incl .
+                FILTER( !( ?average >= ?min && ( ?average < ?max || ( ?incl && ?average = ?max ) ) ) )
+            }
+        """
+    ] .
+
+vds:C4_PVMatchShape a sh:NodeShape ;
+    vd:checkId "C4" ;
+    sh:targetClass vd:Diploma ;
+    sh:sparql [
+        a sh:SPARQLConstraint ;
+        sh:message "C4: la moyenne du diplôme diffère de celle du PV."@fr ,
+                   "C4: the average on the diploma differs from the PV entry."@en ;
+        sh:prefixes <https://veridiplo.org/shapes> ;
+        sh:select """
+            SELECT $this ?claimed ?recorded WHERE {
+                $this vd:verifiedAgainst ?e ; vd:average ?claimed .
+                ?e vd:average ?recorded .
+                FILTER( ABS(?claimed - ?recorded) > 0.005 )
+            }
+        """
+    ] ;
+    sh:sparql [
+        a sh:SPARQLConstraint ;
+        sh:message "C4: la mention du diplôme diffère de celle du PV."@fr ,
+                   "C4: the mention on the diploma differs from the PV entry."@en ;
+        sh:prefixes <https://veridiplo.org/shapes> ;
+        sh:select """
+            SELECT $this ?claimed ?recorded WHERE {
+                $this vd:verifiedAgainst ?e ; vd:mention ?claimed .
+                ?e vd:mention ?recorded .
+                FILTER( ?claimed != ?recorded )
+            }
+        """
+    ] .
+
+# -----------------------------------------------------------------------------
+# C5 - session / year and deliberation date coherent with the diploma issue date
+# -----------------------------------------------------------------------------
+
+vds:C5_DatesShape a sh:NodeShape ;
+    vd:checkId "C5" ;
+    sh:targetClass vd:Diploma ;
+    sh:sparql [
+        a sh:SPARQLConstraint ;
+        sh:message "C5: le diplôme est daté avant la délibération du PV."@fr ,
+                   "C5: the diploma is dated before the PV deliberation."@en ;
+        sh:prefixes <https://veridiplo.org/shapes> ;
+        sh:select """
+            SELECT $this ?issued ?deliberated WHERE {
+                $this dcterms:issued ?issued ; vd:verifiedAgainst ?e .
+                ?e vd:recordedIn/vd:deliberationDate ?deliberated .
+                FILTER( ?issued < ?deliberated )
+            }
+        """
+    ] ;
+    sh:sparql [
+        a sh:SPARQLConstraint ;
+        sh:message "C5: l'année de session du diplôme diffère de celle du PV."@fr ,
+                   "C5: the session year on the diploma differs from the PV."@en ;
+        sh:prefixes <https://veridiplo.org/shapes> ;
+        sh:select """
+            SELECT $this ?claimed ?recorded WHERE {
+                $this vd:inSession/vd:sessionYear ?claimed ; vd:verifiedAgainst ?e .
+                ?e vd:inSession/vd:sessionYear ?recorded .
+                FILTER( ?claimed != ?recorded )
+            }
+        """
+    ] ;
+    sh:sparql [
+        a sh:SPARQLConstraint ;
+        sh:message "C5: le diplôme est daté avant l'année de la session."@fr ,
+                   "C5: the diploma is dated before the session year."@en ;
+        sh:prefixes <https://veridiplo.org/shapes> ;
+        sh:select """
+            SELECT $this ?issued ?year WHERE {
+                $this dcterms:issued ?issued ; vd:inSession/vd:sessionYear ?year .
+                FILTER( YEAR(?issued) < ?year )
+            }
+        """
+    ] .
+
+# -----------------------------------------------------------------------------
+# C6 - signatory was in office on the signing date (and at the issuing institution)
+# -----------------------------------------------------------------------------
+
+vds:C6_SignatoryShape a sh:NodeShape ;
+    vd:checkId "C6" ;
+    sh:targetClass vd:Diploma ;
+    sh:sparql [
+        a sh:SPARQLConstraint ;
+        sh:message "C6: le signataire n'était pas en fonction à la date de signature."@fr ,
+                   "C6: the signatory was not in office on the signing date."@en ;
+        sh:prefixes <https://veridiplo.org/shapes> ;
+        sh:select """
+            SELECT $this ?signatory ?date ?from ?to WHERE {
+                $this vd:signedBy ?signatory .
+                OPTIONAL { $this vd:signedOn ?signed }
+                OPTIONAL { $this dcterms:issued ?issued }
+                BIND( COALESCE(?signed, ?issued) AS ?date )
+                ?signatory vd:inOfficeFrom ?from .
+                OPTIONAL { ?signatory vd:inOfficeTo ?to }
+                FILTER( ?date < ?from || ( BOUND(?to) && ?date > ?to ) )
+            }
+        """
+    ] ;
+    sh:sparql [
+        a sh:SPARQLConstraint ;
+        sh:message "C6: le signataire n'exerce pas dans l'établissement émetteur."@fr ,
+                   "C6: the signatory does not serve at the issuing institution."@en ;
+        sh:prefixes <https://veridiplo.org/shapes> ;
+        sh:select """
+            SELECT $this ?signatory WHERE {
+                $this vd:signedBy ?signatory ; vd:issuedBy ?inst .
+                ?signatory vd:atInstitution ?other .
+                FILTER( ?other != ?inst )
+            }
+        """
+    ] .
+
+# -----------------------------------------------------------------------------
+# C7 - serial number format valid for institution / year, and unique
+#      (same serial held by a different holder = duplicate).
+# -----------------------------------------------------------------------------
+
+vds:C7_SerialShape a sh:NodeShape ;
+    vd:checkId "C7" ;
+    sh:targetClass vd:Diploma ;
+    sh:sparql [
+        a sh:SPARQLConstraint ;
+        sh:message "C7: le numéro de série ne respecte pas le format de l'établissement."@fr ,
+                   "C7: the serial number does not match the institution's format."@en ;
+        sh:prefixes <https://veridiplo.org/shapes> ;
+        sh:select """
+            SELECT $this ?serial ?pattern WHERE {
+                $this vd:serialNumber ?serial ; vd:issuedBy ?inst .
+                ?inst vd:serialPattern ?pattern .
+                OPTIONAL { $this vd:inSession/vd:sessionYear ?year }
+                BIND( REPLACE(?pattern, "YYYY", COALESCE(STR(?year), "[0-9]{4}")) AS ?re )
+                FILTER( !REGEX(?serial, ?re) )
+            }
+        """
+    ] ;
+    sh:sparql [
+        a sh:SPARQLConstraint ;
+        sh:message "C7: ce numéro de série est déjà attribué à un autre titulaire (doublon)."@fr ,
+                   "C7: this serial number is already held by another holder (duplicate)."@en ;
+        sh:prefixes <https://veridiplo.org/shapes> ;
+        sh:select """
+            SELECT $this ?serial ?other WHERE {
+                $this vd:serialNumber ?serial ; vd:holder/vd:nameKey ?k1 .
+                ?other a vd:Diploma ; vd:serialNumber ?serial ; vd:holder/vd:nameKey ?k2 .
+                FILTER( ?other != $this && ?k1 != ?k2 )
+            }
+        """
+    ] .
+
+# -----------------------------------------------------------------------------
+# Structural shapes (STRUCT): evidence provenance, verdicts, policy
+# -----------------------------------------------------------------------------
+
+vds:EvidenceItemShape a sh:NodeShape ;
+    vd:checkId "STRUCT" ;
+    sh:targetClass vd:EvidenceItem ;
+    sh:property [
+        sh:path vd:sha256 ; sh:minCount 1 ; sh:maxCount 1 ;
+        sh:datatype xsd:string ; sh:pattern "^[0-9a-f]{64}$" ;
+        sh:message "Evidence item needs exactly one SHA-256 (64 lowercase hex)."@en ,
+                   "Un élément de preuve exige une empreinte SHA-256 (64 hexadécimaux minuscules)."@fr
+    ] ;
+    sh:property [
+        sh:path vd:sourcePage ; sh:minCount 1 ; sh:maxCount 1 ;
+        sh:datatype xsd:integer ; sh:minInclusive 1 ;
+        sh:message "Evidence item needs exactly one source page (integer >= 1)."@en ,
+                   "Un élément de preuve exige une page source (entier >= 1)."@fr
+    ] ;
+    sh:property [
+        sh:path vd:bbox ; sh:minCount 1 ; sh:maxCount 1 ;
+        sh:datatype xsd:string ;
+        sh:pattern "^\\s*-?[0-9]+(\\.[0-9]+)?(\\s*,\\s*-?[0-9]+(\\.[0-9]+)?){3}\\s*$" ;
+        sh:message "Evidence item needs exactly one bbox 'x0,y0,x1,y1'."@en ,
+                   "Un élément de preuve exige une boîte englobante 'x0,y0,x1,y1'."@fr
+    ] ;
+    sh:property [
+        sh:path prov:wasDerivedFrom ; sh:minCount 1 ;
+        sh:message "Evidence item must cite its source (prov:wasDerivedFrom)."@en ,
+                   "Un élément de preuve doit citer sa source (prov:wasDerivedFrom)."@fr
+    ] .
+
+vds:SourceDocumentShape a sh:NodeShape ;
+    vd:checkId "STRUCT" ;
+    sh:targetClass vd:SourceDocument ;
+    sh:property [
+        sh:path vd:sha256 ; sh:maxCount 1 ; sh:pattern "^[0-9a-f]{64}$" ;
+        sh:message "Malformed SHA-256 on source document."@en
+    ] .
+
+vds:DiplomaShape a sh:NodeShape ;
+    vd:checkId "STRUCT" ;
+    sh:targetClass vd:Diploma ;
+    sh:property [ sh:path vd:serialNumber ; sh:minCount 1 ; sh:maxCount 1 ; sh:datatype xsd:string ;
+        sh:message "A diploma needs exactly one serial number."@en ] ;
+    sh:property [ sh:path vd:holder ; sh:minCount 1 ; sh:maxCount 1 ; sh:class vd:Person ;
+        sh:message "A diploma needs exactly one holder."@en ] ;
+    sh:property [ sh:path vd:issuedBy ; sh:minCount 1 ; sh:maxCount 1 ; sh:class vd:Institution ;
+        sh:message "A diploma needs exactly one issuing institution."@en ] ;
+    sh:property [ sh:path vd:average ; sh:maxCount 1 ; sh:datatype xsd:decimal ;
+        sh:minInclusive 0 ; sh:maxInclusive 20 ;
+        sh:message "Average must be a single decimal in [0,20]."@en ] ;
+    sh:property [ sh:path vd:mention ; sh:maxCount 1 ; sh:class vd:Mention ;
+        sh:message "Mention must be a single known vd:Mention."@en ] .
+
+vds:PersonShape a sh:NodeShape ;
+    vd:checkId "C2" ;
+    sh:targetClass vd:Person ;
+    sh:property [ sh:path <https://schema.org/birthDate> ; sh:maxCount 1 ; sh:datatype xsd:date ;
+        sh:message "C2: a person has a single birth date."@en ,
+                   "C2: une personne a une seule date de naissance."@fr ] .
+
+vds:DeliberationEntryShape a sh:NodeShape ;
+    vd:checkId "STRUCT" ;
+    sh:targetClass vd:DeliberationEntry ;
+    sh:property [ sh:path vd:recordedIn ; sh:minCount 1 ; sh:class vd:Deliberation ;
+        sh:message "A PV entry must belong to a deliberation."@en ] ;
+    sh:property [ sh:path vd:average ; sh:maxCount 1 ; sh:datatype xsd:decimal ;
+        sh:minInclusive 0 ; sh:maxInclusive 20 ;
+        sh:message "Average must be a single decimal in [0,20]."@en ] .
+
+vds:VerdictShape a sh:NodeShape ;
+    vd:checkId "STRUCT" ;
+    sh:targetClass vd:Verdict ;
+    sh:property [
+        sh:path vd:verdictValue ; sh:minCount 1 ; sh:maxCount 1 ;
+        sh:in ( "CONSISTENT" "INCONSISTENT" "INSUFFICIENT_EVIDENCE" ) ;
+        sh:message "Verdict must be CONSISTENT, INCONSISTENT or INSUFFICIENT_EVIDENCE (never 'fake')."@en ,
+                   "Le verdict doit être CONSISTENT, INCONSISTENT ou INSUFFICIENT_EVIDENCE (jamais « faux »)."@fr
+    ] ;
+    sh:sparql [
+        a sh:SPARQLConstraint ;
+        sh:message "Every INCONSISTENT verdict requires registrar review (vd:requiresReview true)."@en ,
+                   "Tout verdict INCONSISTENT exige la revue du registraire (vd:requiresReview true)."@fr ;
+        sh:prefixes <https://veridiplo.org/shapes> ;
+        sh:select """
+            SELECT $this WHERE {
+                $this vd:verdictValue "INCONSISTENT" .
+                FILTER NOT EXISTS { $this vd:requiresReview true }
+            }
+        """
+    ] .
+
+vds:PolicyRuleShape a sh:NodeShape ;
+    vd:checkId "STRUCT" ;
+    sh:targetClass vd:PolicyRule ;
+    sh:property [ sh:path vd:ruleId ; sh:minCount 1 ; sh:maxCount 1 ] ;
+    sh:sparql [
+        a sh:SPARQLConstraint ;
+        sh:message "A policy rule must cite a legal provision (vd:justifiedBy) or be flagged vd:proposal true."@en ,
+                   "Une règle doit citer une disposition légale (vd:justifiedBy) ou être marquée vd:proposal true."@fr ;
+        sh:prefixes <https://veridiplo.org/shapes> ;
+        sh:select """
+            SELECT $this WHERE {
+                $this a vd:PolicyRule .
+                FILTER NOT EXISTS { $this vd:justifiedBy ?p }
+                FILTER NOT EXISTS { $this vd:proposal true }
+            }
+        """
+    ] .
+
+vds:LegalProvisionShape a sh:NodeShape ;
+    vd:checkId "STRUCT" ;
+    sh:targetClass vd:LegalProvision ;
+    sh:property [ sh:path vd:chunkId ; sh:minCount 1 ; sh:maxCount 1 ;
+        sh:message "A legal provision must carry the KB chunk id."@en ] .

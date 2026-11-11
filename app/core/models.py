@@ -74,7 +74,7 @@ class KBChunk(Base):
     jurisdiction: Mapped[Optional[str]] = mapped_column(String(16), index=True)
     binding: Mapped[bool] = mapped_column(Boolean, default=False)
     kind: Mapped[str] = mapped_column(String(16), default="primary")
-    article: Mapped[Optional[str]] = mapped_column(String(64))
+    article: Mapped[Optional[str]] = mapped_column(Text)
     as_reported: Mapped[bool] = mapped_column(Boolean, default=False)
     lang: Mapped[Optional[str]] = mapped_column(String(8))
     topics: Mapped[list[str]] = mapped_column(ARRAY(String), default=list)

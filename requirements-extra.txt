@@ -1,0 +1,9 @@
+# Small-but-needed libs for ingestion/OCR/report on slow networks (no torch, no opencv).
+# Embeddings fall back to the deterministic 384-d hashing backend (EMBED_BACKEND=hashing).
+numpy>=1.26
+pymupdf>=1.24
+reportlab>=4.0
+openpyxl>=3.1
+pytesseract>=0.3.10
+opencv-python-headless>=4.9
+pandas>=2.1

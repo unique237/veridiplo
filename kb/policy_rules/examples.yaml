@@ -1,0 +1,221 @@
+# Test fixtures for the policy engine (QA): context overrides -> expected fired rules + final decision.
+# Each example's context = context_schema.yaml `defaults` deep-merged with `context` below.
+# Expected `decision` = strongest fired action by action_precedence (block > escalate > require_consent > redact > allow);
+# if nothing fires: decision allow, fired [].  `fired` is compared as a SET. Only rules of the given checkpoint are evaluated.
+# Reference evaluator: tests/unit/test_policy_rules.py (simpleeval EvalWithCompoundTypes) — the engine must agree with it.
+
+examples:
+  # ---------------- S1: genuine diploma, consent present ----------------
+  - name: S1_search_with_consent
+    scenario: S1
+    checkpoint: before_search
+    context:
+      request: {consent_token: "tok-123", consent_valid: true, purpose: recruitment, requester_type: employer, batch_size: 1}
+      verifier: {id: "V1", queries_last_hour: 2}
+    expect: {fired: [], decision: allow}
+
+  - name: S1_report_consistent_with_evidence
+    scenario: S1
+    checkpoint: before_report
+    context:
+      verdict: {label: CONSISTENT, evidence_count: 3, confidence: 0.93}
+      output: {audience: verifier, scope: verdict, fields: [holder_name, institution, diploma_title, session_year], text: "Les informations du diplôme sont cohérentes avec les sources institutionnelles consultées (3 pièces)."}
+    expect: {fired: [], decision: allow}
+
+  # ---------------- consent edge cases ----------------
+  - name: consent_token_invalid
+    checkpoint: before_search
+    context:
+      request: {consent_token: "tok-expired", consent_valid: false, purpose: admission, requester_type: university}
+    expect: {fired: [PR-CONSENT-002], decision: block}
+
+  - name: employer_claims_legal_basis_only
+    scenario: S3
+    checkpoint: before_search
+    context:
+      request: {consent_token: null, legal_basis: "legitimate_interest", purpose: recruitment, requester_type: employer}
+    expect: {fired: [PR-CONSENT-003], decision: require_consent}
+
+  - name: ministry_with_statutory_basis_no_consent_token
+    checkpoint: before_search
+    context:
+      request: {consent_token: null, legal_basis: "public_authority_statutory", purpose: equivalence, requester_type: ministry}
+    expect: {fired: [], decision: allow}
+
+  - name: purpose_not_permitted
+    checkpoint: before_search
+    context:
+      request: {consent_token: "tok-1", consent_valid: true, purpose: other, requester_type: employer}
+    expect: {fired: [PR-PURPOSE-001], decision: block}
+
+  - name: purpose_missing
+    checkpoint: before_search
+    context:
+      request: {consent_token: "tok-1", consent_valid: true, purpose: null}
+    expect: {fired: [PR-PURPOSE-001], decision: block}
+
+  # ---------------- S3: HR firm, 200 names, no consent ----------------
+  - name: S3_bulk_no_consent
+    scenario: S3
+    checkpoint: before_search
+    context:
+      request: {consent_token: null, legal_basis: null, purpose: recruitment, requester_type: employer, batch_size: 200}
+      verifier: {id: "HR-FIRM-9", queries_last_hour: 0}
+    expect: {fired: [PR-CONSENT-001, PR-BULK-001], decision: block}
+
+  - name: bulk_limit_boundary_ok
+    checkpoint: before_search
+    context:
+      request: {consent_token: "tok", consent_valid: true, purpose: recruitment, batch_size: 5}
+      verifier: {queries_last_hour: 15}
+    expect: {fired: [], decision: allow}
+
+  - name: bulk_limit_exceeded_with_consent
+    checkpoint: before_search
+    context:
+      request: {consent_token: "tok", consent_valid: true, purpose: recruitment, batch_size: 6}
+      verifier: {queries_last_hour: 15}
+    expect: {fired: [PR-BULK-001], decision: block}
+
+  # ---------------- retention (proposal) ----------------
+  - name: S1_expired_upload
+    scenario: S1
+    checkpoint: before_search
+    context:
+      request: {consent_token: "tok", consent_valid: true, purpose: recruitment}
+      upload: {age_days: 91}
+    expect: {fired: [PR-RETENTION-001], decision: block}
+
+  - name: upload_within_retention
+    checkpoint: before_search
+    context:
+      request: {consent_token: "tok", consent_valid: true, purpose: recruitment}
+      upload: {age_days: 90}
+    expect: {fired: [], decision: allow}
+
+  # ---------------- S2: altered mention ----------------
+  - name: S2_version_A_wording_fake
+    scenario: S2
+    checkpoint: before_report
+    context:
+      verdict: {label: INCONSISTENT, evidence_count: 2, confidence: 0.9}
+      output: {audience: verifier, scope: verdict, fields: [holder_name], text: "FAKE diploma: the mention was forged."}
+    expect: {fired: [PR-NOACCUSE-001], decision: block}
+
+  - name: S2_version_B_wording_neutral
+    scenario: S2
+    checkpoint: before_report
+    context:
+      verdict: {label: INCONSISTENT, evidence_count: 2, confidence: 0.9}
+      output: {audience: verifier, scope: verdict, fields: [holder_name], text: "Incohérence documentaire détectée sur la mention ; dossier transmis au registraire pour revue humaine."}
+    expect: {fired: [], decision: allow}
+
+  - name: S2_inconsistent_awaiting_registrar
+    scenario: S2
+    checkpoint: before_share
+    context:
+      verdict: {label: INCONSISTENT, evidence_count: 2}
+      review: {status: pending}
+    expect: {fired: [PR-REGISTRAR-001], decision: escalate}
+
+  - name: S2_inconsistent_registrar_approved
+    scenario: S2
+    checkpoint: before_share
+    context:
+      verdict: {label: INCONSISTENT, evidence_count: 2}
+      review: {status: approved, action: approve, justification: "Mention différente de la ligne 14 du PV de délibération (page 3).", justification_length: 62}
+    expect: {fired: [PR-HOLDER-NOTICE-001], decision: allow}
+
+  - name: report_without_evidence
+    scenario: S5
+    checkpoint: before_report
+    context:
+      verdict: {label: CONSISTENT, evidence_count: 0}
+      output: {audience: verifier, text: "Cohérent."}
+    expect: {fired: [PR-EVIDENCE-001], decision: block}
+
+  # ---------------- S5: missing 1998 archive ----------------
+  - name: S5_insufficient_evidence_no_rule_blocks
+    scenario: S5
+    checkpoint: before_report
+    context:
+      verdict: {label: INSUFFICIENT_EVIDENCE, evidence_count: 0, confidence: 0.8}
+      output: {audience: verifier, text: "Preuves insuffisantes : le procès-verbal de 1998 est introuvable ; demande d'archives préparée."}
+    expect: {fired: [], decision: allow}
+
+  # ---------------- S6: OCR-hard name ----------------
+  - name: S6_unknown_name_match_needs_human
+    scenario: S6
+    checkpoint: before_report
+    context:
+      verdict: {label: INSUFFICIENT_EVIDENCE, needs_human: true, unknown_checks: 1, evidence_count: 1, confidence: 0.55}
+      output: {audience: verifier, text: "Correspondance de nom incertaine : revue humaine requise."}
+    expect: {fired: [PR-HUMAN-REVIEW-001], decision: escalate}
+
+  - name: low_confidence_only
+    checkpoint: before_report
+    context:
+      verdict: {label: CONSISTENT, evidence_count: 2, confidence: 0.59}
+      output: {audience: verifier, text: "ok"}
+    expect: {fired: [PR-HUMAN-REVIEW-001], decision: escalate}
+
+  # ---------------- redaction ----------------
+  - name: report_leaks_personal_fields
+    checkpoint: before_report
+    context:
+      verdict: {label: CONSISTENT, evidence_count: 2, confidence: 0.9}
+      output: {audience: verifier, scope: full_record, fields: [holder_name, date_of_birth, marks_per_subject], text: "Cohérent."}
+    expect: {fired: [PR-REDACT-001], decision: redact}
+
+  - name: registrar_sees_all_fields
+    checkpoint: before_report
+    context:
+      verdict: {label: CONSISTENT, evidence_count: 2, confidence: 0.9}
+      output: {audience: registrar, fields: [holder_name, date_of_birth, marks_per_subject], text: "Cohérent."}
+    expect: {fired: [], decision: allow}
+
+  # ---------------- S4: UAE employer via embassy ----------------
+  - name: S4_full_transcript_to_uae
+    scenario: S4
+    checkpoint: before_export_abroad
+    context:
+      request: {requester_country: AE, requester_type: embassy, purpose: recruitment}
+      output: {audience: third_country_verifier, scope: full_record}
+    expect: {fired: [PR-CROSSBORDER-001, PR-CROSSBORDER-002], decision: redact}
+
+  - name: S4_minimal_attestation_to_uae
+    scenario: S4
+    checkpoint: before_export_abroad
+    context:
+      request: {requester_country: AE, requester_type: embassy, purpose: recruitment}
+      output: {audience: third_country_verifier, scope: attestation}
+    expect: {fired: [PR-CROSSBORDER-002], decision: allow}
+
+  - name: domestic_request_no_transfer_rule
+    checkpoint: before_export_abroad
+    context:
+      request: {requester_country: CM}
+      output: {scope: verdict}
+    expect: {fired: [], decision: allow}
+
+  # ---------------- cloud LLM ----------------
+  - name: cloud_llm_call
+    checkpoint: before_export_abroad
+    context:
+      llm: {provider: anthropic, sends_personal_data: true}
+    expect: {fired: [PR-LLM-TRANSFER-001], decision: redact}
+
+  - name: local_llm_call
+    checkpoint: before_export_abroad
+    context:
+      llm: {provider: ollama, sends_personal_data: true}
+    expect: {fired: [], decision: allow}
+
+  # ---------------- S7: registrar approves without justification ----------------
+  - name: S7_approval_without_justification
+    scenario: S7
+    checkpoint: before_share
+    context:
+      verdict: {label: INCONSISTENT, evidence_count: 2}
+      review: {status: pending, action: approve, justification: null, justification_length: 0}
+    expect: {fired: [PR-REGISTRAR-001, PR-APPROVAL-AUDIT-001], decision: block}

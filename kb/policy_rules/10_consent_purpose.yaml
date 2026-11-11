@@ -1,0 +1,80 @@
+# Consent, legal basis, purpose limitation, bulk-query limit.   Schema: CLAUDE.md §4.3 (+ optional kind/proposal/gap_id/params/guards_node/scenarios).
+# `kind`: legal (implements a binding text read in the KB) | legal_interpretation (our reading/operationalisation of a binding text)
+#         | proposal (our own governance rule, NOT law -> proposal: true).
+# `when` is evaluated by simpleeval over the context documented in kb/policy_rules/README.md and context_schema.yaml.
+
+- id: PR-CONSENT-001
+  checkpoint: before_search
+  when: "request.consent_token is None and request.legal_basis is None"
+  action: block
+  message_fr: "Recherche refusée : aucun consentement du titulaire ni base légale."
+  message_en: "Search refused: no holder consent or legal basis."
+  justified_by: [CM-DP-2024#consent, CM-DP-2024#consent_required, CM-MINESUP-FORM#autorisation]
+  pipeline_node: P
+  readiness_dims: [10, 1]
+  kind: legal_interpretation
+  guards_node: M
+  gap_id: P5
+  scenarios: [S3]
+  note: "Law 2024/017 Art. 9(1) makes processing subject to prior, free, informed, specific and unambiguous consent (derogations in Art. 9(2): legal obligation, public-interest mission, vital interests); the MINESUP equivalence form carries a holder authorisation to search. Applying this to employer-initiated checks is our interpretation (gap P5)."
+
+- id: PR-CONSENT-002
+  checkpoint: before_search
+  when: "request.consent_token is not None and request.consent_valid is not True"
+  action: block
+  message_fr: "Recherche refusée : le jeton de consentement est invalide, expiré, ou ne couvre pas la finalité demandée."
+  message_en: "Search refused: the consent token is invalid, expired, or does not cover the requested purpose."
+  justified_by: [CM-DP-2024#consent, CM-MINESUP-FORM#autorisation]
+  pipeline_node: P
+  readiness_dims: [10, 1]
+  kind: legal_interpretation
+  guards_node: M
+  scenarios: []
+  note: "Consent must be 'préalable, libre, éclairé, spécifique et univoque' (Art. 9(1)): a token that is expired or not tied to the holder/purpose cannot evidence it."
+
+- id: PR-CONSENT-003
+  checkpoint: before_search
+  when: "request.consent_token is None and request.legal_basis is not None and request.requester_type in ['employer', 'individual', 'other']"
+  action: require_consent
+  message_fr: "Une base légale déclarée ne suffit pas pour un employeur ou un particulier : le consentement du titulaire est requis."
+  message_en: "A claimed legal basis is not sufficient for an employer or private requester: the holder's consent is required."
+  justified_by: [CM-DP-2024#consent]
+  pipeline_node: P
+  readiness_dims: [10, 1]
+  kind: proposal
+  proposal: true
+  guards_node: M
+  gap_id: P5
+  scenarios: [S3]
+  justification_note: "Art. 9(2) of Law 2024/017 allows derogation from consent only for a legal obligation of the controller, a public-interest mission or vital interests. We conservatively accept a claimed legal basis only from public authorities (ministry, embassy acting under statute, court); this stricter reading is our proposal."
+
+- id: PR-PURPOSE-001
+  checkpoint: before_search
+  when: "request.purpose not in ['recruitment', 'admission', 'equivalence']"
+  action: block
+  message_fr: "Finalité non autorisée : seules la vérification pour recrutement, admission ou équivalence est permise."
+  message_en: "Purpose not permitted: only verification for recruitment, admission or equivalence is allowed."
+  justified_by: [CM-DP-2024#purpose, EU-GDPR-2016#purpose_limitation]
+  pipeline_node: P
+  readiness_dims: [10, 1]
+  kind: legal_interpretation
+  guards_node: M
+  scenarios: []
+  note: "Art. 11 of Law 2024/017: data collected for determined, explicit and legitimate purposes and not further processed incompatibly. The closed list of three purposes is our operationalisation (GDPR Art. 5(1)(b) cited as comparison, not binding in Cameroon)."
+
+- id: PR-BULK-001
+  checkpoint: before_search
+  when: "verifier.queries_last_hour + request.batch_size > 20"
+  action: block
+  message_fr: "Limite dépassée : plus de 20 titulaires par heure et par vérificateur. Demande bloquée et signalée."
+  message_en: "Limit exceeded: more than 20 holders per hour per verifier. Request blocked and flagged."
+  justified_by: [CM-DP-2024#security]
+  pipeline_node: P
+  readiness_dims: [10, 1]
+  kind: proposal
+  proposal: true
+  guards_node: M
+  gap_id: P5
+  params: {max_holders_per_hour: 20}
+  scenarios: [S3]
+  justification_note: "The numeric threshold (20 holders/hour/verifier) is our own proposal, not law. Closest real text: the controller's duty to secure personal data against unauthorised access (Law 2024/017 security provisions); bulk enumeration is treated as a misuse risk."

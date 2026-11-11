@@ -1,0 +1,125 @@
+# Keyword tagging used by kb/build_kb.py to fill `topics`, `pipeline_nodes`, `readiness_dims` of every chunk.
+# Swappable per domain (KB_DIR). Matching is case-insensitive on the chunk text (accents folded).
+# readiness_dims refer to the 13 dimensions of ITU AI Readiness 2.0 (kb/framework/dimensions.json):
+#  1 Data/Model Marketplace  2 Generated Content  3 Cross-Domain Correlation  4 Contextualization & Regional Impact
+#  5 AI Integration in Workflows  6 Human Interface  7 Strategy Alignment  8 Collaboration with AI
+#  9 Impacts of Humans in AI Integration  10 AI & Policies  11 AI for Inclusion  12 Granular Priorities  13 Digital Infrastructure
+# Pipeline nodes: Y.3172 SRC C PP M P D SINK.
+
+topics:
+  consent:
+    keywords: ["consentement", "consent", "autorisation de recherche", "autorisation du titulaire", "autorise"]
+    nodes: [SRC, C, P]
+    dims: [10, 1]
+  purpose_limitation:
+    keywords: ["finalite", "purpose limitation", "specified, explicit", "determinee", "explicit and legitimate", "compatible avec"]
+    nodes: [C, P]
+    dims: [10, 1]
+  minimisation:
+    keywords: ["minimisation", "minimization", "minimisation", "adequate, relevant", "adequates, pertinentes", "pertinentes et non excessives", "strictly necessary", "strictement necessaire"]
+    nodes: [C, PP, P]
+    dims: [10, 1]
+  cross_border:
+    keywords: ["transfert", "transfer of personal data", "cross-border", "transborder", "third country", "pays tiers", "etranger", "adequate level", "niveau de protection adequat", "niveau de protection suffisant"]
+    nodes: [P, D]
+    dims: [10, 7]
+  data_protection:
+    keywords: ["donnees a caractere personnel", "personal data", "data subject", "personne concernee", "responsable du traitement", "data controller", "controller"]
+    nodes: [SRC, C, P]
+    dims: [10, 1]
+  rights:
+    keywords: ["droit d'acces", "droit de rectification", "droit d'opposition", "right of access", "right to rectification", "right to erasure", "droit a l'effacement", "droit a l'information", "rights of the data subject", "droits de la personne concernee", "droit d'opposition"]
+    nodes: [P, SINK]
+    dims: [10, 11]
+  automated_decision:
+    keywords: ["automated individual decision", "decision automatisee", "traitement automatise", "automated processing", "profiling", "profilage", "solely on automated", "uniquement fondee"]
+    nodes: [M, P, SINK]
+    dims: [10, 5, 8]
+  human_oversight:
+    keywords: ["human oversight", "human intervention", "intervention humaine", "controle humain", "supervision humaine", "human review", "human-in-the-loop", "human in the loop", "meaningful human"]
+    nodes: [P, SINK]
+    dims: [8, 10]
+  transparency_explainability:
+    keywords: ["transparence", "transparency", "explainab", "explicabilite", "right to explanation", "intelligible", "traceab", "tracabilite"]
+    nodes: [M, P, D]
+    dims: [10, 6]
+  accountability_audit:
+    keywords: ["accountab", "responsabilite", "audit", "logging", "journalisation", "record-keeping", "tenue de registres", "registre des traitements"]
+    nodes: [P, D]
+    dims: [10]
+  security:
+    keywords: ["securite", "security", "confidentialite", "confidentiality", "integrite", "integrity", "violation de donnees", "personal data breach", "cybersecurite", "cybersecurity", "chiffrement", "encryption"]
+    nodes: [C, PP, D]
+    dims: [1, 10, 13]
+  retention:
+    keywords: ["duree de conservation", "conservation des donnees", "storage limitation", "retention", "n'excede pas la duree", "delai de conservation", "elimination", "destruction des archives"]
+    nodes: [SRC, PP]
+    dims: [10, 1]
+  authority:
+    keywords: ["autorite de protection", "supervisory authority", "protection authority", "autorite de controle", "national authority", "antic"]
+    nodes: [P]
+    dims: [10, 7]
+  forgery:
+    keywords: ["faux", "contrefait", "falsifi", "forgery", "forged", "counterfeit", "usurpation"]
+    nodes: [P, SINK]
+    dims: [10]
+  diplomas_qualifications:
+    keywords: ["diplome", "diploma", "academic qualification", "higher education qualification", "qualifications", "baccalaureat", "equivalence", "recognition of", "reconnaissance des", "titre academique"]
+    nodes: [SRC, SINK]
+    dims: [4, 7]
+  archives:
+    keywords: ["archiv"]
+    nodes: [SRC, PP]
+    dims: [1, 3]
+  electronic_evidence:
+    keywords: ["preuve", "electronic evidence", "ecrit electronique", "signature electronique", "electronic signature", "electronic record", "document electronique", "digital evidence", "evidential"]
+    nodes: [C, D]
+    dims: [1, 3]
+  digital_credentials:
+    keywords: ["verifiable credential", "verifiable presentation", "issuer", "holder", "verifier", "credential subject", "attestation"]
+    nodes: [D, SINK]
+    dims: [7, 1]
+  provenance_integrity:
+    keywords: ["provenance", "prov-o", "wasderivedfrom", "wasgeneratedby", "hash", "digital signature", "chain of custody"]
+    nodes: [C, PP, D]
+    dims: [1, 3]
+  validation_shapes:
+    keywords: ["shacl", "shape graph", "validation report", "sh:property", "sh:nodeshape"]
+    nodes: [M]
+    dims: [1, 3]
+  ai_governance:
+    keywords: ["artificial intelligence", "intelligence artificielle", "ai system", "ai governance", "ai strategy", "ai regulation", "trustworthy ai", "responsible ai", "systeme d'ia"]
+    nodes: [M, P]
+    dims: [10, 7]
+  ai_risk_management:
+    keywords: ["risk management", "gestion des risques", "map function", "measure function", "manage function", "govern function", "risk assessment", "high-risk"]
+    nodes: [M, P]
+    dims: [10, 5]
+  fairness_bias:
+    keywords: ["bias", "biais", "fairness", "equite", "non-discrimination", "discriminat"]
+    nodes: [PP, M]
+    dims: [1, 11, 10]
+  inclusion_language:
+    keywords: ["multilingual", "multilingue", "local language", "langues nationales", "inclusi", "gender", "women", "femmes", "indigenous"]
+    nodes: [PP, SINK]
+    dims: [11, 6, 4]
+  sovereignty_data_governance:
+    keywords: ["sovereign", "souverainete", "data governance", "gouvernance des donnees", "data policy", "interoperab", "interoperab", "open data"]
+    nodes: [SRC, C, P]
+    dims: [10, 7, 1]
+  ml_pipeline_architecture:
+    keywords: ["ml pipeline", "mlfo", "ml sandbox", "ml intent", "sandbox", "orchestrator", "collector", "preprocessor", "distributor"]
+    nodes: [SRC, C, PP, M, P, D, SINK]
+    dims: [13, 7, 5]
+  international_cooperation:
+    keywords: ["international cooperation", "cooperation internationale", "mutual", "reciproc", "bilateral", "convention on the recognition"]
+    nodes: [P]
+    dims: [7]
+  higher_education:
+    keywords: ["enseignement superieur", "higher education", "universite", "university", "etablissement d'enseignement", "institution of higher"]
+    nodes: [SRC, SINK]
+    dims: [9, 4]
+  readiness_framework:
+    keywords: ["readiness"]
+    nodes: []
+    dims: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]

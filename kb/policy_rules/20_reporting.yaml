@@ -1,0 +1,112 @@
+# Output governance: redaction, no-accusation wording, evidence requirement, human review, registrar approval, audit, holder notice.
+
+- id: PR-REDACT-001
+  checkpoint: before_report
+  when: "output.audience in ['verifier', 'third_country_verifier'] and intersects(output.fields, ['date_of_birth', 'place_of_birth', 'national_id', 'address', 'phone', 'email', 'photo', 'marks_per_subject', 'parents_names'])"
+  action: redact
+  message_fr: "Données non nécessaires retirées du rapport : le vérificateur reçoit uniquement le verdict, l'institution, le diplôme, la session et les références de preuves."
+  message_en: "Non-essential data removed from the report: the verifier receives only the verdict, institution, diploma, session and evidence references."
+  justified_by: [CM-DP-2024#purpose, CM-DP-2024#minimisation, EU-GDPR-2016#data_minimisation, W3C-VC-2.0#data_minimization]
+  pipeline_node: P
+  readiness_dims: [10, 1]
+  kind: legal_interpretation
+  guards_node: D
+  scenarios: [S1, S4]
+  note: "Art. 11 of Law 2024/017 limits processing to the declared purposes; the text names the 'principe de minimisation' explicitly only in Art. 36 (interconnection of files) and requires adequate/relevant/limited data for minors (Art. 18) — a general minimisation article equivalent to GDPR Art. 5(1)(c) was not found in the OCR text. Our redaction list is therefore a legal_interpretation backed by Art. 11 + Art. 36; GDPR Art. 5 and W3C VC 2.0 section 8.9 are comparison / good practice (non-binding in Cameroon)."
+
+- id: PR-NOACCUSE-001
+  checkpoint: before_report
+  when: "contains_any(output.text, ['faux', 'fake', 'fraud', 'fraude', 'frauduleux', 'falsifi', 'forged', 'forgery', 'contrefa', 'counterfeit', 'usurp', 'imposteur', 'fraudster'])"
+  action: block
+  message_fr: "Formulation interdite : le système n'emploie jamais « faux », « fraude » ou équivalent. Il signale une incohérence documentaire et renvoie au registraire ; la qualification pénale relève des autorités compétentes."
+  message_en: "Forbidden wording: the system never uses 'fake', 'fraud' or equivalents. It reports a documentary inconsistency and refers to the registrar; criminal qualification is for the competent authorities."
+  justified_by: [CM-PEN-2016#forgery_public_act, CM-PEN-2016#title_usurpation, CM-PEN-2016#private_forgery]
+  pipeline_node: P
+  readiness_dims: [10, 6]
+  kind: proposal
+  proposal: true
+  guards_node: D
+  scenarios: [S2]
+  justification_note: "No Cameroonian text imposes a wording rule on verification tools. The Penal Code (Art. 144, 219, 314-315) defines forgery/unlawful use of a diploma as offences to be established by the courts; an AI tool that labels a diploma 'fake' pre-empts that qualification and exposes the holder to harm. Wording ban is our governance proposal (gap P6)."
+  gap_id: P6
+
+- id: PR-EVIDENCE-001
+  checkpoint: before_report
+  when: "verdict.label in ['CONSISTENT', 'INCONSISTENT'] and verdict.evidence_count < 1"
+  action: block
+  message_fr: "Aucun verdict sans preuve : un verdict CONSISTENT ou INCONSISTENT doit citer au moins une pièce (document, page, ligne)."
+  message_en: "No verdict without evidence: a CONSISTENT or INCONSISTENT verdict must cite at least one item (document, page, row)."
+  justified_by: [CM-ARCH-2024#evidential_copy, EU-AI-ACT-2024#transparency]
+  pipeline_node: P
+  readiness_dims: [10, 3]
+  kind: proposal
+  proposal: true
+  guards_node: D
+  scenarios: [S5]
+  gap_id: P2
+  justification_note: "Our own traceability rule. Closest real texts: Law 2024/001 Art. 29 (certified archive copies admissible as evidence like the original) shows evidence must be traceable to an archive record; EU AI Act Art. 13 (transparency, comparison only)."
+
+- id: PR-HUMAN-REVIEW-001
+  checkpoint: before_report
+  when: "verdict.needs_human or verdict.unknown_checks > 0 or (verdict.confidence is not None and verdict.confidence < 0.6)"
+  action: escalate
+  message_fr: "Résultat incertain (vérification « unknown » ou confiance faible) : revue humaine obligatoire avant toute communication ; voie de rectification proposée au titulaire."
+  message_en: "Uncertain result ('unknown' check or low confidence): human review is mandatory before any communication; a rectification path is offered to the holder."
+  justified_by: [CM-DP-2024#automated_decision, CM-DP-2024#human_intervention, EU-AI-ACT-2024#human_oversight]
+  pipeline_node: P
+  readiness_dims: [8, 10]
+  kind: proposal
+  proposal: true
+  guards_node: D
+  gap_id: P1
+  params: {min_confidence: 0.6}
+  scenarios: [S6]
+  justification_note: "Law 2024/017 Art. 44 gives the data subject a right to object to decisions based exclusively on automated processing and to obtain human intervention (on request). Making human review proactive for uncertain results, and the 0.6 confidence threshold, are our proposals (gap P1)."
+
+- id: PR-REGISTRAR-001
+  checkpoint: before_share
+  when: "verdict.label == 'INCONSISTENT' and review.status != 'approved'"
+  action: escalate
+  message_fr: "Verdict INCONSISTENT retenu : l'approbation d'un registraire humain est obligatoire avant toute communication."
+  message_en: "INCONSISTENT verdict held: approval by a human registrar is mandatory before any communication."
+  justified_by: [CM-DP-2024#automated_decision, CM-DP-2024#human_intervention, EU-AI-ACT-2024#human_oversight]
+  pipeline_node: P
+  readiness_dims: [8, 10]
+  kind: proposal
+  proposal: true
+  guards_node: SINK
+  gap_id: P1
+  scenarios: [S2]
+  justification_note: "Law 2024/017 Art. 44 (right to object to exclusively automated decisions, human intervention on request) is the closest binding text; a mandatory registrar gate for every INCONSISTENT verdict is our proposal (also inspired by EU AI Act Art. 14, comparison only)."
+
+- id: PR-APPROVAL-AUDIT-001
+  checkpoint: before_share
+  when: "review.action == 'approve' and review.justification_length < 20"
+  action: block
+  message_fr: "Approbation rejetée : une justification écrite (au moins 20 caractères) est obligatoire ; alerte envoyée au superviseur."
+  message_en: "Approval rejected: a written justification (at least 20 characters) is mandatory; alert sent to the supervisor."
+  justified_by: [EU-AI-ACT-2024#record_keeping, CM-DP-2024#accountability_register]
+  pipeline_node: P
+  readiness_dims: [10]
+  kind: proposal
+  proposal: true
+  guards_node: SINK
+  params: {min_justification_chars: 20, alert: supervisor}
+  scenarios: [S7]
+  gap_id: P6
+  justification_note: "Our own accountability rule. Closest real texts: Law 2024/017 obligation to keep a register of processing activities (accountability) and EU AI Act Art. 12 record-keeping (comparison only)."
+
+- id: PR-HOLDER-NOTICE-001
+  checkpoint: before_share
+  when: "verdict.label == 'INCONSISTENT' and review.status == 'approved'"
+  action: allow
+  message_fr: "Communication autorisée après approbation du registraire ; le titulaire est informé et dispose d'une voie de contestation et de rectification."
+  message_en: "Release allowed after registrar approval; the holder is notified and given a path to contest and rectify."
+  justified_by: [CM-DP-2024#human_intervention, CM-DP-2024#accuracy]
+  pipeline_node: P
+  readiness_dims: [10, 11]
+  kind: legal_interpretation
+  guards_node: SINK
+  params: {notify_holder: true, offer_rectification: true}
+  scenarios: [S2, S6]
+  note: "Art. 44(3): the data subject may express a point of view and contest an automated decision; Art. 12: data must be accurate and corrected on request. The notification obligation operationalises these rights."

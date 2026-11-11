@@ -1,0 +1,409 @@
+{
+  "sources": {
+    "CM-DP-2024": {
+      "status": "downloaded",
+      "chunks": 80,
+      "kind": "primary",
+      "binding": true,
+      "raw_file": "CM-DP-2024.pdf",
+      "notes": [],
+      "declared": "downloaded",
+      "pages": 24,
+      "extraction": [
+        "ocr"
+      ]
+    },
+    "CM-CYB-2010": {
+      "status": "downloaded",
+      "chunks": 101,
+      "kind": "primary",
+      "binding": true,
+      "raw_file": "CM-CYB-2010.pdf",
+      "notes": [],
+      "declared": "downloaded",
+      "pages": 26,
+      "extraction": [
+        "pdf_text"
+      ]
+    },
+    "CM-ECOM-2010": {
+      "status": "downloaded",
+      "chunks": 50,
+      "kind": "primary",
+      "binding": true,
+      "raw_file": "CM-ECOM-2010.pdf",
+      "notes": [],
+      "declared": "downloaded",
+      "pages": 13,
+      "extraction": [
+        "pdf_text"
+      ]
+    },
+    "CM-SNIA-2025": {
+      "status": "summary_only",
+      "chunks": 3,
+      "kind": "summary",
+      "binding": false,
+      "raw_file": "CM-SNIA-2025__1.html",
+      "notes": [],
+      "declared": "summary_only",
+      "pages": 0,
+      "extraction": [
+        "html"
+      ]
+    },
+    "CM-HE-2023": {
+      "status": "pending_download",
+      "chunks": 0,
+      "kind": "primary",
+      "binding": true,
+      "raw_file": null,
+      "notes": [
+        "offline: nothing in kb/raw"
+      ],
+      "declared": "pending_download",
+      "pages": 0,
+      "extraction": []
+    },
+    "CM-HE-2001": {
+      "status": "downloaded",
+      "chunks": 54,
+      "kind": "primary",
+      "binding": false,
+      "raw_file": "CM-HE-2001.pdf",
+      "notes": [],
+      "declared": "downloaded",
+      "pages": 11,
+      "extraction": [
+        "pdf_text"
+      ]
+    },
+    "CM-ARCH-2024": {
+      "status": "downloaded",
+      "chunks": 58,
+      "kind": "primary",
+      "binding": true,
+      "raw_file": "CM-ARCH-2024.pdf",
+      "notes": [],
+      "declared": "downloaded",
+      "pages": 16,
+      "extraction": [
+        "pdf_text"
+      ]
+    },
+    "CM-ARCH-2000": {
+      "status": "downloaded",
+      "chunks": 33,
+      "kind": "primary",
+      "binding": false,
+      "raw_file": "CM-ARCH-2000.pdf",
+      "notes": [],
+      "declared": "downloaded",
+      "pages": 7,
+      "extraction": [
+        "pdf_text"
+      ]
+    },
+    "CM-PEN-2016": {
+      "status": "downloaded",
+      "chunks": 7,
+      "kind": "primary",
+      "binding": true,
+      "raw_file": "CM-PEN-2016.html",
+      "notes": [],
+      "declared": "downloaded",
+      "pages": 0,
+      "extraction": [
+        "html"
+      ]
+    },
+    "CM-MINESUP-FORM": {
+      "status": "downloaded",
+      "chunks": 1,
+      "kind": "primary",
+      "binding": true,
+      "raw_file": "CM-MINESUP-FORM.pdf",
+      "notes": [],
+      "declared": "downloaded",
+      "pages": 3,
+      "extraction": [
+        "pdf_text"
+      ]
+    },
+    "CM-VERIF-PLATFORM-2024": {
+      "status": "summary_only",
+      "chunks": 2,
+      "kind": "summary",
+      "binding": false,
+      "raw_file": "CM-VERIF-PLATFORM-2024__1.html",
+      "notes": [],
+      "declared": "summary_only",
+      "pages": 0,
+      "extraction": [
+        "html"
+      ]
+    },
+    "INT-ADDIS-2014": {
+      "status": "downloaded",
+      "chunks": 28,
+      "kind": "primary",
+      "binding": false,
+      "raw_file": "INT-ADDIS-2014.pdf",
+      "notes": [],
+      "declared": "downloaded",
+      "pages": 22,
+      "extraction": [
+        "ocr"
+      ]
+    },
+    "INT-GLOBAL-CONV-2019": {
+      "status": "pending_download",
+      "chunks": 0,
+      "kind": "primary",
+      "binding": false,
+      "raw_file": null,
+      "notes": [
+        "offline: nothing in kb/raw"
+      ],
+      "declared": "pending_download",
+      "pages": 0,
+      "extraction": []
+    },
+    "AU-AI-2024": {
+      "status": "downloaded",
+      "chunks": 81,
+      "kind": "primary",
+      "binding": false,
+      "raw_file": "AU-AI-2024.pdf",
+      "notes": [],
+      "declared": "downloaded",
+      "pages": 66,
+      "extraction": [
+        "pdf_text"
+      ]
+    },
+    "AU-DATA-POLICY-2022": {
+      "status": "downloaded",
+      "chunks": 118,
+      "kind": "primary",
+      "binding": false,
+      "raw_file": "AU-DATA-POLICY-2022.pdf",
+      "notes": [],
+      "declared": "downloaded",
+      "pages": 84,
+      "extraction": [
+        "pdf_text"
+      ]
+    },
+    "INT-MALABO-2014": {
+      "status": "downloaded",
+      "chunks": 57,
+      "kind": "primary",
+      "binding": true,
+      "raw_file": "INT-MALABO-2014.pdf",
+      "notes": [],
+      "declared": "downloaded",
+      "pages": 37,
+      "extraction": [
+        "ocr"
+      ]
+    },
+    "ECOWAS-DPA-2010": {
+      "status": "downloaded",
+      "chunks": 46,
+      "kind": "primary",
+      "binding": false,
+      "raw_file": "ECOWAS-DPA-2010.pdf",
+      "notes": [],
+      "declared": "downloaded",
+      "pages": 19,
+      "extraction": [
+        "pdf_text"
+      ]
+    },
+    "INT-UNESCO-ETH-2021": {
+      "status": "pending_download",
+      "chunks": 0,
+      "kind": "primary",
+      "binding": false,
+      "raw_file": null,
+      "notes": [
+        "offline: nothing in kb/raw"
+      ],
+      "declared": "pending_download",
+      "pages": 0,
+      "extraction": []
+    },
+    "OECD-AI-2019": {
+      "status": "summary_only",
+      "chunks": 2,
+      "kind": "summary",
+      "binding": false,
+      "raw_file": "OECD-AI-2019__1.html",
+      "notes": [],
+      "declared": "summary_only",
+      "pages": 0,
+      "extraction": [
+        "html"
+      ]
+    },
+    "INT-LISBON-1997": {
+      "status": "pending_download",
+      "chunks": 0,
+      "kind": "primary",
+      "binding": false,
+      "raw_file": null,
+      "notes": [
+        "offline: nothing in kb/raw"
+      ],
+      "declared": "pending_download",
+      "pages": 0,
+      "extraction": []
+    },
+    "ITU-Y3172": {
+      "status": "downloaded",
+      "chunks": 31,
+      "kind": "primary",
+      "binding": false,
+      "raw_file": "ITU-Y3172.pdf",
+      "notes": [],
+      "declared": "downloaded",
+      "pages": 34,
+      "extraction": [
+        "pdf_text"
+      ]
+    },
+    "ITU-READINESS-2": {
+      "status": "downloaded",
+      "chunks": 14,
+      "kind": "primary",
+      "binding": false,
+      "raw_file": "ITU-READINESS-2.json",
+      "notes": [],
+      "declared": "downloaded",
+      "pages": 0,
+      "extraction": [
+        "json"
+      ]
+    },
+    "W3C-VC-2.0": {
+      "status": "downloaded",
+      "chunks": 30,
+      "kind": "primary",
+      "binding": false,
+      "raw_file": "W3C-VC-2.0.html",
+      "notes": [],
+      "declared": "downloaded",
+      "pages": 0,
+      "extraction": [
+        "html"
+      ]
+    },
+    "W3C-SHACL": {
+      "status": "downloaded",
+      "chunks": 9,
+      "kind": "primary",
+      "binding": false,
+      "raw_file": "W3C-SHACL.html",
+      "notes": [],
+      "declared": "downloaded",
+      "pages": 0,
+      "extraction": [
+        "html"
+      ]
+    },
+    "W3C-PROV-O": {
+      "status": "downloaded",
+      "chunks": 28,
+      "kind": "primary",
+      "binding": false,
+      "raw_file": "W3C-PROV-O.html",
+      "notes": [],
+      "declared": "downloaded",
+      "pages": 0,
+      "extraction": [
+        "html"
+      ]
+    },
+    "NIST-AI-RMF-1.0": {
+      "status": "downloaded",
+      "chunks": 37,
+      "kind": "primary",
+      "binding": false,
+      "raw_file": "NIST-AI-RMF-1.0.pdf",
+      "notes": [],
+      "declared": "downloaded",
+      "pages": 48,
+      "extraction": [
+        "pdf_text"
+      ]
+    },
+    "ISO-IEC-42001": {
+      "status": "pending_download",
+      "chunks": 0,
+      "kind": "summary",
+      "binding": false,
+      "raw_file": null,
+      "notes": [
+        "offline: nothing in kb/raw"
+      ],
+      "declared": "pending_download",
+      "pages": 0,
+      "extraction": []
+    },
+    "EU-GDPR-2016": {
+      "status": "downloaded",
+      "chunks": 37,
+      "kind": "primary",
+      "binding": false,
+      "raw_file": "EU-GDPR-2016.html",
+      "notes": [],
+      "declared": "downloaded",
+      "pages": 0,
+      "extraction": [
+        "html"
+      ]
+    },
+    "EU-AI-ACT-2024": {
+      "status": "downloaded",
+      "chunks": 49,
+      "kind": "primary",
+      "binding": false,
+      "raw_file": "EU-AI-ACT-2024.html",
+      "notes": [],
+      "declared": "downloaded",
+      "pages": 0,
+      "extraction": [
+        "html"
+      ]
+    },
+    "UAE-PDPL-2021": {
+      "status": "summary_only",
+      "chunks": 3,
+      "kind": "summary",
+      "binding": true,
+      "raw_file": "UAE-PDPL-2021__1.html",
+      "notes": [],
+      "declared": "summary_only",
+      "pages": 0,
+      "extraction": [
+        "html"
+      ]
+    },
+    "UAE-MOHESR-RECOG": {
+      "status": "summary_only",
+      "chunks": 5,
+      "kind": "summary",
+      "binding": true,
+      "raw_file": "UAE-MOHESR-RECOG__1.html",
+      "notes": [],
+      "declared": "summary_only",
+      "pages": 0,
+      "extraction": [
+        "html"
+      ]
+    }
+  },
+  "anchors_resolved": 56,
+  "anchors_unresolved": []
+}

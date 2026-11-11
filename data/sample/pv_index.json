@@ -1,0 +1,1530 @@
+{
+ "UFN_LDROIT_2016": {
+  "institution_id": "UFN",
+  "programme_id": "LDROIT",
+  "session_year": 2016,
+  "deliberation_date": "2016-07-05",
+  "lang": "fr",
+  "jury_president": "Pr Fabrice EBELLE",
+  "signatory": {
+   "name": "Charlotte NGO BATJOM",
+   "title": "Rectrice"
+  },
+  "scan_preset": "scan",
+  "scan_dpi": 250,
+  "rows": [
+   {
+    "n": 1,
+    "person_id": "P0048",
+    "matricule": "13A0754",
+    "name": "ABENA Jean-Pierre",
+    "average": "12.18",
+    "mention": "Assez Bien",
+    "decision": "Admis",
+    "page": 1,
+    "bbox_pt": [
+     40,
+     226.0,
+     555,
+     244.0
+    ]
+   },
+   {
+    "n": 2,
+    "person_id": null,
+    "matricule": "13A0526",
+    "name": "Ingrid Estelle ABENA EDOA",
+    "average": "5.39",
+    "mention": "-",
+    "decision": "Ajourné",
+    "page": 1,
+    "bbox_pt": [
+     40,
+     244.0,
+     555,
+     262.0
+    ]
+   },
+   {
+    "n": 3,
+    "person_id": null,
+    "matricule": "13A2348",
+    "name": "ABENA NDZANA Prisca Zacharie",
+    "average": "8.72",
+    "mention": "-",
+    "decision": "Ajourné",
+    "page": 1,
+    "bbox_pt": [
+     40,
+     262.0,
+     555,
+     280.0
+    ]
+   },
+   {
+    "n": 4,
+    "person_id": "P0055",
+    "matricule": "13A3581",
+    "name": "ALIM Gaëlle Josiane Gilbert",
+    "average": "14.61",
+    "mention": "Bien",
+    "decision": "Admis",
+    "page": 1,
+    "bbox_pt": [
+     40,
+     280.0,
+     555,
+     298.0
+    ]
+   },
+   {
+    "n": 5,
+    "person_id": "P0061",
+    "matricule": "13A0500",
+    "name": "SALI ALIM Sandrine Fidèle",
+    "average": "11.18",
+    "mention": "Passable",
+    "decision": "Admis",
+    "page": 1,
+    "bbox_pt": [
+     40,
+     298.0,
+     555,
+     316.0
+    ]
+   },
+   {
+    "n": 6,
+    "person_id": "P0052",
+    "matricule": "13A4050",
+    "name": "AMBE TANYI Atem Cecilia",
+    "average": "12.11",
+    "mention": "Assez Bien",
+    "decision": "Admis",
+    "page": 1,
+    "bbox_pt": [
+     40,
+     316.0,
+     555,
+     334.0
+    ]
+   },
+   {
+    "n": 7,
+    "person_id": "P0058",
+    "matricule": "13A0257",
+    "name": "OBAME AMOUGOU Clarisse Vanessa",
+    "average": "10.00",
+    "mention": "Passable",
+    "decision": "Admis",
+    "page": 1,
+    "bbox_pt": [
+     40,
+     334.0,
+     555,
+     352.0
+    ]
+   },
+   {
+    "n": 8,
+    "person_id": "P0057",
+    "matricule": "13A4268",
+    "name": "MENGUE ATANGANA Mireille",
+    "average": "12.31",
+    "mention": "Assez Bien",
+    "decision": "Admis",
+    "page": 1,
+    "bbox_pt": [
+     40,
+     352.0,
+     555,
+     370.0
+    ]
+   },
+   {
+    "n": 9,
+    "person_id": "P0059",
+    "matricule": "13A4817",
+    "name": "ATEM Rosemary",
+    "average": "12.24",
+    "mention": "Assez Bien",
+    "decision": "Admis",
+    "page": 1,
+    "bbox_pt": [
+     40,
+     370.0,
+     555,
+     388.0
+    ]
+   },
+   {
+    "n": 10,
+    "person_id": null,
+    "matricule": "13A2966",
+    "name": "Marie-Noëlle BASSOM",
+    "average": "6.40",
+    "mention": "-",
+    "decision": "Ajourné",
+    "page": 1,
+    "bbox_pt": [
+     40,
+     388.0,
+     555,
+     406.0
+    ]
+   },
+   {
+    "n": 11,
+    "person_id": null,
+    "matricule": "13A4974",
+    "name": "CHIA Brendaline",
+    "average": "5.90",
+    "mention": "-",
+    "decision": "Ajourné",
+    "page": 1,
+    "bbox_pt": [
+     40,
+     406.0,
+     555,
+     424.0
+    ]
+   },
+   {
+    "n": 12,
+    "person_id": null,
+    "matricule": "13A0138",
+    "name": "FRU-EKEMA Prudence Neba",
+    "average": "9.56",
+    "mention": "-",
+    "decision": "Ajourné",
+    "page": 1,
+    "bbox_pt": [
+     40,
+     424.0,
+     555,
+     442.0
+    ]
+   },
+   {
+    "n": 13,
+    "person_id": null,
+    "matricule": "13A2826",
+    "name": "EKOKA TANYI Pamela Cynthia",
+    "average": "7.84",
+    "mention": "-",
+    "decision": "Ajourné",
+    "page": 1,
+    "bbox_pt": [
+     40,
+     442.0,
+     555,
+     460.0
+    ]
+   },
+   {
+    "n": 14,
+    "person_id": "P0054",
+    "matricule": "13A2608",
+    "name": "EKOLLO Alain Fidèle",
+    "average": "12.70",
+    "mention": "Assez Bien",
+    "decision": "Admis",
+    "page": 1,
+    "bbox_pt": [
+     40,
+     460.0,
+     555,
+     478.0
+    ]
+   },
+   {
+    "n": 15,
+    "person_id": "P0050",
+    "matricule": "13A1584",
+    "name": "ETAME ELIMBI Marie-Noëlle",
+    "average": "14.17",
+    "mention": "Bien",
+    "decision": "Admis",
+    "page": 1,
+    "bbox_pt": [
+     40,
+     478.0,
+     555,
+     496.0
+    ]
+   },
+   {
+    "n": 16,
+    "person_id": null,
+    "matricule": "13A0598",
+    "name": "ELLA Olivier Térence",
+    "average": "7.02",
+    "mention": "-",
+    "decision": "Ajourné",
+    "page": 1,
+    "bbox_pt": [
+     40,
+     496.0,
+     555,
+     514.0
+    ]
+   },
+   {
+    "n": 17,
+    "person_id": null,
+    "matricule": "13A0611",
+    "name": "EPEE Magloire",
+    "average": "6.53",
+    "mention": "-",
+    "decision": "Ajourné",
+    "page": 1,
+    "bbox_pt": [
+     40,
+     514.0,
+     555,
+     532.0
+    ]
+   },
+   {
+    "n": 18,
+    "person_id": "P0060",
+    "matricule": "13A2199",
+    "name": "ETOUNDI Jean-Paul",
+    "average": "11.49",
+    "mention": "Passable",
+    "decision": "Admis",
+    "page": 1,
+    "bbox_pt": [
+     40,
+     532.0,
+     555,
+     550.0
+    ]
+   },
+   {
+    "n": 19,
+    "person_id": "P0053",
+    "matricule": "13A2064",
+    "name": "EYENGA Roméo Thierry",
+    "average": "10.82",
+    "mention": "Passable",
+    "decision": "Admis",
+    "page": 1,
+    "bbox_pt": [
+     40,
+     550.0,
+     555,
+     568.0
+    ]
+   },
+   {
+    "n": 20,
+    "person_id": null,
+    "matricule": "13A3457",
+    "name": "FEUDJIO Éric-Joël",
+    "average": "9.53",
+    "mention": "-",
+    "decision": "Ajourné",
+    "page": 1,
+    "bbox_pt": [
+     40,
+     568.0,
+     555,
+     586.0
+    ]
+   },
+   {
+    "n": 21,
+    "person_id": null,
+    "matricule": "13A3915",
+    "name": "HAMAN Marie-Claire",
+    "average": "6.55",
+    "mention": "-",
+    "decision": "Ajourné",
+    "page": 1,
+    "bbox_pt": [
+     40,
+     586.0,
+     555,
+     604.0
+    ]
+   },
+   {
+    "n": 22,
+    "person_id": null,
+    "matricule": "13A0362",
+    "name": "KANG Stella",
+    "average": "7.62",
+    "mention": "-",
+    "decision": "Ajourné",
+    "page": 1,
+    "bbox_pt": [
+     40,
+     604.0,
+     555,
+     622.0
+    ]
+   },
+   {
+    "n": 23,
+    "person_id": null,
+    "matricule": "13A0037",
+    "name": "KEMAYOU Dieudonné Judith",
+    "average": "9.51",
+    "mention": "-",
+    "decision": "Ajourné",
+    "page": 1,
+    "bbox_pt": [
+     40,
+     622.0,
+     555,
+     640.0
+    ]
+   },
+   {
+    "n": 24,
+    "person_id": null,
+    "matricule": "13A4061",
+    "name": "Brice PENKA MELI",
+    "average": "7.10",
+    "mention": "-",
+    "decision": "Ajourné",
+    "page": 1,
+    "bbox_pt": [
+     40,
+     640.0,
+     555,
+     658.0
+    ]
+   },
+   {
+    "n": 25,
+    "person_id": null,
+    "matricule": "13A2458",
+    "name": "MINKO NLEND Océane Chantal",
+    "average": "8.35",
+    "mention": "-",
+    "decision": "Ajourné",
+    "page": 1,
+    "bbox_pt": [
+     40,
+     658.0,
+     555,
+     676.0
+    ]
+   },
+   {
+    "n": 26,
+    "person_id": "P0049",
+    "matricule": "13A0364",
+    "name": "NGUEMA Rosine Prisca",
+    "average": "12.47",
+    "mention": "Assez Bien",
+    "decision": "Admis",
+    "page": 2,
+    "bbox_pt": [
+     40,
+     98.0,
+     555,
+     116.0
+    ]
+   },
+   {
+    "n": 27,
+    "person_id": null,
+    "matricule": "13A4796",
+    "name": "NKODO Louis-Marie",
+    "average": "6.26",
+    "mention": "-",
+    "decision": "Ajourné",
+    "page": 2,
+    "bbox_pt": [
+     40,
+     116.0,
+     555,
+     134.0
+    ]
+   },
+   {
+    "n": 28,
+    "person_id": null,
+    "matricule": "13A1270",
+    "name": "OBAME Gaëlle Alain",
+    "average": "7.12",
+    "mention": "-",
+    "decision": "Ajourné",
+    "page": 2,
+    "bbox_pt": [
+     40,
+     134.0,
+     555,
+     152.0
+    ]
+   },
+   {
+    "n": 29,
+    "person_id": null,
+    "matricule": "13A2091",
+    "name": "OTTOU Jocelyne Mireille",
+    "average": "7.40",
+    "mention": "-",
+    "decision": "Ajourné",
+    "page": 2,
+    "bbox_pt": [
+     40,
+     152.0,
+     555,
+     170.0
+    ]
+   },
+   {
+    "n": 30,
+    "person_id": "P0051",
+    "matricule": "13A2472",
+    "name": "TAGNE Wilfried",
+    "average": "11.29",
+    "mention": "Passable",
+    "decision": "Admis",
+    "page": 2,
+    "bbox_pt": [
+     40,
+     170.0,
+     555,
+     188.0
+    ]
+   },
+   {
+    "n": 31,
+    "person_id": "P0056",
+    "matricule": "13A1254",
+    "name": "Léonie Nicaise TIDJANI",
+    "average": "12.87",
+    "mention": "Assez Bien",
+    "decision": "Admis",
+    "page": 2,
+    "bbox_pt": [
+     40,
+     188.0,
+     555,
+     206.0
+    ]
+   },
+   {
+    "n": 32,
+    "person_id": null,
+    "matricule": "13A4692",
+    "name": "ZAKARI Joël Landry Flore",
+    "average": "7.71",
+    "mention": "-",
+    "decision": "Ajourné",
+    "page": 2,
+    "bbox_pt": [
+     40,
+     206.0,
+     555,
+     224.0
+    ]
+   }
+  ],
+  "pages": 2,
+  "clean_pdf": "pv/UFN_LDROIT_2016.clean.pdf",
+  "scan_params": {
+   "dpi": 250,
+   "pages": 2,
+   "first_page": {
+    "preset": "scan",
+    "rotation_deg": -1.968,
+    "blur_sigma": 0.973,
+    "noise_sigma": 2.625,
+    "jpeg_quality": 37,
+    "streak": false
+   }
+  }
+ },
+ "UFN_LDROIT_2022": {
+  "institution_id": "UFN",
+  "programme_id": "LDROIT",
+  "session_year": 2022,
+  "deliberation_date": "2022-07-18",
+  "lang": "fr",
+  "jury_president": "Pr Anne-Marie SIMO",
+  "signatory": {
+   "name": "Alphonse MVONDO BELINGA",
+   "title": "Recteur"
+  },
+  "scan_preset": "poor",
+  "scan_dpi": 200,
+  "rows": [
+   {
+    "n": 1,
+    "person_id": null,
+    "matricule": "19A1081",
+    "name": "ABENA BELINGA Franck Patrick",
+    "average": "5.05",
+    "mention": "-",
+    "decision": "Ajourné",
+    "page": 1,
+    "bbox_pt": [
+     40,
+     226.0,
+     555,
+     244.0
+    ]
+   },
+   {
+    "n": 2,
+    "person_id": "P0356",
+    "matricule": "19A4294",
+    "name": "ABESSOLO Ernest Nathalie",
+    "average": "12.86",
+    "mention": "Assez Bien",
+    "decision": "Admis",
+    "page": 1,
+    "bbox_pt": [
+     40,
+     244.0,
+     555,
+     262.0
+    ]
+   },
+   {
+    "n": 3,
+    "person_id": "P0355",
+    "matricule": "19A2317",
+    "name": "ALIOUM SADOU Sylvie Hervé",
+    "average": "11.23",
+    "mention": "Passable",
+    "decision": "Admis",
+    "page": 1,
+    "bbox_pt": [
+     40,
+     262.0,
+     555,
+     280.0
+    ]
+   },
+   {
+    "n": 4,
+    "person_id": "P0354",
+    "matricule": "19A1213",
+    "name": "ATABONG EKOKA Lesly",
+    "average": "11.58",
+    "mention": "Passable",
+    "decision": "Admis",
+    "page": 1,
+    "bbox_pt": [
+     40,
+     280.0,
+     555,
+     298.0
+    ]
+   },
+   {
+    "n": 5,
+    "person_id": null,
+    "matricule": "19A4457",
+    "name": "DIBOUE DIKA Jean-Baptiste",
+    "average": "9.25",
+    "mention": "-",
+    "decision": "Ajourné",
+    "page": 1,
+    "bbox_pt": [
+     40,
+     298.0,
+     555,
+     316.0
+    ]
+   },
+   {
+    "n": 6,
+    "person_id": null,
+    "matricule": "19A2334",
+    "name": "DJIBRILLA Jean Ghislain",
+    "average": "5.43",
+    "mention": "-",
+    "decision": "Ajourné",
+    "page": 1,
+    "bbox_pt": [
+     40,
+     316.0,
+     555,
+     334.0
+    ]
+   },
+   {
+    "n": 7,
+    "person_id": "P0360",
+    "matricule": "19A0172",
+    "name": "NDI EKOKA Gabriel Terence",
+    "average": "14.48",
+    "mention": "Bien",
+    "decision": "Admis",
+    "page": 1,
+    "bbox_pt": [
+     40,
+     334.0,
+     555,
+     352.0
+    ]
+   },
+   {
+    "n": 8,
+    "person_id": "P0363",
+    "matricule": "19A2998",
+    "name": "ESSOMBA Léonie Kevin",
+    "average": "12.24",
+    "mention": "Assez Bien",
+    "decision": "Admis",
+    "page": 1,
+    "bbox_pt": [
+     40,
+     352.0,
+     555,
+     370.0
+    ]
+   },
+   {
+    "n": 9,
+    "person_id": "P0362",
+    "matricule": "19A3518",
+    "name": "ÉTOUNDI-MBALLA OWONO Jean-Rémi Éloi",
+    "average": "11.05",
+    "mention": "Passable",
+    "decision": "Admis",
+    "page": 1,
+    "bbox_pt": [
+     40,
+     370.0,
+     555,
+     388.0
+    ]
+   },
+   {
+    "n": 10,
+    "person_id": "P0359",
+    "matricule": "19A1349",
+    "name": "Wilfred FRU-TANYI",
+    "average": "12.60",
+    "mention": "Assez Bien",
+    "decision": "Admis",
+    "page": 1,
+    "bbox_pt": [
+     40,
+     388.0,
+     555,
+     406.0
+    ]
+   },
+   {
+    "n": 11,
+    "person_id": null,
+    "matricule": "19A2162",
+    "name": "KAMGA Delphine Alain",
+    "average": "8.23",
+    "mention": "-",
+    "decision": "Ajourné",
+    "page": 1,
+    "bbox_pt": [
+     40,
+     406.0,
+     555,
+     424.0
+    ]
+   },
+   {
+    "n": 12,
+    "person_id": "P0361",
+    "matricule": "19A4213",
+    "name": "KOUAM Nadège Ingrid",
+    "average": "14.49",
+    "mention": "Bien",
+    "decision": "Admis",
+    "page": 1,
+    "bbox_pt": [
+     40,
+     424.0,
+     555,
+     442.0
+    ]
+   },
+   {
+    "n": 13,
+    "person_id": "P0358",
+    "matricule": "19A3355",
+    "name": "Harold KUATE",
+    "average": "11.27",
+    "mention": "Passable",
+    "decision": "Admis",
+    "page": 1,
+    "bbox_pt": [
+     40,
+     442.0,
+     555,
+     460.0
+    ]
+   },
+   {
+    "n": 14,
+    "person_id": null,
+    "matricule": "19A1053",
+    "name": "MBALLA Rosine",
+    "average": "6.32",
+    "mention": "-",
+    "decision": "Ajourné",
+    "page": 1,
+    "bbox_pt": [
+     40,
+     460.0,
+     555,
+     478.0
+    ]
+   },
+   {
+    "n": 15,
+    "person_id": null,
+    "matricule": "19A0409",
+    "name": "NDZANA MBALLA Paul",
+    "average": "7.62",
+    "mention": "-",
+    "decision": "Ajourné",
+    "page": 1,
+    "bbox_pt": [
+     40,
+     478.0,
+     555,
+     496.0
+    ]
+   },
+   {
+    "n": 16,
+    "person_id": null,
+    "matricule": "19A1454",
+    "name": "MEDJO Delphine Cyrille",
+    "average": "7.32",
+    "mention": "-",
+    "decision": "Ajourné",
+    "page": 1,
+    "bbox_pt": [
+     40,
+     496.0,
+     555,
+     514.0
+    ]
+   },
+   {
+    "n": 17,
+    "person_id": null,
+    "matricule": "19A1381",
+    "name": "MEKUATE Cyrille",
+    "average": "5.36",
+    "mention": "-",
+    "decision": "Ajourné",
+    "page": 1,
+    "bbox_pt": [
+     40,
+     514.0,
+     555,
+     532.0
+    ]
+   },
+   {
+    "n": 18,
+    "person_id": "P0357",
+    "matricule": "19A3704",
+    "name": "NDIFOR NJI Atem",
+    "average": "13.56",
+    "mention": "Assez Bien",
+    "decision": "Admis",
+    "page": 1,
+    "bbox_pt": [
+     40,
+     532.0,
+     555,
+     550.0
+    ]
+   },
+   {
+    "n": 19,
+    "person_id": null,
+    "matricule": "19A4611",
+    "name": "NFOR Bernard",
+    "average": "8.89",
+    "mention": "-",
+    "decision": "Ajourné",
+    "page": 1,
+    "bbox_pt": [
+     40,
+     550.0,
+     555,
+     568.0
+    ]
+   },
+   {
+    "n": 20,
+    "person_id": null,
+    "matricule": "19A3275",
+    "name": "NJI Godlove",
+    "average": "8.48",
+    "mention": "-",
+    "decision": "Ajourné",
+    "page": 1,
+    "bbox_pt": [
+     40,
+     568.0,
+     555,
+     586.0
+    ]
+   },
+   {
+    "n": 21,
+    "person_id": null,
+    "matricule": "19A2489",
+    "name": "SONE Franck",
+    "average": "6.00",
+    "mention": "-",
+    "decision": "Ajourné",
+    "page": 1,
+    "bbox_pt": [
+     40,
+     586.0,
+     555,
+     604.0
+    ]
+   },
+   {
+    "n": 22,
+    "person_id": null,
+    "matricule": "19A3880",
+    "name": "TAGNE Ulrich Évelyne",
+    "average": "6.79",
+    "mention": "-",
+    "decision": "Ajourné",
+    "page": 1,
+    "bbox_pt": [
+     40,
+     604.0,
+     555,
+     622.0
+    ]
+   },
+   {
+    "n": 23,
+    "person_id": null,
+    "matricule": "19A2644",
+    "name": "TALLA Olivier Arnaud",
+    "average": "9.83",
+    "mention": "-",
+    "decision": "Ajourné",
+    "page": 1,
+    "bbox_pt": [
+     40,
+     622.0,
+     555,
+     640.0
+    ]
+   },
+   {
+    "n": 24,
+    "person_id": null,
+    "matricule": "19A0366",
+    "name": "TCHOUMI Delphine",
+    "average": "7.06",
+    "mention": "-",
+    "decision": "Ajourné",
+    "page": 1,
+    "bbox_pt": [
+     40,
+     640.0,
+     555,
+     658.0
+    ]
+   },
+   {
+    "n": 25,
+    "person_id": "P0353",
+    "matricule": "19A1313",
+    "name": "TSANGA Marie",
+    "average": "11.64",
+    "mention": "Passable",
+    "decision": "Admis",
+    "page": 1,
+    "bbox_pt": [
+     40,
+     658.0,
+     555,
+     676.0
+    ]
+   }
+  ],
+  "pages": 1,
+  "clean_pdf": "pv/UFN_LDROIT_2022.clean.pdf",
+  "scan_params": {
+   "dpi": 200,
+   "pages": 1,
+   "first_page": {
+    "preset": "poor",
+    "rotation_deg": 0.538,
+    "blur_sigma": 1.295,
+    "noise_sigma": 6.422,
+    "jpeg_quality": 34,
+    "streak": false
+   }
+  }
+ },
+ "UFN_LDROIT_2024": {
+  "institution_id": "UFN",
+  "programme_id": "LDROIT",
+  "session_year": 2024,
+  "deliberation_date": "2024-07-16",
+  "lang": "fr",
+  "jury_president": "Pr Jean-Claude EBELLE",
+  "signatory": {
+   "name": "Joséphine ABENA MANGA",
+   "title": "Rectrice"
+  },
+  "scan_preset": "scan",
+  "scan_dpi": 200,
+  "rows": [
+   {
+    "n": 1,
+    "person_id": "P0469",
+    "matricule": "21A0201",
+    "name": "SOMO ABOUNA Emmanuel Blaise",
+    "average": "10.00",
+    "mention": "Passable",
+    "decision": "Admis",
+    "page": 1,
+    "bbox_pt": [
+     40,
+     226.0,
+     555,
+     244.0
+    ]
+   },
+   {
+    "n": 2,
+    "person_id": null,
+    "matricule": "21A0904",
+    "name": "ASONG-ETA Joseph Atem",
+    "average": "6.72",
+    "mention": "-",
+    "decision": "Ajourné",
+    "page": 1,
+    "bbox_pt": [
+     40,
+     244.0,
+     555,
+     262.0
+    ]
+   },
+   {
+    "n": 3,
+    "person_id": "P0473",
+    "matricule": "21A0898",
+    "name": "ASSAM Pascaline",
+    "average": "12.64",
+    "mention": "Assez Bien",
+    "decision": "Admis",
+    "page": 1,
+    "bbox_pt": [
+     40,
+     262.0,
+     555,
+     280.0
+    ]
+   },
+   {
+    "n": 4,
+    "person_id": null,
+    "matricule": "21A1486",
+    "name": "BASSOM Marie-Thérèse",
+    "average": "5.63",
+    "mention": "-",
+    "decision": "Ajourné",
+    "page": 1,
+    "bbox_pt": [
+     40,
+     280.0,
+     555,
+     298.0
+    ]
+   },
+   {
+    "n": 5,
+    "person_id": "P0476",
+    "matricule": "21A1632",
+    "name": "Bertrand BELINGA",
+    "average": "10.53",
+    "mention": "Passable",
+    "decision": "Admis",
+    "page": 1,
+    "bbox_pt": [
+     40,
+     298.0,
+     555,
+     316.0
+    ]
+   },
+   {
+    "n": 6,
+    "person_id": null,
+    "matricule": "21A0837",
+    "name": "BELINGA Brice Gilbert",
+    "average": "5.58",
+    "mention": "-",
+    "decision": "Ajourné",
+    "page": 1,
+    "bbox_pt": [
+     40,
+     316.0,
+     555,
+     334.0
+    ]
+   },
+   {
+    "n": 7,
+    "person_id": null,
+    "matricule": "21A4666",
+    "name": "BELINGA OLINGA Larissa",
+    "average": "5.06",
+    "mention": "-",
+    "decision": "Ajourné",
+    "page": 1,
+    "bbox_pt": [
+     40,
+     334.0,
+     555,
+     352.0
+    ]
+   },
+   {
+    "n": 8,
+    "person_id": null,
+    "matricule": "21A0445",
+    "name": "DJEUMOU Éric-Joël",
+    "average": "8.03",
+    "mention": "-",
+    "decision": "Ajourné",
+    "page": 1,
+    "bbox_pt": [
+     40,
+     352.0,
+     555,
+     370.0
+    ]
+   },
+   {
+    "n": 9,
+    "person_id": null,
+    "matricule": "21A1226",
+    "name": "EKOKA Wilfred Roland",
+    "average": "7.75",
+    "mention": "-",
+    "decision": "Ajourné",
+    "page": 1,
+    "bbox_pt": [
+     40,
+     370.0,
+     555,
+     388.0
+    ]
+   },
+   {
+    "n": 10,
+    "person_id": "P0474",
+    "matricule": "21A0220",
+    "name": "NDIFOR EKOKA Prudence",
+    "average": "12.13",
+    "mention": "Assez Bien",
+    "decision": "Admis",
+    "page": 1,
+    "bbox_pt": [
+     40,
+     388.0,
+     555,
+     406.0
+    ]
+   },
+   {
+    "n": 11,
+    "person_id": "P0471",
+    "matricule": "21A0997",
+    "name": "ELIMBI Yvan Arnaud",
+    "average": "11.92",
+    "mention": "Passable",
+    "decision": "Admis",
+    "page": 1,
+    "bbox_pt": [
+     40,
+     406.0,
+     555,
+     424.0
+    ]
+   },
+   {
+    "n": 12,
+    "person_id": null,
+    "matricule": "21A3936",
+    "name": "ENAMA Mireille",
+    "average": "7.64",
+    "mention": "-",
+    "decision": "Ajourné",
+    "page": 1,
+    "bbox_pt": [
+     40,
+     424.0,
+     555,
+     442.0
+    ]
+   },
+   {
+    "n": 13,
+    "person_id": "P0472",
+    "matricule": "21A4522",
+    "name": "ETOUNDI Guy",
+    "average": "12.07",
+    "mention": "Assez Bien",
+    "decision": "Admis",
+    "page": 1,
+    "bbox_pt": [
+     40,
+     442.0,
+     555,
+     460.0
+    ]
+   },
+   {
+    "n": 14,
+    "person_id": "P0468",
+    "matricule": "21A3641",
+    "name": "FORCHA Divine Pamela",
+    "average": "14.83",
+    "mention": "Bien",
+    "decision": "Admis",
+    "page": 1,
+    "bbox_pt": [
+     40,
+     460.0,
+     555,
+     478.0
+    ]
+   },
+   {
+    "n": 15,
+    "person_id": null,
+    "matricule": "21A3592",
+    "name": "OLINGA FOUDA Jean-Pierre",
+    "average": "5.54",
+    "mention": "-",
+    "decision": "Ajourné",
+    "page": 1,
+    "bbox_pt": [
+     40,
+     478.0,
+     555,
+     496.0
+    ]
+   },
+   {
+    "n": 16,
+    "person_id": null,
+    "matricule": "21A2494",
+    "name": "Noël Franck KUATE",
+    "average": "5.57",
+    "mention": "-",
+    "decision": "Ajourné",
+    "page": 1,
+    "bbox_pt": [
+     40,
+     496.0,
+     555,
+     514.0
+    ]
+   },
+   {
+    "n": 17,
+    "person_id": null,
+    "matricule": "21A0491",
+    "name": "MELI Paul Emile",
+    "average": "5.89",
+    "mention": "-",
+    "decision": "Ajourné",
+    "page": 1,
+    "bbox_pt": [
+     40,
+     514.0,
+     555,
+     532.0
+    ]
+   },
+   {
+    "n": 18,
+    "person_id": null,
+    "matricule": "21A4256",
+    "name": "MOUNCHILI Ulrich Rodrigue",
+    "average": "7.68",
+    "mention": "-",
+    "decision": "Ajourné",
+    "page": 1,
+    "bbox_pt": [
+     40,
+     532.0,
+     555,
+     550.0
+    ]
+   },
+   {
+    "n": 19,
+    "person_id": null,
+    "matricule": "21A1525",
+    "name": "NCHARE Alain Brigitte",
+    "average": "8.38",
+    "mention": "-",
+    "decision": "Ajourné",
+    "page": 1,
+    "bbox_pt": [
+     40,
+     550.0,
+     555,
+     568.0
+    ]
+   },
+   {
+    "n": 20,
+    "person_id": "P0477",
+    "matricule": "21A0668",
+    "name": "NGAMENI Térence Hélène",
+    "average": "13.85",
+    "mention": "Assez Bien",
+    "decision": "Admis",
+    "page": 1,
+    "bbox_pt": [
+     40,
+     568.0,
+     555,
+     586.0
+    ]
+   },
+   {
+    "n": 21,
+    "person_id": null,
+    "matricule": "21A0115",
+    "name": "NGEH Mercy Peter",
+    "average": "9.02",
+    "mention": "-",
+    "decision": "Ajourné",
+    "page": 1,
+    "bbox_pt": [
+     40,
+     586.0,
+     555,
+     604.0
+    ]
+   },
+   {
+    "n": 22,
+    "person_id": "P0475",
+    "matricule": "21A2522",
+    "name": "NGWA Cecilia Ngum",
+    "average": "13.66",
+    "mention": "Assez Bien",
+    "decision": "Admis",
+    "page": 1,
+    "bbox_pt": [
+     40,
+     604.0,
+     555,
+     622.0
+    ]
+   },
+   {
+    "n": 23,
+    "person_id": "P0478",
+    "matricule": "21A1882",
+    "name": "NJOYA Fidèle Zacharie",
+    "average": "11.21",
+    "mention": "Passable",
+    "decision": "Admis",
+    "page": 1,
+    "bbox_pt": [
+     40,
+     622.0,
+     555,
+     640.0
+    ]
+   },
+   {
+    "n": 24,
+    "person_id": null,
+    "matricule": "21A3194",
+    "name": "NOUMBISSIE TSAFACK Béatrice Océane",
+    "average": "8.07",
+    "mention": "-",
+    "decision": "Ajourné",
+    "page": 1,
+    "bbox_pt": [
+     40,
+     640.0,
+     555,
+     658.0
+    ]
+   },
+   {
+    "n": 25,
+    "person_id": null,
+    "matricule": "21A0141",
+    "name": "SANDJO Pierre-Marie",
+    "average": "8.14",
+    "mention": "-",
+    "decision": "Ajourné",
+    "page": 1,
+    "bbox_pt": [
+     40,
+     658.0,
+     555,
+     676.0
+    ]
+   },
+   {
+    "n": 26,
+    "person_id": null,
+    "matricule": "21A2649",
+    "name": "SONE Paul Armand",
+    "average": "8.56",
+    "mention": "-",
+    "decision": "Ajourné",
+    "page": 2,
+    "bbox_pt": [
+     40,
+     98.0,
+     555,
+     116.0
+    ]
+   },
+   {
+    "n": 27,
+    "person_id": "P0470",
+    "matricule": "21A0625",
+    "name": "TIOTSOP Jean-Baptiste",
+    "average": "15.20",
+    "mention": "Bien",
+    "decision": "Admis",
+    "page": 2,
+    "bbox_pt": [
+     40,
+     116.0,
+     555,
+     134.0
+    ]
+   },
+   {
+    "n": 28,
+    "person_id": "P0479",
+    "matricule": "21A3560",
+    "name": "YOUMBI Cédric Patrick",
+    "average": "14.77",
+    "mention": "Bien",
+    "decision": "Admis",
+    "page": 2,
+    "bbox_pt": [
+     40,
+     134.0,
+     555,
+     152.0
+    ]
+   }
+  ],
+  "pages": 2,
+  "clean_pdf": "pv/UFN_LDROIT_2024.clean.pdf",
+  "scan_params": {
+   "dpi": 200,
+   "pages": 2,
+   "first_page": {
+    "preset": "scan",
+    "rotation_deg": -1.694,
+    "blur_sigma": 0.697,
+    "noise_sigma": 2.513,
+    "jpeg_quality": 38,
+    "streak": false
+   }
+  }
+ },
+ "UFN_LINFO_2024": {
+  "institution_id": "UFN",
+  "programme_id": "LINFO",
+  "session_year": 2024,
+  "deliberation_date": "2024-07-22",
+  "lang": "fr",
+  "jury_president": "Pr Béatrice BILOA",
+  "signatory": {
+   "name": "Joséphine ABENA MANGA",
+   "title": "Rectrice"
+  },
+  "scan_preset": "poor",
+  "scan_dpi": 200,
+  "rows": [
+   {
+    "n": 1,
+    "person_id": "P0481",
+    "matricule": "21B4895",
+    "name": "DAIROU Anne-Marie",
+    "average": "13.45",
+    "mention": "Assez Bien",
+    "decision": "Admis",
+    "page": 1,
+    "bbox_pt": [
+     40,
+     226.0,
+     555,
+     244.0
+    ]
+   },
+   {
+    "n": 2,
+    "person_id": "P0480",
+    "matricule": "21B2503",
+    "name": "HAMIDOU Kevin Léonie",
+    "average": "10.44",
+    "mention": "Passable",
+    "decision": "Admis",
+    "page": 1,
+    "bbox_pt": [
+     40,
+     244.0,
+     555,
+     262.0
+    ]
+   },
+   {
+    "n": 3,
+    "person_id": null,
+    "matricule": "21B2197",
+    "name": "TEFOUET Josiane Jean",
+    "average": "7.26",
+    "mention": "-",
+    "decision": "Ajourné",
+    "page": 1,
+    "bbox_pt": [
+     40,
+     262.0,
+     555,
+     280.0
+    ]
+   }
+  ],
+  "pages": 1,
+  "clean_pdf": "pv/UFN_LINFO_2024.clean.pdf",
+  "scan_params": {
+   "dpi": 200,
+   "pages": 1,
+   "first_page": {
+    "preset": "poor",
+    "rotation_deg": 0.056,
+    "blur_sigma": 1.145,
+    "noise_sigma": 6.661,
+    "jpeg_quality": 34,
+    "streak": false
+   }
+  }
+ }
+}

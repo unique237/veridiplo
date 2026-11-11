@@ -1,0 +1,4 @@
+# Generated synthetic data is not committed; only data/sample/ and data/scenarios/ are.
+synthetic/
+cache/
+uploads/
